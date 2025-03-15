@@ -40,6 +40,7 @@ const AdminDashboard = () => {
               <FaDollarSign className="dashboard-icon" />
               <h5>Revenue</h5>
               <p>$12,500</p>
+              <p>HHHHHHHHH</p>
             </div>
           </div>
         </div>
