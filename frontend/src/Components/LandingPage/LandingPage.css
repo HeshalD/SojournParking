@@ -1,0 +1,484 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+}
+
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+}
+
+@font-face {
+    font-family: "GothamLight";
+    src: url("./Gotham-Light.ttf");
+}
+
+@font-face {
+    font-family: "GothamThin";
+    src: url("./Gotham-Thin.ttf");
+}
+
+@font-face {
+    font-family: "GothamXLight";
+    src: url("./Gotham-XLight.ttf");
+}
+
+h2{
+    font-family: 'GothamBold';
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+/* Buttons */
+.btn {
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #50b08600;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn-primary:hover {
+    background-color: #3e8a67;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #ff5252;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Section 1 - Hero */
+#hero {
+    background-color: #2D2A2A;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.spinning-logo {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    opacity: 0.1;
+    animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 18px;
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* Section 2 - Emergency Services */
+#emergency {
+    background-color:  #50B087;
+    color: #ffffff;
+}
+
+.emergency-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.emergency-text {
+    flex: 1;
+    padding-right: 60px;
+}
+
+.emergency-text h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.emergency-text p {
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.emergency-image {
+    flex: 1;
+    text-align: center;
+}
+
+.emergency-image img {
+    border: 1px solid white;
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Section 3 - Discounts & Promos */
+#discounts {
+    background-color: #2D2A2A;
+    color: white;
+}
+
+.discounts-content h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.slider {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    height: 350px;
+}
+
+.slide {
+    min-width: 100%;
+    padding: 40px;
+    background-color: #1E1C1C;
+    border-radius: 10px;
+    margin: 0 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.slide h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #50B087;
+}
+
+.slide p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.slide .discount-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ff6b6b;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.slider-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #555;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+    background-color: #50B087;
+}
+
+.slider-buttons {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: calc(100% + 40px);
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+}
+
+.slider-btn {
+    background-color: rgba(80, 176, 135, 0.7);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 20px;
+    z-index: 10;
+}
+
+.slider-btn:hover {
+    background-color: #50B087;
+}
+
+/* Section 4 - Contact Us */
+#contact {
+    background-color: #50B087;
+    color: #333;
+}
+
+.contact-container {
+    display: flex;
+    gap: 40px;
+}
+
+.contact-form {
+    flex: 1;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #2D2A2A;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #50B087;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(80, 176, 135, 0.2);
+}
+
+.form-group textarea {
+    height: 150px;
+    resize: vertical;
+}
+
+.map-container {
+    flex: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    height: 500px;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hero-content h1 {
+        font-size: 40px;
+    }
+
+    .emergency-container {
+        flex-direction: column;
+    }
+
+    .emergency-text {
+        padding-right: 0;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .contact-container {
+        flex-direction: column;
+    }
+
+    .spinning-logo {
+        width: 300px;
+        height: 300px;
+    }
+
+    .header {
+    background-color: #2D2A2A; 
+    color: white;
+    padding: 15px 30px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 1200px; 
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-family: 'GothamLight';
+    border: 1px solid white;
+}
+
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease-in, transform 0.3s ease-in
+}
+
+.nav-links a:hover {
+    color: #50B087; 
+    
+}
+
+.profile-icon {
+    cursor: pointer;
+}
+
+.usericon {
+    filter: invert(100%) brightness(100%);
+}
+
+.usericon :hover {
+    filter: invert(100%) brightness(100%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 10px;
+    }
+}
+}
+
+/* Pattern 1 - Celtic knot pattern (for sections 2 and 4) */
+.pattern-1 {
+    background-image: url('./DesignTwo-removebg.png');
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    opacity: 0.3; /* Adjust opacity as needed */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  
+  /* Pattern 2 - Green diamond pattern (for section 3) */
+  #discounts {
+    background-color: #2D2A2A;
+    color: white;
+    position: relative;
+    background-image: url('DesignOneGreen.png');
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    background-blend-mode: overlay;
+  }
+
+  /* Make sure content is properly positioned above the patterns */
+#emergency .container, #contact .container {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Adjust section positions for overlay patterns */
+  #emergency, #contact {
+    position: relative;
+    overflow: hidden;
+  }
