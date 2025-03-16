@@ -1,0 +1,186 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/*  General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #F5F7FA;
+    color: #2C3E50;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    background: white;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/*  Sidebar */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(135deg, #2E86C1, #1F618D);
+    color: white;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.nav-item {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.nav-item:hover, .active {
+    background: rgba(255, 255, 255, 0.2);
+    color: #F5F7FA;
+}
+
+/*  Dashboard Main */
+.dashboard-main {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #FDFEFE;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: #140909;
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #2E86C1;
+}
+
+/*  Profile Card */
+.profile-card {
+    background: #59B87A;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 350px;
+}
+
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid #3498DB;
+}
+
+/*  Buttons */
+.save-btn {
+    background: #3498DB;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background: #2980B9;
+}
+
+/*  Dashboard Cards */
+.dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 🟢 Badge Styles */
+.badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+.paid {
+    background: #2ECC71;
+    color: white;
+}
+
+/* 🔀 Responsive Design */
+@media screen and (max-width: 1024px) {
+    .dashboard-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    .dashboard-main {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .dashboard-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+}
