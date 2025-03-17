@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+        
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif; 
+}
+
+body {
+    background-color: #2D2A2A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    border: solid 1px white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.illustration {
+    flex: 1;
+    max-width: 500px;
+    margin-right: -100px;
+    z-index: 2;
+}
+
+.reports-panel {
+    background-color: #59B87A;
+    border-radius: 15px;
+    padding: 40px;
+    width: 500px;
+    z-index: 1;
+    margin-right: 100px;
+}
+
+.reports-panel h1 {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 600;
+
+}
+
+.form-group {
+    margin-bottom: 20px;
+    margin-right: 100px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1rem;
+    margin-left: -50px;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-control:focus {
+    outline: none;
+    background-color:#2D2A2A;
+}
+
+.btn-download {
+    display: block;
+    width: 150px;
+    margin: 30px auto 0;
+    padding: 12px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.btn-download:hover {
+    background-color: #235c26;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .illustration {
+        margin-right: 0;
+        margin-bottom: -50px;
+        max-width: 300px;
+    }
+    
+    .reports-panel {
+        width: 100%;
+    }
+}

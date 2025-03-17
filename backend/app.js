@@ -1,11 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const router = require("./Routes/MembershipRoutes");
 
 const app = express();
 
-app.use("/",(req,res,next)=>{
-    res.send("It is working");
-})
+app.use("/Members",router)
 
 mongoose.connect("mongodb+srv://Heshal:12345@sojournparking.exrjn.mongodb.net/")
 .then(()=>console.log("Connected to MongoDB"))
