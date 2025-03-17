@@ -4,7 +4,9 @@ const router = require("./Routes/MembershipRoutes");
 
 const app = express();
 
-app.use("/Members",router)
+app.use(express.json());
+app.use("/Members",router);
+
 
 mongoose.connect("mongodb+srv://Heshal:12345@sojournparking.exrjn.mongodb.net/")
 .then(()=>console.log("Connected to MongoDB"))
