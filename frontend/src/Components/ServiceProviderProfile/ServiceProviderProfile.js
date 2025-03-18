@@ -1,7 +1,22 @@
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 import './ServiceProviderProfile.css'
+import axios from "axios";
+import ServiceProvider from "../AddServiceProvider/AddServiceProvider"
+
+
+const URL ="http://Localhost:4000/ServiceProviderProfile";
+
+const fetchHandler = async () =>{
+  return await axios.get(URL).then((res) => res.data);
+
+}
 
 function ServiceProviderProfile() {
+  const[ServiceProvider, setServiceProviderProfile] =useState();
+  useEffect(() =>  {
+    fetchHandler().then((data) => setServiceProviderProfile(data.ServiceProviderProfile));
+  },[])
+
   return (
     <div>
       <>
@@ -11,6 +26,15 @@ function ServiceProviderProfile() {
   <link rel="stylesheet" href="/medmech_profile.css" />
   <div className="container">
     <h2>Service Providers Profiles</h2>
+
+    <div>
+      {ServiceProvider && ServiceProvider.map((servieProvider, i) => (
+        <div key={i}>
+          <ServiceProvider servieProvider={servieProvider}/>
+        </div>
+      ))}
+    </div>
+
     {/* Profile Example */}
     <div className="profile-card">
       <h3>John Doe</h3>
@@ -21,16 +45,16 @@ function ServiceProviderProfile() {
       />
       <div className="profile-info">
         <p>
-          <strong>Role:</strong> Mechanic
+          <strong>Role:</strong> 
         </p>
         <p>
-          <strong>Specialization:</strong> Engine Repair
+          <strong>Specialization:</strong> 
         </p>
         <p>
-          <strong>Location:</strong> Downtown Garage
+          <strong>Location:</strong> 
         </p>
         <p>
-          <strong>Contact:</strong> +123456789
+          <strong>Contact:</strong> 
         </p>
       </div>
       <div className="rating">

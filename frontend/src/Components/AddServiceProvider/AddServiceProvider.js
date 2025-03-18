@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './AddServiceProvider.css'
-function AddServiceProvider() {
+
+
+
+function AddServiceProvider(props) {
+  const {fullname,contactnumber,specialozation,location} =props.ServiceProvider;
   return (
     <div>
      <>
@@ -19,7 +23,7 @@ function AddServiceProvider() {
         </select>
       </div>
       <div className="form-group">
-        <label htmlFor="name">Full Name:</label>
+        <label htmlFor="name">Full Name:{fullname}</label>
         <input
           type="text"
           id="name"
@@ -29,7 +33,7 @@ function AddServiceProvider() {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="contact">Contact Number:</label>
+        <label htmlFor="contact">Contact Number:{contactnumber}</label>
         <input
           type="text"
           id="contact"
@@ -39,7 +43,7 @@ function AddServiceProvider() {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="specialization">Specialization:</label>
+        <label htmlFor="specialization">Specialization:{specialozation}</label>
         <input
           type="text"
           id="specialization"
@@ -49,7 +53,7 @@ function AddServiceProvider() {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="location">Location:</label>
+        <label htmlFor="location">Location:{location}</label>
         <input
           type="text"
           id="location"
