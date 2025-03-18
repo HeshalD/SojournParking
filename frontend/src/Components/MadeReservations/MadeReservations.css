@@ -131,6 +131,10 @@
     font-family: 'GothamMedium';
     background-color: #50B087;
     color: white;
+    margin-bottom: 10px; 
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
 }
 
 .sidebar-btn-primary:hover {
@@ -142,6 +146,10 @@
     background-color: transparent;
     color: #50B087;
     border: 1px solid #50B087;
+    margin-bottom: 10px; 
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
 }
 
 .sidebar-btn-secondary:hover {
@@ -180,8 +188,14 @@
 
 /* No Reservation State */
 .sidebar-no-reservation {
-    padding: 20px 15px;
-    text-align: center;
+     max-width: 50%;
+    margin-bottom: 20px;
+    background-color: #2D2A2A;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-size: 14px;
+    border: solid 1px white
 }
 
 .sidebar-no-reservation h4 {

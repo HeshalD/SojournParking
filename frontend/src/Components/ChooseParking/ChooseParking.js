@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ChooseParking.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // Import for navigation
 
 function ChooseParking() {
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -12,6 +14,7 @@ function ChooseParking() {
     const [slots, setSlots] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();  // Initialize navigate hook
 
     // Fetch all slots on component mount
     useEffect(() => {
@@ -45,52 +48,6 @@ function ChooseParking() {
         }));
     };
 
-    const submitForm = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        
-        try {
-            // Prepare the data to match the server schema
-            const reservationData = {
-                slotId: selectedSlot,
-                userName: formData.name,
-                licensePlate: formData.licensePlate,
-                entryTime: new Date(`2023-01-01T${formData.entryTime}:00`) // Convert time to Date object
-            };
-            
-            // Send the data to the server
-            const response = await fetch('http://localhost:5000/slots/reserve', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(reservationData),
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to reserve slot');
-            }
-            
-            // If successful, refresh the slots to show updated state
-            await fetchSlots();
-            
-            // Reset form and close
-            setFormData({
-                name: '',
-                licensePlate: '',
-                entryTime: ''
-            });
-            
-            closeForm();
-            alert(`Parking slot ${selectedSlot} reserved successfully!`);
-        } catch (err) {
-            console.error("Error reserving slot:", err);
-            setError("Failed to reserve slot. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
-
     // Check if a slot is reserved
     const isSlotReserved = (slotId) => {
         return slots.some(slot => slot.slotId === slotId && slot.isReserved);
@@ -108,6 +65,50 @@ function ChooseParking() {
                 {slotId}
             </div>
         );
+    };
+
+    const sendRequest = async () => {
+        try {
+            setLoading(true);
+            // Prepare the data to match the server schema
+            const reservationData = {
+                slotId: selectedSlot,
+                userName: formData.name,
+                licensePlate: formData.licensePlate,
+                entryTime: new Date(`2023-01-01T${formData.entryTime}:00`), // Convert time to Date object
+                isReserved: true
+            };
+            
+            // Send the data to the server
+            const response = await axios.post("http://localhost:5000/slots", reservationData);
+
+            await axios.post("http://localhost:5000/sessions",{
+                name: formData.name,
+                licensePlate: formData.licensePlate
+            })
+
+            return response.data;
+            
+        } catch (err) {
+            console.error("Error making reservation:", err);
+            setError("Failed to reserve parking slot");
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const submitForm = async (e) => {
+        e.preventDefault(); // Corrected from prevDefault()
+        try {
+            await sendRequest();
+            // On successful reservation
+            closeForm();
+            fetchSlots(); // Refresh slots to show updated status
+            navigate('/madeReservations'); // Navigate to the same page to refresh
+        } catch (err) {
+            // Error is already set in sendRequest
+        }
     };
 
     return (

@@ -1,39 +1,110 @@
-const Slot = require("../Models/SlotModel");
+const Slot = require("../Models/SlotModel")
 
-// Get all slots
-const getAllSlots = async (req, res, next) => {
-  let slots; // Fixed: lowercase variable name
+const getAllReservations = async(req,res,next)=>{
 
-  try {
+  let Slots;
+
+  try{
     slots = await Slot.find();
-    
-    if (!slots) {
-      return res.status(404).json({ message: "Slots not found" });
-    }
-    
-    return res.status(200).json({ slots }); // Added: send response with slots
-  } catch (err) {
+  }catch(err){
     console.log(err);
-    return res.status(500).json({ message: "Server error" }); // Added: error handling
   }
-};
 
-// Reserve a slot
-const reserveSlot = async (req, res) => {
-  const { slotId, userName, licensePlate, entryTime } = req.body;
+  if(!slots){
+    return res.status(404).json({message:"No reservations found"})
+  }
 
-  try {
-    const slot = await Slot.findOneAndUpdate(
-      { slotId },
-      { isReserved: true, userName, licensePlate, entryTime },
-      { new: true, upsert: true }
+  return res.status(200).json({slots});
+}
+
+const addReservation = async(req,res,next)=>{
+
+  const {slotId,isReserved,userName,licensePlate,entryTime} = req.body;
+
+  let slots;
+
+  try{
+    slots = new Slot({slotId,isReserved,userName,licensePlate,entryTime});
+    await slots.save();
+  }catch(err){
+    console.log(err);
+  }
+
+  if(!slots){
+    return res.status(404).send({message:"Unable to add reservation"});
+  }
+
+  return res.status(200).json({slots});
+
+}
+
+const getByLicensePlate = async(req,res,next)=>{
+    
+  const lp = req.params.licensePlate
+
+  let slot;
+
+  try{
+    slot = await Slot.findOne(lp);
+  }catch(err){
+    console.log(err);
+  }
+
+  if(!slot){
+    return res.status(404).send({message:"Unable to find reservation"});
+  }
+
+  return res.status(200).json({slot});
+
+}
+
+const updateReservation = async(req,res,next)=>{
+
+  const lp = req.params.licensePlate;
+
+  const { slotId,isReserved,userName,licensePlate,entryTime } = req.body;
+
+  let slot;
+
+  try{
+    slot = await Slot.findOneAndUpdate(lp,
+      {slotId:slotId,isReserved:isReserved,userName:userName,licensePlate:licensePlate,entryTime:entryTime}
     );
-
-    res.json(slot);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    slot = await slot.save();
+  }catch(err){
+    console.log(err);
   }
-};
 
-exports.getAllSlots = getAllSlots;
-exports.reserveSlot = reserveSlot;
+  if(!slot){
+    return res.status(404).send({message:"Unable to update reservation"});
+  }
+
+  return res.status(200).json({slot});
+
+}
+
+const deleteReservation = async(req,res,next)=>{
+  const id = req.params.id;
+
+  let slot
+
+  try{
+    slot = await Slot.findByIdAndDelete(id)
+
+  }catch(err){
+    console.log(err);
+  }
+
+  if(!slot){
+    return res.status(404).send({message:"Unable to find reservation"});
+  }
+
+  return res.status(200).json({message:"Reservation Deleted"});
+
+}
+
+exports.getAllReservations = getAllReservations;
+exports.addReservation = addReservation;
+exports.getByLicensePlate = getByLicensePlate;
+exports.updateReservation = updateReservation;
+exports.deleteReservation = deleteReservation;

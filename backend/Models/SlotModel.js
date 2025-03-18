@@ -6,7 +6,7 @@ const slotSchema = new mongoose.Schema({
   userName: String,
   licensePlate: String,
   entryTime: Date,
-});
+},{ collection: "parkingSlots" });
 
 const Slot = mongoose.model("Slot", slotSchema);
 module.exports = Slot;

@@ -1,5 +1,6 @@
 import React from 'react'
 import './LandingPage.css'
+import {Link} from "react-router-dom"
 
 function LandingPage() {
   return (
@@ -20,9 +21,9 @@ function LandingPage() {
           parking spaces. Reserve your spot in advance and enjoy a hassle-free
           parking experience.
         </p>
-        <a href="#" className="btn btn-primary">
+        <Link to="/chooseParking" className="btn btn-primary">
           Reserve Now
-        </a>
+        </Link>
       </div>
     </div>
   </section>
