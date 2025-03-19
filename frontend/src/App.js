@@ -9,9 +9,8 @@ import ReportPreveiw from './Components/ReportPreveiw/ReportPreveiw';
 
 function App() {
   return (
-    <div className="App">
-      <Header/>
-      <ReportPreveiw/>
+    <div className="App">  
+      <MembershipRenewal/>
     </div>
   );
 }
