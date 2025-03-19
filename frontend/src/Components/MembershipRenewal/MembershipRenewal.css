@@ -1,6 +1,12 @@
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+}
 
-@import url('https://fonts.cdnjs.com/css?family=Montserrat:400,500,600,700');
-@import url('https://fonts.cdnjs.com/css?family=Proxima+Nova:400,500,600,700');
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+}
 
 * {
     margin: 0;
@@ -19,21 +25,27 @@ body {
 }
 
 .container {
-    
     border: solid 1px white;
     position: relative;
     width: 100%;
     max-width: 900px;
     overflow: hidden;
     border-radius: 63px;
+    background-color: #2D2A2A;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .background-card {
     background-color: #59B87A;
-    border-radius: 63px;
+    border-radius: 30px;
     padding: 40px;
-    width: 60%;
-    margin-left: auto;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
     position: relative;
     z-index: 1;
 }
@@ -47,11 +59,10 @@ body {
 }
 
 .form-group {
-     width: 400px;  /* Set width to 500px */
-     height: 39px;  /* Set height to 39px */
-     margin: 20px 30px;
-
+    width: 100%;
+    margin: 20px 0;
 }
+
 input, button {
     width: 100%;
     padding: 15px;
@@ -70,13 +81,11 @@ input::placeholder {
 }
 
 button {
-    width: 215px;
-    height: 40px;
     background-color: #2e7d32;
     color: white;
     cursor: pointer;
     font-weight: bold;
-    margin: 20px 120px;
+    height: 40px;
     transition: background-color 0.3s;
     padding: 0;
     border: none;
@@ -126,7 +135,7 @@ button:hover {
         border-radius: 30px;
         padding: 20px;
     }
-    
+
     .tagline {
         position: relative;
         left: auto;
@@ -135,15 +144,26 @@ button:hover {
         text-align: center;
         max-width: none;
     }
-    
+
     .car-image {
-    width: 100%;
-    margin-top: 80px;
-    display: block;
-}
-    
+        width: 100%;
+        margin-top: 80px;
+        display: block;
+    }
+
     .container {
         display: flex;
         flex-direction: column;
+        padding: 20px;
+    }
+
+    .form-group {
+        width: 100%;
+        margin: 10px 0; /* Adjust form-group spacing for small screens */
+    }
+
+    button {
+        width: 100%; /* Make the button full-width on smaller screens */
+        margin: 20px 0; /* Adjust margin for smaller screens */
     }
 }

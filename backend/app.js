@@ -4,7 +4,7 @@ const router = require("./Routes/MembershipRoutes");
 const paymentRouter = require("./Routes/PaymentRoute");
 
 const app = express();
-const cors = require("cors");
+const cors =require("cors");
 
 app.use(express.json());
 app.use(cors());

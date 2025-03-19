@@ -1,0 +1,139 @@
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+}
+
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+}
+
+.membership-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background-color: #121212;
+}
+
+.member-card {
+    max-width: 500px;
+    width: 100%;
+    background-color: #1E1E1E;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    padding: 20px;
+    font-size: 14px;
+    color: white;
+}
+
+.member-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.member-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.member-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'GothamMedium', sans-serif;
+    background-color: #50B087;
+    color: white;
+}
+
+.member-details {
+    padding: 15px 0;
+}
+
+.member-detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.member-detail-item .label {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.member-detail-item .value {
+    color: #fcfcfc;
+    text-align: right;
+}
+
+.sidebar-membership {
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+    background-color: #1E1E1E;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-size: 14px;
+    padding-bottom: 20px;
+}
+
+.member-actions {
+    display: flex;
+    justify-content: space-between; 
+    gap: 5px; /* Space between buttons */
+    padding: 15px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #1E1E1E;
+    flex-wrap: wrap; 
+}
+
+.member-btn {
+    flex: 1 1 auto; 
+    min-width: 120px;
+    max-width: 150px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: none;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Update Button */
+.member-btn-primary {
+    background-color: #50B087;
+    color: white;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.member-btn-primary:hover {
+    background-color: #3e8a67;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Delete Button */
+.member-btn-secondary {
+    background-color: transparent;
+    color: #50B087;
+    border: 1px solid #50B087;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.member-btn-secondary:hover {
+    background-color: rgba(80, 176, 135, 0.1);
+    transform: translateY(-2px);
+}

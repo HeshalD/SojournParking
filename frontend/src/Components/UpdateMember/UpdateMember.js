@@ -1,41 +1,44 @@
-import React, { useState } from 'react';
-import './MembershipRenewal.css';
+import React, {useEffect,useState} from 'react'
+import axios from 'axios'
 import { useNavigate } from "react-router";
-import axios from 'axios';
+import { useParams } from "react-router";
 
-function MembershipRenewal() {
 
-  const history = useNavigate();
-  const [inputs, setInputs] = useState({
-    EmployeeID: "",
-    LicensePlateNo: "",
-    Slip: ""
-  });
+function UpdateMember() {
+    const [inputs,setInputs] = useState({});
+    const history = useNavigate();
+    const id = useParams().id;
 
-  const handleChange = (e) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
+    useEffect(() =>{
+        const fetchHandler = async () =>{
+            await axios
+            .get(`http://Localhost:5000/Members/${id}`)
+            .then((res) => res.data)
+            .then((data) => setInputs(data.user));
+        };
+        fetchHandler();
+    },[id]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Correct the typo here
-    console.log(inputs);
-    sendRequest().then(() => history('DisplayMembership'));
-  };
+    const sendRequest = async () => {
+        await axios.put(`http://Localhost:5000/Members/${id}`,{
+            EmployeeID: String(inputs.EmployeeID),
+            LicensePlateNo: String(inputs.LicensePlateNo),
+            Slip: String(inputs.Slip),
+      }).then((res) => res.data);
+    };
 
-  const sendRequest = async () => {
-    try {
-      await axios.post("http://localhost:5000/Members", {
-        EmployeeID: String(inputs.EmployeeID),
-        LicensePlateNo: String(inputs.LicensePlateNo),
-        Slip: String(inputs.Slip),
-      }).then(res => res.data);
-    } catch (error) {
-      console.error("There was an error sending the request", error);
-    }
-  };
+    const handleChange = (e) => {
+        setInputs((prevState) => ({
+          ...prevState,
+          [e.target.name]: e.target.value,
+        }));
+      };
+    
+      const handleSubmit = (e) => {
+        e.preventDefault(); // Correct the typo here
+        console.log(inputs);
+        sendRequest().then(() => history('/DisplayMembership'));
+      };
 
   return (
     <div>
@@ -99,7 +102,7 @@ function MembershipRenewal() {
         </div>
       </>
     </div>
-  );
+  )
 }
 
-export default MembershipRenewal;
+export default UpdateMember
