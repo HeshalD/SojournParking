@@ -1,9 +1,19 @@
 import React from "react";
 import "./Member.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Member(props) {
   const { _id,EmployeeID, LicensePlateNo, Slip } = props.user;
+
+  const history = useNavigate();
+  const deleteHandler = async() =>{
+    await axios.delete(`http://localhost:5000/Members/${_id}`)
+    .then(res =>res.data)
+    .then(() => history("/"))
+    .then(() =>history("/displayMembership"))
+  }
 
   return (
     <div className="member-card">
@@ -30,8 +40,8 @@ function Member(props) {
         </div>
       </div>
       <div className="member-actions">
-        <Link to={`/DisplayMembership/${_id}`} className="member-btn member-btn-primary">Edit</Link>
-        <button className="member-btn member-btn-secondary">Delete</button>
+        <Link to={`/UpdateMember/${_id}`} className="member-btn member-btn-primary">Edit</Link>
+        <button onClick={deleteHandler} className="member-btn member-btn-secondary">Delete</button>
       </div>
     </div>
   );

@@ -14,9 +14,11 @@ import {Route,Routes} from "react-router";
 function App() {
   return (
     <div className="App">  
-      <DisplayMembership/>
+      
       <Routes>
-      <Route path ="/DisplayMembership/:id" element = {<UpdateMember/>} />
+          <Route path="/" element={<MembershipRenewal/>}/>
+          <Route path="/displayMembership" element={<DisplayMembership/>}/>
+          <Route path="/UpdateMember/:id" element={<UpdateMember />} />
       </Routes>
     </div>
   );

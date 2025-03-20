@@ -16,7 +16,7 @@
 }
 
 body {
-    background-color: #2D2A2A;
+    background-color: #1E1E1E;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,7 +31,7 @@ body {
     max-width: 900px;
     overflow: hidden;
     border-radius: 63px;
-    background-color: #2D2A2A;
+    background-color: #1E1E1E;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -40,7 +40,7 @@ body {
 }
 
 .background-card {
-    background-color: #59B87A;
+    background-color: #3A3A3A;
     border-radius: 30px;
     padding: 40px;
     width: 100%;
@@ -72,8 +72,9 @@ input, button {
 }
 
 input {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 input::placeholder {
@@ -81,7 +82,7 @@ input::placeholder {
 }
 
 button {
-    background-color: #2e7d32;
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
     font-weight: bold;
@@ -94,26 +95,7 @@ button {
 }
 
 button:hover {
-    background-color: #235c26;
-}
-
-.tagline {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    max-width: 300px;
-    z-index: 2;
-}
-
-.car-image {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 50%;
-    z-index: 0;
+    background-color: #388E3C;
 }
 
 .upload-icon {
@@ -129,26 +111,49 @@ button:hover {
     position: relative;
 }
 
+.upload-label {
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.upload-label:hover {
+    background-color: #deeede1a;
+}
+
+.upload-icon {
+    font-size: 18px;
+    margin-right: 8px;
+    color: white;
+}
+
+.image-preview {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: auto;
+    max-height: 150px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+
 @media (max-width: 768px) {
     .background-card {
         width: 100%;
         border-radius: 30px;
         padding: 20px;
-    }
-
-    .tagline {
-        position: relative;
-        left: auto;
-        top: auto;
-        margin-bottom: 20px;
-        text-align: center;
-        max-width: none;
-    }
-
-    .car-image {
-        width: 100%;
-        margin-top: 80px;
-        display: block;
     }
 
     .container {
@@ -159,11 +164,11 @@ button:hover {
 
     .form-group {
         width: 100%;
-        margin: 10px 0; /* Adjust form-group spacing for small screens */
+        margin: 10px 0;
     }
 
     button {
-        width: 100%; /* Make the button full-width on smaller screens */
-        margin: 20px 0; /* Adjust margin for smaller screens */
+        width: 100%;
+        margin: 20px 0;
     }
 }
