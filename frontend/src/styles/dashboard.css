@@ -1,0 +1,374 @@
+/*
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(135deg, #fc6625, #8f9491);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .sidebar ul .active, .sidebar ul li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+  
+
+  .content {
+    margin-left: 270px;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .search-bar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+  
+
+  .stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .stat-card {
+    flex: 1;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+  }
+  
+  .progress-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: conic-gradient(#4285F4 var(--percentage), #e0e0e0 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+  }
+  
+  .stat-info h4 {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .stat-info p {
+    margin: 5px 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .increase {
+    color: #34A853;
+  }
+  
+  .decrease {
+    color: #EA4335;
+  }
+  
+
+  .charts {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .chart-card {
+    flex: 1;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+*/
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background: linear-gradient(135deg, #11aa38, #8f9491);
+  color: white;
+  padding: 20px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease; /* Added transition for sliding */
+  transform: translateX(-250px); /* Initially hidden */
+}
+
+.sidebar.active {
+  transform: translateX(0); /* Show sidebar when active */
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar ul .active, .sidebar ul li:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+/* Main Content */
+.content {
+  margin-left: 270px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Stats Section */
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  flex: 1;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.progress-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: conic-gradient(#4285F4 var(--percentage), #e0e0e0 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.stat-info h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.stat-info p {
+  margin: 5px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.increase {
+  color: #34A853;
+}
+
+.decrease {
+  color: #EA4335;
+}
+
+
+/* Button Section */
+.slider-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: wrap; /* Allows the buttons to wrap on smaller screens */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1200px) {
+  .content {
+    margin-left: 220px;
+  }
+}
+
+@media (max-width: 992px) {
+  /* For Tablet or smaller screens */
+  .sidebar {
+    width: 200px;
+    padding: 10px;
+  }
+
+  .logo {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .sidebar ul li {
+    padding: 8px 12px;
+  }
+
+  .content {
+    margin-left: 210px;
+  }
+
+  .search-bar {
+    width: 250px;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Adjust slider buttons to wrap in one line */
+  .slider-buttons {
+    flex-direction: row;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Sidebar */
+  .sidebar {
+    width: 200px; /* Set a visible width */
+    transform: translateX(-200px); /* Hide initially */
+    display: flex; /* Ensure it's still in the layout */
+    position: fixed;
+    height: 100vh;
+    background: linear-gradient(135deg, #11aa38, #8f9491);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.active {
+    transform: translateX(0); /* Slide in when active */
+  }
+
+  /* Main Content */
+  .content {
+    margin-left: 0; /* No margin when sidebar is hidden */
+    transition: margin-left 0.3s ease;
+  }
+
+  .sidebar.active + .content {
+    margin-left: 200px; /* Push content when sidebar appears */
+  }
+
+  /* Header */
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-right {
+    margin-top: 10px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .stat-card,
+  .chart-card {
+    flex: 1 0 100%;
+  }
+
+  .stats {
+    flex-direction: column;
+  }
+
+  /* Adjust slider buttons */
+  .slider-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
