@@ -1,0 +1,51 @@
+.rt-reservation-container {
+    width: 90%;
+    max-width: 600px; /* Adjust max width for better responsiveness */
+    margin: 100px auto; /* Center the container vertically and horizontally */
+    background-color: #1E1C1C;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.rt-heading {
+    font-size: 24px;
+    font-family: "GothamBold", sans-serif;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.rt-tick {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.rt-message {
+    font-size: 18px;
+    font-family: "GothamLight", sans-serif;
+    color: white;
+    line-height: 1.5;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .rt-reservation-container {
+        width: 95%;
+        padding: 30px;
+    }
+
+    .rt-heading {
+        font-size: 20px;
+    }
+
+    .rt-message {
+        font-size: 16px;
+    }
+
+    .rt-tick {
+        width: 80px;
+    }
+}

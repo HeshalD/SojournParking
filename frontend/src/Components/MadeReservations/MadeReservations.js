@@ -17,18 +17,31 @@ function MadeReservations() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchCurrentUser = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/sessions/current');
-                setCurrentUser(response.data.user);
-            } catch (err) {
-                console.error("No active session:", err);
-                // Redirect to login if no session is found
-                // navigate('/login'); // Uncomment if you have a login page
-            }
-        };
         fetchCurrentUser();
-    }, [navigate]);
+    }, []);
+
+    useEffect(() => {
+        if (currentUser) {
+            fetchReservations();
+        } else {
+            setLoading(false);
+        }
+    }, [currentUser]);
+
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/sessions/current');
+            if (response.data && response.data.user) {
+                setCurrentUser(response.data.user);
+            } else {
+                setError("User session not found.");
+            }
+        } catch (err) {
+            console.error("Error fetching user session:", err);
+            setError("Failed to load user session.");
+        }
+    };
 
     // Define the fetchReservations function
     const fetchReservations = async () => {
@@ -39,13 +52,16 @@ function MadeReservations() {
             if (response.data && response.data.slots) {
                 // Filter only reserved slots
                 let activeReservations = response.data.slots.filter(slot => slot.isReserved);
+                
+                console.log(currentUser.name);
 
                 // Ensure currentUser exists before filtering
-                if (currentUser && currentUser.licensePlate) {
+                if (currentUser && currentUser.name) {
                     activeReservations = activeReservations.filter(
-                        reservation => reservation.licensePlate === currentUser.licensePlate
+                        reservation => reservation.userName === currentUser.name
                     );
                 }
+
 
                 setReservations(activeReservations);
             } else {
@@ -141,7 +157,11 @@ function MadeReservations() {
                                 <span className="value">{formatTime(reservation.exitTime)}</span>
                             </div>
 
-                            <Link to={`/madeReservations/${reservation.licensePlate}`} className='sidebar-btn-secondary'>
+                            <Link to={`/findMyLocation/${reservation._id}`} className='sidebar-btn-secondary'>
+                                Find My Location
+                            </Link>
+
+                            <Link to={`/madeReservations/${reservation._id}`} className='sidebar-btn-secondary'>
                                 Update Reservation
                             </Link>
 
@@ -157,7 +177,7 @@ function MadeReservations() {
             ) : (
                 <div className="no-reservations">
                     <p>You have no active reservations</p>
-                    <Link to={`/madeReservations`} className='sidebar-btn-secondary'>
+                    <Link to={`/chooseParking`} className='sidebar-btn-secondary'>
                     Make a Reservation
                     </Link>
                 </div>

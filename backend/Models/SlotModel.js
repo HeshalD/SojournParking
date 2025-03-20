@@ -6,6 +6,7 @@ const slotSchema = new mongoose.Schema({
   userName: String,
   licensePlate: String,
   entryTime: Date,
+  exitTime: Date,
 },{ collection: "parkingSlots" });
 
 const Slot = mongoose.model("Slot", slotSchema);

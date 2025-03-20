@@ -75,7 +75,8 @@ function ChooseParking() {
                 slotId: selectedSlot,
                 userName: formData.name,
                 licensePlate: formData.licensePlate,
-                entryTime: new Date(`2023-01-01T${formData.entryTime}:00`), // Convert time to Date object
+                entryTime: new Date(`2023-01-01T${formData.entryTime}:00`),
+                exitTime: new Date(`2023-01-01T${formData.exitTime}:00`),
                 isReserved: true
             };
             
@@ -102,12 +103,10 @@ function ChooseParking() {
         e.preventDefault(); // Corrected from prevDefault()
         try {
             await sendRequest();
-            // On successful reservation
             closeForm();
-            fetchSlots(); // Refresh slots to show updated status
-            navigate('/madeReservations'); // Navigate to the same page to refresh
+            fetchSlots(); 
+            navigate('/madeReservations'); 
         } catch (err) {
-            // Error is already set in sendRequest
         }
     };
 

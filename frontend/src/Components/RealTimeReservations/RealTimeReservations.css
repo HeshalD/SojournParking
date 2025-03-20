@@ -190,61 +190,7 @@ button:hover {
     cursor: not-allowed;
 }
 
-
-.slot.reserved.your-reservation {
-    background-color: #66b3ff !important;
-    color: white;
-    animation: glow 0.5s infinite alternate;
-}
-
 .error-message {
     color: #ff6b6b;
     margin-bottom: 10px;
-}
-
-.parking-legend {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 20px;
-}
-
-.legendItem {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.legendBox {
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.reserved {
-    background-color: #ff6b6b;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-
-}
-
-.yourSpot {
-    background-color: #66b3ff;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-
-}
-
-.available {
-    background-color: #50B087;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-
 }

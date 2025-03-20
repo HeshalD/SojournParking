@@ -23,7 +23,7 @@
     src: url("./Gotham-XLight.ttf");
 }
 .sidebar-reservation {
-    max-width: 50%;
+    max-width: 30%;
     margin-bottom: 20px;
     background-color: #2D2A2A;
     border-radius: 10px;
@@ -54,8 +54,9 @@
 
 .sidebar-reservation-id {
     font-size: 12px;
-    opacity: 0.8;
+    opacity: 1;
     margin-top: 3px;
+    font-size: 20px;
 }
 
 .sidebar-status {
@@ -144,16 +145,21 @@
 .sidebar-btn-secondary {
     font-family: 'GothamMedium';
     background-color: transparent;
-    color: #50B087;
-    border: 1px solid #50B087;
+    color: #ffffff;
+    border: 1px solid #ffffff;
     margin-bottom: 10px; 
     display: inline-block;
     padding: 10px;
     text-decoration: none;
+    margin-left: 20px;
+    border-radius: 5px;
+
 }
 
 .sidebar-btn-secondary:hover {
-    background-color: rgba(80, 176, 135, 0.1);
+    background-color: #50B087;
+    color:#ffffff;
+    transition: 0.5s;
 }
 
 .sidebar-qr-preview {

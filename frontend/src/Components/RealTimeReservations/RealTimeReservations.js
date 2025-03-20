@@ -1,52 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import './UpdateReservations.css';
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  // Import for navigation
-import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom'; 
+import './RealTimeReservations.css'
 
-
-function UpdateReservations() {
-
+function RealTimeReservations() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState('');
     const [formData, setFormData] = useState({
         name: '',
         licensePlate: '',
-        entryTime: ''
+        entryTime: '',
+        exitTime: ''
     });
     const [slots, setSlots] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();  // Initialize navigate hook
-    const params = useParams()
-    const id = params.id;
-    console.log("ID", id);
 
-    useEffect(() => {
-        const fetchHandler = async () => {
-            try {
-                const res = await axios.get(`http://localhost:5000/slots/id/${id}`);
-                setFormData(res.data.user || {}); // Ensure safe assignment
-            } catch (err) {
-                console.error("Error fetching user data:", err);
-                setError("Failed to fetch user data.");
-            }
-        };
-        fetchHandler();
-    }, [id]);
-
-    const sendRequest = async () => {
-        const response = await axios.put(`http://localhost:5000/slots/id/${id}`, {
-            slotId: selectedSlot,
-            userName: formData.name,
-            licensePlate: formData.licensePlate,
-            entryTime: new Date(`2023-01-01T${formData.entryTime}:00`), // Convert time to Date object
-            isReserved: true,
-        });
-
-        return response.data;
-
-        console.log("Update Success:", response.data);
+    function getCurrentTime() {
+        const now = new Date();
+        return now.toTimeString().slice(0, 5); // Extracts HH:mm
     }
 
     // Fetch all slots on component mount
@@ -55,9 +28,8 @@ function UpdateReservations() {
     }, []);
 
     const fetchSlots = async () => {
-        
         try {
-            const response = await fetch(`http://localhost:5000/slots`);
+            const response = await fetch('http://localhost:5000/slots');
             const data = await response.json();
             setSlots(data.slots || []);
         } catch (err) {
@@ -68,6 +40,10 @@ function UpdateReservations() {
 
     const openForm = (slotId) => {
         setSelectedSlot(slotId);
+        setFormData({
+            ...formData,
+            entryTime: getCurrentTime()
+        })
         setIsFormOpen(true);
     };
 
@@ -87,42 +63,57 @@ function UpdateReservations() {
         return slots.some(slot => slot.slotId === slotId && slot.isReserved);
     };
 
-    const isSlotReservedByCurrentUser = (slotId) => {
-        return slots.some(slot => slot.slotId === slotId && slot._id === id);
-    };
-
     // Generate slot element with appropriate class based on reservation status
     const renderSlot = (slotId) => {
         const reserved = isSlotReserved(slotId);
-        const reservedByCurrentUser = isSlotReservedByCurrentUser(slotId);
-        const isSelected = selectedSlot === slotId;
-    
         return (
-            <div
-                key={slotId}
-                className={`slot ${reserved ? 'reserved' : ''} ${reservedByCurrentUser ? 'your-reservation' : ''} ${isSelected ? 'selected' : ''}`} 
+            <div 
+                key={slotId} 
+                className={`slot ${reserved ? 'reserved' : ''}`} 
                 onClick={() => !reserved && openForm(slotId)}
             >
-                {slotId} {reservedByCurrentUser ? " " : ""}
+                {slotId}
             </div>
         );
     };
 
-    const submitForm = async (e) => {
-        e.preventDefault();
-        console.log("Submitting update request...");
-    
+    const sendRequest = async () => {
         try {
-            await sendRequest(); 
-            console.log("Reservation updated successfully!");
-            closeForm();
-            fetchSlots();
-            navigate('/madeReservations'); 
+            setLoading(true);
+            // Prepare the data to match the server schema
+            const reservationData = {
+                slotId: selectedSlot,
+                userName: formData.name,
+                licensePlate: formData.licensePlate,
+                entryTime: new Date(`2023-01-01T${formData.entryTime}:00`), // Convert time to Date object
+                isReserved: true
+            };
+            
+            // Send the data to the server
+            const response = await axios.post("http://localhost:5000/slots", reservationData);
+
+            return response.data;
+            
         } catch (err) {
-            console.error("Update failed:", err);
+            console.error("Error making reservation:", err);
+            setError("Failed to reserve parking slot");
+            throw err;
+        } finally {
+            setLoading(false);
         }
     };
-    
+
+    const submitForm = async (e) => {
+        e.preventDefault(); // Corrected from prevDefault()
+        try {
+            await sendRequest();
+            closeForm();
+            fetchSlots(); // Refresh slots to show updated status
+            navigate('/realTimeReservationMade'); 
+        } catch (err) {
+            
+        }
+    };
 
     return (
         <div className="parking-container">
@@ -139,11 +130,11 @@ function UpdateReservations() {
                         <img src="/Icons/gate.png" alt="Entrance" />
                         <p>Entrance</p>
                     </div>
-                    {["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"].map(slot =>
+                    {["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"].map(slot => 
                         renderSlot(slot)
                     )}
                 </div>
-
+                
                 {/* Second Row */}
                 <div className="row arrows">
                     <span>➡</span>
@@ -151,11 +142,11 @@ function UpdateReservations() {
                     <span>➡</span>
                 </div>
                 <div className="row">
-                    {["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"].map(slot =>
+                    {["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"].map(slot => 
                         renderSlot(slot)
                     )}
                 </div>
-
+                
                 {/* Third Row */}
                 <div className="row arrows">
                     <span>⬅</span>
@@ -167,26 +158,11 @@ function UpdateReservations() {
                         <img src="/Icons/gate.png" alt="Exit" />
                         <p>Exit</p>
                     </div>
-                    {["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"].map(slot =>
+                    {["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"].map(slot => 
                         renderSlot(slot)
                     )}
                 </div>
-
-                <div className="legend">
-                <div className="legendItem">
-                    <div className="yourSpot"></div>
-                    <span>Your Spot</span>
-                </div>
-                <div className="legendItem">
-                    <div className="reserved"></div>
-                    <span>Reserved</span>
-                </div>
-                <div className="legendItem">
-                    <div className="legendBox available"></div>
-                    <span>Available</span>
-                </div>
-            </div>
-
+                
                 {/* Form popup */}
                 {isFormOpen && (
                     <div className="form-container">
@@ -194,17 +170,18 @@ function UpdateReservations() {
                             <span className="close-btn" onClick={closeForm}>
                                 X
                             </span>
-                            <h3>Update Reeservation</h3>
+                            <h3>Reserve Parking Slot</h3>
                             <p>Slot: {selectedSlot}</p>
-                            <form>
-                                <input
+                            <form onSubmit={submitForm}>
+                                <input 
                                     name="name"
-                                    type="text"
-                                    id="name"
-                                    placeholder="Your Name"
+                                    type="text" 
+                                    id="name" 
+                                    placeholder="Your Name" 
                                     required
-                                    value={formData.name}
+                                    value="RealTimeReservation"
                                     onChange={handleInputChange}
+                                    hidden
                                 />
                                 <input
                                     name="licensePlate"
@@ -215,16 +192,25 @@ function UpdateReservations() {
                                     value={formData.licensePlate}
                                     onChange={handleInputChange}
                                 />
-                                <input
+                                <input 
                                     name="entryTime"
-                                    type="time"
-                                    id="entryTime"
+                                    type="time" 
+                                    id="entryTime" 
                                     required
                                     value={formData.entryTime}
-                                    onChange={handleInputChange}
+                                    readOnly
                                 />
-                                <button type="button" onClick={submitForm} disabled={loading}>
-                                    {loading ? 'Updating...' : 'Update'}
+                                <input 
+                                    name="exitTime"
+                                    type="time" 
+                                    id="exitTime" 
+                                    required
+                                    value={formData.exitTime}
+                                    readOnly
+                                    hidden
+                                />
+                                <button type="submit" disabled={loading}>
+                                    {loading ? 'Reserving...' : 'Reserve'}
                                 </button>
                             </form>
                         </div>
@@ -235,4 +221,4 @@ function UpdateReservations() {
     );
 }
 
-export default UpdateReservations;
+export default RealTimeReservations
