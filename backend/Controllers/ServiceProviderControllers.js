@@ -18,14 +18,14 @@ const getAllServiceProviders = async(req, res, next) => {
 };
 
 //data insert
-const addServiceProviders = async (req, res, next) =>{
+const Provider = async (req, res, next) =>{
 
-    const {fullname,contactnumber,specialozation,location} = req.body;
+    const {fullname,contactnumber,specialization,location} = req.body;
 
     let serviceProviders;
 
     try{
-        serviceProviders = new ServiceProvider({fullname,contactnumber,specialozation,location});
+        serviceProviders = new ServiceProvider({fullname,contactnumber,specialization,location});
         await serviceProviders.save();
     }catch (err) {
         console.log(err);
@@ -65,13 +65,13 @@ const getById = async (req, res, next) => {
 const updateServiceProvider = async (req, res, next) => {
 
     const id = req.params.id;
-    const {fullname,contactnumber,specialozation,location} = req.body;
+    const {fullname,contactnumber,specialization,location} = req.body;
 
     let serviceProviders;
 
     try{
         serviceProviders = await  ServiceProvider.findByIdAndUpdate(id,
-            {fullname,contactnumber,specialozation,location});
+            {fullname,contactnumber,specialization,location});
             serviceProviders = await serviceProviders.save();
     }catch(err) {
         console.log(err);
@@ -108,7 +108,7 @@ const deleteServiceProvider =async (req, res, next) => {
 
 
 exports.getAllServiceProviders = getAllServiceProviders; 
-exports.addServiceProviders =addServiceProviders;
+exports.Provider = Provider;
 exports.getById =getById;
 exports.updateServiceProvider = updateServiceProvider;
 exports.deleteServiceProvider = deleteServiceProvider;

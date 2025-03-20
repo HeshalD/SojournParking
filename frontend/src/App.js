@@ -1,3 +1,5 @@
+import React from 'react';
+import { Route,Routes } from 'react-router-dom';
 import Header from './Components/Header/Header'
 import './App.css';
 import ChooseParking from './Components/ChooseParking/ChooseParking';
@@ -11,13 +13,24 @@ import MedicalIssue from './Components/MedicalIssue/MedicalIssue';
 import SecurityIssue from './Components/SecurityIssue/SecurityIssue';
 import ResponsePage from './Components/ResponsePage/ResponsePage';
 import ServiceProviderProfile from './Components/ServiceProviderProfile/ServiceProviderProfile';
+import Provider from './Components/Provider/Provider';
+import UpdateServiceProvider from './Components/UpdateServiceProvider/UpdateServiceProvider';
 
 
 function App() {
   return (
     <div className="App">
+    <React.Fragment>
+     <Routes>
+     <Route path="/" element={<AddServiceProvider/>}/>
+     <Route path="/ServiceProviderProfile" element={<ServiceProviderProfile/>}/>
+     <Route path="/UpdateServiceProvider/:id" element={<UpdateServiceProvider/>}/>
+     </Routes>
+     </React.Fragment>
+     
+     
     
-    <AddServiceProvider/>
+    
     </div>
   );
 }

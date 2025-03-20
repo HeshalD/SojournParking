@@ -6,7 +6,7 @@ const router = express.Router();
  const ServiceProviderControllers = require("../Controllers/ServiceProviderControllers");
 
 router.get("/",ServiceProviderControllers.getAllServiceProviders);
-router.post("/",ServiceProviderControllers.addServiceProviders);
+router.post("/",ServiceProviderControllers.Provider);
 router.get("/:id",ServiceProviderControllers.getById);
 router.put("/:id",ServiceProviderControllers.updateServiceProvider);
 router.delete("/:id",ServiceProviderControllers.deleteServiceProvider);

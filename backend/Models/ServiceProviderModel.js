@@ -3,6 +3,7 @@
 
 
     const ServiceProviderSchema = new Schema({
+         
          fullname:{
             type:String,//dataType
             required:true,//validate
@@ -13,7 +14,7 @@
             required:true,//validate
 
          },
-         specialozation:{
+         specialization:{
             type:String,//dataType
             required:true,//validate
 

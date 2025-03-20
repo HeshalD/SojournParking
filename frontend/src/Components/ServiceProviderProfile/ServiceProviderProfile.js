@@ -1,10 +1,10 @@
 import React, {useState,useEffect} from 'react'
 import './ServiceProviderProfile.css'
-import axios from "axios";
-import ServiceProvider from "../AddServiceProvider/AddServiceProvider"
+import axios from "axios"
+import ServiceProvider from '../Provider/Provider'
 
 
-const URL ="http://Localhost:4000/ServiceProviderProfile";
+const URL ="http://localhost:4000/ServiceProviders";
 
 const fetchHandler = async () =>{
   return await axios.get(URL).then((res) => res.data);
@@ -12,10 +12,17 @@ const fetchHandler = async () =>{
 }
 
 function ServiceProviderProfile() {
-  const[ServiceProvider, setServiceProviderProfile] =useState();
-  useEffect(() =>  {
-    fetchHandler().then((data) => setServiceProviderProfile(data.ServiceProviderProfile));
-  },[])
+  const [serviceProviders, setServiceProviders] = useState([]);
+
+ 
+  useEffect(() => {
+    fetchHandler().then((data) => {
+      console.log("API Response:", data);
+      setServiceProviders(data.ServiceProviders);
+    });
+  }, []);
+  
+
 
   return (
     <div>
@@ -28,9 +35,9 @@ function ServiceProviderProfile() {
     <h2>Service Providers Profiles</h2>
 
     <div>
-      {ServiceProvider && ServiceProvider.map((servieProvider, i) => (
+      {serviceProviders && serviceProviders.map((serviceProvider, i) => (
         <div key={i}>
-          <ServiceProvider servieProvider={servieProvider}/>
+          <ServiceProvider serviceProvider={serviceProvider}/>
         </div>
       ))}
     </div>
@@ -38,25 +45,8 @@ function ServiceProviderProfile() {
     {/* Profile Example */}
     <div className="profile-card">
       <h3>John Doe</h3>
-      <img
-        className="profile-img"
-        src="/photos/logonew.png"
-        alt="Profile Picture"
-      />
-      <div className="profile-info">
-        <p>
-          <strong>Role:</strong> 
-        </p>
-        <p>
-          <strong>Specialization:</strong> 
-        </p>
-        <p>
-          <strong>Location:</strong> 
-        </p>
-        <p>
-          <strong>Contact:</strong> 
-        </p>
-      </div>
+      
+      
       <div className="rating">
         <span className="star" data-value={1}>
           ★
