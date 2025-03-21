@@ -41,7 +41,17 @@ function UpdateMember() {
     sendRequest().then(() => history("/DisplayMembership"));
   };
 
+  const [slip, setSlip] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSlip(file);
+      setPreview(URL.createObjectURL(file)); // Show image preview
+    }
+  };
 
   const validate = () => {
     let newErrors = {};
@@ -95,24 +105,23 @@ function UpdateMember() {
               )}
             </div>
             <div className="form-group upload-container">
+              <label htmlFor="fileInput" className="upload-label">
+                <i className="fas fa-paperclip upload-icon"></i> Attach Slip
+              </label>
               <input
-                type="text"
-                placeholder="Add your slip here"
-                name="Slip"
-                onChange={handleChange}
-                value={inputs.Slip}
+                type="file"
+                id="fileInput"
+                accept="image/png, image/jpeg"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
               />
-              <span
-                className="upload-icon"
-                role="button"
-                onClick={() =>
-                  alert("Upload functionality can be implemented here")
-                }
-              >
-                📎
-              </span>
               {errors.Slip && <p className="error">{errors.Slip}</p>}
             </div>
+            {preview && (
+              <div className="image-preview">
+                <img src={preview} alt="Slip Preview" />
+              </div>
+            )}
             <button id="submitBtn" type="submit">
               Submit
             </button>

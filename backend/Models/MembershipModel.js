@@ -9,13 +9,11 @@ const memberSchema = new Schema({
     LicensePlateNo:{
         type:String,//data type
         required:true,//validation
-        match: /^[A-Z0-9-]+$/
     },
-    Slip: {
-        type: String, // Stores file path (not actual image)
-        default: null,
-    },
-}, { timestamps: true });
+    Slip:{
+        type:String,//data type
+    }
+});
 
 module.exports = mongoose.model(
     "MembershipModel", //file name

@@ -102,4 +102,4 @@ exports.getAllMembers = getAllMembers;
 exports.addMembers = addMembers;
 exports.getById = getById;
 exports.updateMember = updateMember;
-exports.deleteMember = deleteMember;
+exports.deleteMember = deleteMember

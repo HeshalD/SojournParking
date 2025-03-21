@@ -21,10 +21,18 @@ function MembershipRenewal() {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSlip(file);
+      setPreview(URL.createObjectURL(file)); // Show image preview
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Correct the typo here
     console.log(inputs);
-    sendRequest().then(() => history("/displayMembership"));
+    sendRequest().then(() => history("DisplayMembership"));
   };
 
   const sendRequest = async () => {
@@ -38,6 +46,7 @@ function MembershipRenewal() {
         .then((res) => res.data);
     } catch (error) {
       console.error("There was an error sending the request", error);
+      alert("Error submitting the form. Please try again.");
     }
   };
 
@@ -57,6 +66,15 @@ function MembershipRenewal() {
       newErrors.Slip = "Payment slip is required";
     }
     setErrors(newErrors);
+    
+    if (Object.keys(newErrors).length > 0) {
+      // Show an alert if validation fails
+      let errorMessage = "Please fix the following errors:\n";
+      for (let key in newErrors) {
+        errorMessage += `- ${newErrors[key]}\n`;
+      }
+      alert(errorMessage);
+    }
     return Object.keys(newErrors).length === 0;
   };
 
@@ -103,12 +121,13 @@ function MembershipRenewal() {
                 id="fileInput"
                 accept="image/png, image/jpeg"
                 style={{ display: "none" }}
-                onChange={handleChange}
+                onChange={handleFileChange}
                 value={inputs.Slip}
               />
+              {errors.Slip && <p className="error">{errors.Slip}</p>}
             </div>
 
-            {preview && (
+             {preview && (
               <div className="image-preview">
                 <img src={preview} alt="Slip Preview" />
               </div>
