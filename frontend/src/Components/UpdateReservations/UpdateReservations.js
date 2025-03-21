@@ -10,7 +10,6 @@ function UpdateReservations() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState('');
     const [formData, setFormData] = useState({
-        name: '',
         licensePlate: '',
         entryTime: ''
     });
@@ -38,7 +37,6 @@ function UpdateReservations() {
     const sendRequest = async () => {
         const response = await axios.put(`http://localhost:5000/slots/id/${id}`, {
             slotId: selectedSlot,
-            userName: formData.name,
             licensePlate: formData.licensePlate,
             entryTime: new Date(`2023-01-01T${formData.entryTime}:00`), // Convert time to Date object
             isReserved: true,
@@ -197,15 +195,7 @@ function UpdateReservations() {
                             <h3>Update Reeservation</h3>
                             <p>Slot: {selectedSlot}</p>
                             <form>
-                                <input
-                                    name="name"
-                                    type="text"
-                                    id="name"
-                                    placeholder="Your Name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                />
+                                
                                 <input
                                     name="licensePlate"
                                     type="text"

@@ -88,7 +88,7 @@ const updateReservation = async (req, res, next) => {
 
   try {
     slot = await Slot.findByIdAndUpdate(id,
-      { slotId: slotId, isReserved: isReserved, userName: userName, licensePlate: licensePlate, entryTime: entryTime },
+      { slotId: slotId, isReserved: isReserved, licensePlate: licensePlate, entryTime: entryTime },
       { new: true }
     );
   } catch (err) {

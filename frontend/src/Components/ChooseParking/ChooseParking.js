@@ -42,11 +42,26 @@ function ChooseParking() {
     };
 
     const handleInputChange = (e) => {
+        const { name, value } = e.target;
+    
+        if (name === "name") {
+            
+            if (!/^[A-Za-z\s]*$/.test(value)) return;
+        }
+    
+        if (name === "licensePlate") {
+            
+            const upperValue = value.toUpperCase();
+            
+            e.target.value = upperValue;
+        }
+    
         setFormData((prevState) => ({
             ...prevState,
-            [e.target.name]: e.target.value,
+            [name]: value,
         }));
     };
+    
 
     // Check if a slot is reserved
     const isSlotReserved = (slotId) => {
@@ -100,15 +115,40 @@ function ChooseParking() {
     };
 
     const submitForm = async (e) => {
-        e.preventDefault(); // Corrected from prevDefault()
+        e.preventDefault();
+    
+        const { name, licensePlate, entryTime } = formData;
+    
+        if (!name.trim()) {
+            setError("Name cannot be empty.");
+            return;
+        }
+
+        const licenseRegex = /^[A-Z]{2,3}-\d{4}$/;
+        if (!licenseRegex.test(licensePlate)) {
+            setError("Invalid license plate format. Use 'XXX-0000' or 'XX-0000'.");
+            return;
+        }
+    
+        const currentTime = new Date();
+        const selectedTime = new Date(`2023-01-01T${entryTime}:00`);
+        if (selectedTime > currentTime) {
+            setError("Entry time cannot be in the past.");
+            return;
+        }
+    
+        setError(null);
+    
         try {
             await sendRequest();
             closeForm();
-            fetchSlots(); 
-            navigate('/madeReservations'); 
+            fetchSlots();
+            navigate('/madeReservations');
         } catch (err) {
+            console.error("Error:", err);
         }
     };
+    
 
     return (
         <div className="parking-container">
