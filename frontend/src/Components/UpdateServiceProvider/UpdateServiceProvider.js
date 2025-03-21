@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from "react";
 import axios from "axios";
 import{data, useParams} from 'react-router'
+import './UpdateServiceProvider.css'
 
 import { useNavigate } from 'react-router-dom';
 
@@ -65,7 +66,6 @@ function UpdateServiceProvider(){
      <meta charSet="UTF-8" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <title>Add Mechanic/Medic</title>
-     <link rel="stylesheet" href="/addmed_mech.css" />
      <div className="container">
        <div className="header">Add a New Mechanic or Medic</div>
        <form onSubmit={handleSubmit} id="addForm">
@@ -119,7 +119,7 @@ function UpdateServiceProvider(){
            />
          </div>
          <button type="submit" className="btn">
-           Add to System
+           Update
          </button>
        </form>
      </div>

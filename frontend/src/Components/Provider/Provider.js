@@ -41,8 +41,10 @@ function Provider({ serviceProvider = {} }) {
         <p>
           <strong>Contact: {contactnumber}</strong> 
         </p>
-        <Link to={`/UpdateServiceProvider/${_id}`}>Update</Link>
-        <button onClick={deleteHandler}Delete></button>
+
+        <Link to={`/UpdateServiceProvider/${_id}`} className="btn btn-update">Update</Link>
+        <button onClick={deleteHandler} className="btn btn-delete">Delete</button>
+
   </div>
   </div>
   </div>

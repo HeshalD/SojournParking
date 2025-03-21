@@ -42,30 +42,7 @@ function ServiceProviderProfile() {
       ))}
     </div>
 
-    {/* Profile Example */}
-    <div className="profile-card">
-      <h3>John Doe</h3>
-      
-      
-      <div className="rating">
-        <span className="star" data-value={1}>
-          ★
-        </span>
-        <span className="star" data-value={2}>
-          ★
-        </span>
-        <span className="star" data-value={3}>
-          ★
-        </span>
-        <span className="star" data-value={4}>
-          ★
-        </span>
-        <span className="star" data-value={5}>
-          ★
-        </span>
-      </div>
-      <button className="btn">Submit Rating</button>
-    </div>
+    
   </div>
 </>
 
