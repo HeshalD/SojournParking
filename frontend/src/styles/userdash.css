@@ -1,146 +1,183 @@
+/* Import Gotham Font */
+@import url('https://fonts.cdnfonts.com/css/gotham');
+
+/* Color Palette */
+:root {
+    --dark-green: #386949;
+    --medium-green: #509B67;
+    --light-green: #59887A;
+    --soft-green: #D3F0DD;
+    --dark-gray: #2D2A2A;
+    --white: #ffffff;
+
+}
+
+/* Apply Gotham Font */
+* {
+    font-family: 'Gotham', sans-serif;
+}
+
+/* User Profile */
 .user-profile {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
     padding: 20px;
-  }
-  
-  /* Profile Card (Responsive) */
-  .profile-card {
-    background: white;
+}
+
+/* Profile Card (Responsive) */
+.profile-card {
+    background: var(--white);
     padding: 30px;
     border-radius: 15px;
-    width: 500px; /* Default width */
-    max-width: 90%; /* Responsive adjustment */
+    width: 500px;
+    max-width: 90%;
     text-align: center;
-    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-card .profile-pic {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.12);
+    transition: 0.3s;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card .profile-pic {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     margin-bottom: 15px;
     object-fit: cover;
-  }
-  
-  .profile-card h3 {
+    border: 3px solid var(--soft-green);
+}
+
+.profile-card h3 {
     margin-bottom: 5px;
-    color: #3b6949;
+    color: var(--dark-green);
     font-size: 22px;
-  }
-  
-  .profile-card .user-role {
+    text-shadow: 0px 0px 5px var(--text-glow);
+}
+
+.profile-card .user-role {
     font-size: 14px;
-    color: #50b087;
+    color: var(--medium-green);
+    font-weight: bold;
     margin-bottom: 10px;
-  }
-  
-  /* Profile Info (Responsive) */
-  .profile-info {
-    background: white;
+}
+
+/* Profile Info (Responsive) */
+.profile-info {
+    background: var(--white);
     padding: 25px;
     border-radius: 15px;
-    width: 500px; /* Default width */
-    max-width: 90%; /* Responsive */
-    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-info h4 {
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.profile-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.profile-info h4 {
     margin-bottom: 15px;
-    color: #3b6949;
+    color: var(--dark-green);
     font-size: 20px;
-  }
-  
-  /* User Details */
-  .user-details {
+}
+
+/* User Details */
+.user-details {
     display: flex;
     flex-direction: column;
     gap: 15px;
-  }
-  
-  .user-details label {
+}
+
+.user-details label {
     font-weight: bold;
-    color: #3b6949;
-  }
-  
-  .user-details p,
-  .user-details input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    color: var(--dark-green);
+}
+
+.user-details p,
+.user-details input {
+    padding: 12px;
+    border: 1px solid var(--light-green);
+    border-radius: 8px;
     font-size: 16px;
     width: 100%;
-  }
-  
-  .user-details input {
-    outline: none;
+    background: rgba(255, 255, 255, 0.9);
     transition: 0.3s;
-  }
-  
-  .user-details input:focus {
-    border-color: #50b087;
-  }
-  
-  /* Buttons */
-  .btn {
+}
+
+.user-details input {
+    outline: none;
+}
+
+.user-details input:focus {
+    border-color: var(--medium-green);
+    box-shadow: 0px 0px 8px rgba(80, 176, 135, 0.5);
+}
+
+/* Buttons */
+.btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     margin-top: 15px;
-    padding: 12px;
+    padding: 14px;
     width: 100%;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     transition: 0.3s;
-  }
-  
-  .btn-edit {
-    background: #50b087;
+    font-weight: bold;
+}
+
+.btn-edit {
+    background: var(--medium-green);
     color: white;
-  }
-  
-  .btn-edit:hover {
-    background: #3b6949;
-  }
-  
-  .btn-save {
+}
+
+.btn-edit:hover {
+    background: var(--dark-green);
+}
+
+.btn-save {
     background: #2daa2a;
     color: white;
-  }
-  
-  .btn-save:hover {
+}
+
+.btn-save:hover {
     background: #208a22;
-  }
-  
-  /* Mobile Responsiveness */
-  @media screen and (max-width: 768px) {
-    .profile-card, 
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .profile-card,
     .profile-info {
-      width: 100%; /* Full width on smaller screens */
-      padding: 20px;
+        width: 100%;
+        padding: 20px;
     }
-  
+
     .profile-card .profile-pic {
-      width: 100px;
-      height: 100px;
+        width: 100px;
+        height: 100px;
     }
-  
+
     .profile-card h3 {
-      font-size: 18px;
+        font-size: 18px;
     }
-  
+
     .profile-info h4 {
-      font-size: 18px;
+        font-size: 18px;
     }
-  
+
     .btn {
-      font-size: 14px;
-      padding: 10px;
+        font-size: 14px;
+        padding: 12px;
     }
-  }
-  
+}

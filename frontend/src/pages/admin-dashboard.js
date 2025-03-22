@@ -87,7 +87,7 @@ const Dashboard = () => {
     <div className={`dashboard-wrapper ${sidebarActive ? "sidebar-active" : ""}`}>
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarActive ? "active" : ""}`}>
-        <h2 className="logo">WorkSync</h2>
+        <h2 className="logo">Admin Profile</h2>
         <ul>
           <li className="active">Dashboard</li>
           <li>User Reservations</li>
@@ -108,7 +108,7 @@ const Dashboard = () => {
             <FaBell className="icon" />
             <div className="profile">
               <img src={profilepic} alt="User" />
-              <span>Minduli Nureka</span>
+              <span>ADMIN</span>
             </div>
           </div>
         </header>
@@ -118,7 +118,7 @@ const Dashboard = () => {
           <div className="stat-card">
             <div className="progress-circle" style={{ "--percentage": "10%" }}></div>
             <div className="stat-info">
-              <h4>New Employees</h4>
+              <h4>New Users</h4>
               <p>1203</p>
               <span className="increase">10% Increase</span>
             </div>
@@ -127,8 +127,8 @@ const Dashboard = () => {
           <div className="stat-card">
             <div className="progress-circle" style={{ "--percentage": "20%" }}></div>
             <div className="stat-info">
-              <h4>Total Employees</h4>
-              <p>12300</p>
+              <h4>Total Admins</h4>
+              <p>12</p>
               <span className="increase">20% Increase</span>
             </div>
           </div>
@@ -136,7 +136,7 @@ const Dashboard = () => {
           <div className="stat-card">
             <div className="progress-circle" style={{ "--percentage": "30%" }}></div>
             <div className="stat-info">
-              <h4>Average Salary</h4>
+              <h4>Users</h4>
               <p>65865k</p>
               <span className="decrease">20% Decrease</span>
             </div>

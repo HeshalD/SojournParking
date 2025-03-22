@@ -14,9 +14,12 @@ const PORT = process.env.PORT || 8070;
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 
+
 // Routes
 const userRouter = require("./routes/user"); // Updated to use user routes
 app.use("/user", userRouter); // Use /user as the base route for authentication
+app.use("/uploads", express.static("uploads"));
+
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })

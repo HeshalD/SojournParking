@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import AdminLogin from "./pages/adminLogin";
 import AdminDashboard from "./pages/admin-dashboard";
 import UserDashboard from "./pages/user-dashboard";
+import FogotPW from "./pages/fotgotPs"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user-dashboard" element={<UserDashboard />} /> 
+        <Route path="/fogot-password" element={<FogotPW />} /> 
       </Routes>
     </Router>
   );

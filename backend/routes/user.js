@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User({
       name,
       age,
-      //phone,
+      phone,
       email,
       password: hashedPassword,
       //role,
@@ -108,5 +108,26 @@ router.put("/profile", async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
+
+// Delete Profile Route
+router.delete("/profile", async (req, res) => {
+  try {
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findByIdAndDelete(decoded.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Account deleted successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 
 module.exports = router;
