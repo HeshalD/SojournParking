@@ -23,64 +23,61 @@
     src: url("./Gotham-XLight.ttf");
 }
 
-body
-
-.header {
+/* Use a specific class to scope all header styles */
+.app-header-component .header {
     background-color: #2D2A2A; 
     color: white;
-    padding: 15px 30px;
+    padding: 10px 30px;
     margin: 10px auto;
-    width: 90%;
+    width: 50%;
     max-width: 1200px; 
     border-radius: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    font-family: 'GothamLight';
+    font-family: 'GothamLight', sans-serif;
     border: 1px solid white;
 }
 
-
-.nav-links {
+.app-header-component .nav-links {
     display: flex;
     gap: 25px;
 }
 
-.nav-links a {
+.app-header-component .nav-links a {
     color: white;
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
-    transition: color 0.3s ease-in, transform 0.3s ease-in
+    transition: color 0.3s ease-in, transform 0.3s ease-in;
 }
 
-.nav-links a:hover {
+.app-header-component .nav-links a:hover {
     color: #50B087; 
-    
 }
 
-.profile-icon {
+.app-header-component .profile-icon {
     cursor: pointer;
 }
 
-.usericon {
+.app-header-component .usericon {
     filter: invert(100%) brightness(100%);
 }
 
-.usericon :hover {
+.app-header-component .usericon:hover {
     filter: invert(100%) brightness(100%);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .header {
+    .app-header-component .header {
         flex-direction: column;
         text-align: center;
         padding: 20px;
     }
     
-    .nav-links {
+    .app-header-component .nav-links {
         flex-direction: column;
         gap: 15px;
         margin-top: 10px;

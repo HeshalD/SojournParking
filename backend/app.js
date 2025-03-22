@@ -2,7 +2,13 @@ const express = require("express");
 const session = require('express-session');
 const mongoose = require("mongoose");
 const router = require("./Routes/SlotRoutes");
+const userRouter = require("./Routes/UserRoutes");
+const serviceProviderRouter = require("./Routes/ServiceProviderRoutes");
 const sessionRouter = express.Router();
+const employeeRouter = require("./Routes/EmployeeRoutes");
+const membershipRouter = require("./Routes/MembershipRoutes");
+const paymentRouter = require("./Routes/PayFormRoute");
+
 const app = express();
 const cors = require("cors");
 
@@ -24,6 +30,11 @@ app.use(session({
 }));
 
 app.use("/slots", router);
+app.use("/user", userRouter);
+app.use("/ServiceProviders",serviceProviderRouter);
+app.use("/employee",employeeRouter);
+app.use("/member",membershipRouter);
+app.use("/pay",paymentRouter);
 
 // Session routes
 sessionRouter.post('/sessions', (req, res) => {

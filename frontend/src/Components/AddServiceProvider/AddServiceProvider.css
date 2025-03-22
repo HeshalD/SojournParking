@@ -1,0 +1,79 @@
+/* Scoped CSS for AddServiceProvider component */
+.add-page {
+    background-color: #1e1e1e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .add-container {
+    background-color: #2d2d2d;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .add-header {
+    text-align: center;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .add-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: white;
+    font-weight: normal;
+  }
+  
+  .add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .add-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .add-form .form-field label {
+    color: white;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  
+  .add-form .form-field input {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+  }
+  
+  .add-form .form-field input::placeholder {
+    color: #888;
+  }
+  
+  .add-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    text-transform: uppercase;
+  }
+  
+  .add-button:hover {
+    background-color: #3e8e41;
+  }

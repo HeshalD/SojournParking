@@ -1,0 +1,32 @@
+/* ServiceProviderProfile.css - Component-scoped styles */
+.service-provider-profile {
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .service-provider-profile .header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .service-provider-profile .header h2 {
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+  }
+  
+  .providers-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* To ensure these styles are scoped only to this component */
+  .service-provider-profile .providers-container > div {
+    width: 100%;
+    max-width: 350px;
+  }

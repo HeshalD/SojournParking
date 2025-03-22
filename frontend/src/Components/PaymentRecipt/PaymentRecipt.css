@@ -1,0 +1,161 @@
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+}
+
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+}
+
+@font-face {
+    font-family: "GothamLight";
+    src: url("./Gotham-Light.ttf");
+}
+
+@font-face {
+    font-family: "GothamThin";
+    src: url("./Gotham-Thin.ttf");
+}
+
+@font-face {
+    font-family: "GothamXLight";
+    src: url("./Gotham-XLight.ttf");
+}
+
+/* Prefix all class names with 'pr-' (payment receipt) to avoid conflicts */
+
+.pr-receipt-container {
+    background-color: #1e1e1e;
+    margin: 40px auto;
+    padding: 25px;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+    font-family: "GothamMedium", Arial, sans-serif;
+    height: auto;
+}
+
+.pr-receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pr-receipt-header h1 {
+    font-size: 26px;
+    color: #4CAF50;
+    font-family: "GothamBold", Arial, sans-serif;
+    margin-bottom: 10px;
+}
+
+.pr-receipt-header p {
+    color: #aaa;
+    font-size: 14px;
+    font-family: "GothamLight", Arial, sans-serif;
+}
+
+.pr-receipt-details {
+    margin-bottom: 15px;
+}
+
+.pr-receipt-details p {
+    font-size: 14px; 
+    color: #ccc;
+    margin: 8px 0;
+    font-family: "GothamMedium", Arial, sans-serif;
+}
+
+.pr-label {
+    font-weight: bold;
+    color: #4CAF50;
+    font-family: "GothamBold", Arial, sans-serif;
+}
+
+.pr-value {
+    color: #ccc;
+}
+
+.pr-receipt-total {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    font-family: "GothamMedium", Arial, sans-serif;
+}
+
+.pr-receipt-footer {
+    text-align: center;
+    margin-top: 25px; 
+    font-size: 12px;
+    color: #aaa;
+    font-family: "GothamLight", Arial, sans-serif;
+}
+
+.pr-pay-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px; 
+    font-family: "GothamMedium", Arial, sans-serif;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.pr-pay-btn:hover {
+    background-color: #388E3C;
+}
+
+@media (max-width: 768px) {
+    .pr-receipt-container {
+        width: 90%; 
+        padding: 20px;
+    }
+
+    .pr-receipt-header h1 {
+        font-size: 24px;
+    }
+
+    .pr-receipt-details p {
+        font-size: 14px;
+    }
+
+    .pr-receipt-total {
+        font-size: 16px;
+    }
+
+    .pr-pay-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .pr-receipt-container {
+        width: 95%; 
+        padding: 15px;
+    }
+
+    .pr-receipt-header h1 {
+        font-size: 22px;
+    }
+
+    .pr-receipt-details p {
+        font-size: 12px;
+    }
+
+    .pr-receipt-total {
+        font-size: 14px;
+    }
+
+    .pr-pay-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

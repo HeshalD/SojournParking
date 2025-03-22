@@ -39,9 +39,10 @@ function EndStayConfirmation() {
         updateReservation();
     }, [licensePlate, location.state]);
 
-    const handleGoHome = () => {
-        navigate('/');
+    const handleToPayment = () => {
+        navigate('/paymentForm', { state: { licensePlate } });
     };
+    
 
     if (loading) {
         return (
@@ -61,7 +62,8 @@ function EndStayConfirmation() {
                     <p>Your parking stay has been ended successfully.</p>
                     <p>License Plate: <strong>{licensePlate}</strong></p>
                     <p>Exit Time: <strong>{location.state?.exitTime}</strong></p>
-                    <button onClick={handleGoHome}>Return to Home</button>
+                    <button onClick={handleToPayment}>Proceed to Payment</button>
+
                 </div>
             ) : (
                 <div className="error-message">
