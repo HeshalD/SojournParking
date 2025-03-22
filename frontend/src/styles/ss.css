@@ -1,0 +1,135 @@
+@import url('https://fonts.cdnfonts.com/css/gotham');
+
+/* Color Palette */
+:root {
+    --dark-green: #386949;
+    --medium-green: #509B67;
+    --light-green: #59887A;
+    --soft-green: #D3F0DD;
+    --dark-gray: #2D2A2A;
+    --white: #ffffff;
+}
+
+/* Apply Gotham Font */
+* {
+    font-family: 'Gotham', sans-serif;
+}
+
+/* Full Page Background */
+.auth-page {
+    height: 100vh;
+    width: 100%;
+    background: radial-gradient(circle, var(--dark-green) 0%, var(--dark-gray) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Floating 3D Effect */
+.auth-page::before,
+.auth-page::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.6;
+}
+
+.auth-page::before {
+    background: linear-gradient(135deg, var(--medium-green), var(--dark-green));
+    top: 10%;
+    left: 15%;
+    animation: floating 6s infinite alternate ease-in-out;
+}
+
+.auth-page::after {
+    background: linear-gradient(135deg, var(--soft-green), var(--light-green));
+    bottom: 10%;
+    right: 20%;
+    animation: floating 8s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes floating {
+    from { transform: translateY(-20px); }
+    to { transform: translateY(20px); }
+}
+
+/* Glassmorphism Form Container */
+.auth-card {
+    width: 100%;
+    max-width: 380px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    text-align: center;
+    z-index: 2;
+}
+
+.auth-card h2 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: var(--white);
+}
+
+/* Input Fields */
+.auth-input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Focus Effect */
+.auth-input:focus {
+    border-color: var(--soft-green);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 12px var(--soft-green);
+}
+
+/* Submit Button */
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--dark-green);
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: var(--white);
+}
+
+.auth-btn:hover {
+    background: var(--medium-green);
+    transform: translateY(-3px);
+}
+
+/* Message Display */
+.message {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-card {
+        width: 90%;
+    }
+
+    .auth-input {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

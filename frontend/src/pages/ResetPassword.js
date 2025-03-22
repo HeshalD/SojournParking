@@ -1,17 +1,19 @@
 import { useState } from "react";
-import "../styles/ss.css";
+import { useParams } from "react-router-dom";
 
-const ForgotPassword = () => {
-    const [email, setEmail] = useState("");
+const ResetPassword = () => {
+    const { token } = useParams();
+    const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:8070/user/forgot-password", {
+        const response = await fetch(`http://localhost:8070/user/reset-password/${token}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
+            body: JSON.stringify({ newPassword }),
         });
+
         const data = await response.json();
         setMessage(data.message);
     };
@@ -19,18 +21,18 @@ const ForgotPassword = () => {
     return (
         <div className="auth-page">
             <div className="auth-card">
-                <h2>Forgot Password</h2>
+                <h2>Reset Password</h2>
+                <p>Make Your New Password</p>
                 <form onSubmit={handleSubmit}>
-                  <p>Enter Your Email</p>
                     <input
-                        type="email"
+                        type="password"
                         className="auth-input"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter new password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
                         required
                     />
-                    <button type="submit" className="auth-btn">Submit</button>
+                    <button type="submit" className="auth-btn">Reset Password</button>
                 </form>
                 {message && <p className="message">{message}</p>}
             </div>
@@ -38,4 +40,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default ResetPassword;
