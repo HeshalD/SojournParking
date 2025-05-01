@@ -164,32 +164,26 @@
 
 .sidebar-qr-preview {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-top: 1px solid #eee;
-    margin-top: 8px;
+    gap: 8px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 10px 0;
 }
 
-.sidebar-qr-preview img {
-    width: 50px;
-    height: 50px;
+.sidebar-qr-preview canvas {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: white;
 }
 
-.sidebar-qr-preview .qr-text {
-    font-size: 11px;
-    color: #666;
-}
-
-.sidebar-qr-preview .qr-link {
-    color: #50B087;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 11px;
-}
-
-.sidebar-qr-preview .qr-link:hover {
-    text-decoration: underline;
+.qr-text {
+    font-size: 0.9rem;
+    color: #495057;
+    font-weight: 500;
 }
 
 /* No Reservation State */

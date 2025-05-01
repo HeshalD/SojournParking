@@ -28,6 +28,14 @@ import PaymentForm from './Components/PaymentForm/PaymentForm';
 import PaymentReceipt from './Components/PaymentRecipt/PaymentRecipt';
 import PaymentGateway from './Components/PaymentGateway/PaymentGateway';
 import PaymentConfirmation from './Components/PaymentConfirmation/PaymentConfirmation';
+import Complaint from './Components/AddCompliant/AddComplant';
+import UpdateComplaint from './Components/UpdateComplaint/UpdateComplaint';
+import DisplayComplaint from './Components/DisplayComplaint/DisplayComplaint';
+import EmployeeLandingPage from './Components/EmployeeLandingPage/EmployeeLandingPage';
+import AddReview from './Components/AddReview/AddReview';
+import DisplayReview from './Components/DisplayReview/DisplayReview';
+import UpdateReview from './Components/UpdateReview/UpdateReview';
+import ReservationTable from './Components/ReservationTable/ReservationTable';
 
 
 function App() {
@@ -62,7 +70,14 @@ function App() {
           <Route path="/paymentReceipt" element={<PaymentReceipt/>}/>
           <Route path="/paymentPortal" element={<PaymentGateway/>}/>
           <Route path="/paymentConfirmation" element={<PaymentConfirmation/>}/>
-
+          <Route path="/addComplaint" element={<Complaint/>}/>
+          <Route path="/displayComplaint" element={<DisplayComplaint/>}/>
+          <Route path="/updateComplaint/:id" element={<UpdateComplaint/>}/>
+          <Route path="/employeeLandingPage" element={<EmployeeLandingPage/>}/>
+          <Route path="/addReview" element={<AddReview/>}/>
+          <Route path="/displayReview" element={<DisplayReview/>}/>
+          <Route path="/updateReview/:id" element={<UpdateReview/>}/>
+          <Route path="/reservationTable" element={<ReservationTable/>}/>
         </Routes>
       </React.Fragment>
     </div>

@@ -1,0 +1,118 @@
+
+/* Scope all styles under a specific class */
+.display-review-container {
+    font-family: 'GothamMediumReview', Arial, sans-serif;
+    background-color: #2d2a2a;
+    color: white;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.display-review-container .sidebar-feedback {
+    width: 350px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.display-review-container .sidebar-feedback-header {
+    background-color: #2d2a2a;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #50b087;
+}
+
+.display-review-container .sidebar-header-content h3 {
+    margin: 0;
+    font-size: 16px;
+    color: white;
+}
+
+.display-review-container .sidebar-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #50b087;
+    color: white;
+}
+
+.display-review-container .sidebar-feedback-details {
+    padding: 15px;
+}
+
+.display-review-container .sidebar-detail-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.display-review-container .label {
+    font-weight: bold;
+    color: #d3f0dd;
+}
+
+.display-review-container .value {
+    color: white;
+}
+
+.display-review-container .edit-field {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #444;
+    color: white;
+}
+
+.display-review-container .sidebar-feedback-actions {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.display-review-container .sidebar-btn {
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+.display-review-container .sidebar-btn-primary {
+    background-color: #50b087;
+    color: white;
+}
+
+.display-review-container .sidebar-btn-primary:hover {
+    background-color: #3e8a67;
+}
+
+.display-review-container .sidebar-btn-secondary {
+    background-color: #777;
+    color: white;
+}
+
+.display-review-container .sidebar-btn-secondary:hover {
+    background-color: #555;
+}
+
+.display-review-container .sidebar-btn-danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+.display-review-container .sidebar-btn-danger:hover {
+    background-color: #b52b27;
+}

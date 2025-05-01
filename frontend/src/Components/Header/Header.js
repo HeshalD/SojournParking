@@ -10,11 +10,12 @@ function Header() {
           <img src="/logo-white.png" alt="Logo" width={50} />
         </div>
         <nav className="nav-links">
-          <a href="#">Reservations</a>
-          <a href="#">Emergency Services</a>
-          <a href="#">Discounts &amp; Promos</a>
-          <a href="#">Customer Care</a>
+          <Link to="/chooseParking">Reservations</Link>
+          <Link to="/chooseParking">Emergency Services</Link>
+          <Link to="/chooseParking">Discounts &amp; Promos</Link>
+          <Link to="/chooseParking">Customer Care</Link>
         </nav>
+        
         <div className="profile-icon">
         <Link to={`/userDashboard`}>
             <img

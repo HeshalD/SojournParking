@@ -1,8 +1,7 @@
-
-import "./AuthStyles.css";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 
@@ -11,6 +10,7 @@ const Register = () => {
     name: "",
     age: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
     role: "",
@@ -25,28 +25,52 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      Swal.fire({
+        title: "Error",
+        text: "Passwords do not match!",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
       return;
     }
     try {
-      const { confirmPassword, ...submitData } = formData; // exclude confirmPassword before sending to backend
-      await axios.post("http://localhost:5000/user/register", submitData,{
-        withCredentials:true,
-      }); // API endpoint for user registration
-      alert("Registered Successfully");
-      navigate("/");
+      const { confirmPassword, ...submitData } = formData; // Exclude confirmPassword before sending to backend
+      await axios.post("http://localhost:5000/user/register", submitData);
+
+      Swal.fire({
+        title: "Success!",
+        text: "Registered Successfully",
+        icon: "success",
+        confirmButtonColor: "#50b087",
+      }).then(() => {
+        navigate("/");
+      });
     } catch (err) {
-      alert(err.response?.data?.message || "Registration Failed");
-      console.log(err)
+      Swal.fire({
+        title: "Error",
+        text: err.response?.data?.message || "Registration Failed",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 
   const handleGoogleLogin = () => {
-    alert("Google Login Clicked (Integrate OAuth Here)");
+    Swal.fire({
+      title: "Google Login",
+      text: "Google Login Clicked (Integrate OAuth Here)",
+      icon: "info",
+      confirmButtonColor: "#50b087",
+    });
   };
 
   const handleFacebookLogin = () => {
-    alert("Facebook Login Clicked (Integrate OAuth Here)");
+    Swal.fire({
+      title: "Facebook Login",
+      text: "Facebook Login Clicked (Integrate OAuth Here)",
+      icon: "info",
+      confirmButtonColor: "#1877f2",
+    });
   };
 
   return (
@@ -79,6 +103,14 @@ const Register = () => {
             required
           />
           <input
+            type="tel"
+            name="phone"
+            onChange={handleChange}
+            className="form-control glass-input mb-3"
+            placeholder="Phone Number"
+            required
+          />
+          <input
             type="password"
             name="password"
             onChange={handleChange}
@@ -102,7 +134,7 @@ const Register = () => {
           <p>Already have an account?</p>
           <button
             className="btn glass-btn-outline w-100"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
           >
             Login
           </button>

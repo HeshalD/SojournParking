@@ -8,6 +8,8 @@ const sessionRouter = express.Router();
 const employeeRouter = require("./Routes/EmployeeRoutes");
 const membershipRouter = require("./Routes/MembershipRoutes");
 const paymentRouter = require("./Routes/PayFormRoute");
+const complaintRouter = require("./Routes/ComplaintRoutes");
+const reviewRouter = require("./Routes/ReviewRoutes");
 
 const app = express();
 const cors = require("cors");
@@ -22,7 +24,7 @@ app.use(express.json());
 app.use(session({
     secret: '12345',
     resave: false,
-    saveUninitialized: true,  // Added this required option
+    saveUninitialized: true,  
     cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true
@@ -35,6 +37,8 @@ app.use("/ServiceProviders",serviceProviderRouter);
 app.use("/employee",employeeRouter);
 app.use("/member",membershipRouter);
 app.use("/pay",paymentRouter);
+app.use("/complaint",complaintRouter);
+app.use("/Review",reviewRouter);
 
 // Session routes
 sessionRouter.post('/sessions', (req, res) => {
@@ -51,8 +55,7 @@ sessionRouter.get('/sessions/current', (req, res) => {
     }
 });
 
-// Register the session router
-app.use("/", sessionRouter);  // This line was missing
+app.use("/", sessionRouter);  
 
 mongoose.connect("mongodb+srv://Heshal:12345@sojournparking.exrjn.mongodb.net/")
 .then(() => console.log("Connected to MongoDB"))

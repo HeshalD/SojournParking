@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBell, FaBars, FaEdit, FaSave, FaSignOutAlt } from "react-icons/fa";
+import { FaBell, FaBars, FaEdit, FaSave, FaSignOutAlt, FaTrash, FaSearch, FaCamera } from "react-icons/fa";
 import axios from "axios";
-import "./userdash.css";
-import profilepic from "../../Assets/ProfilePic.png";
+import Swal from "sweetalert2";
+import "./user-dashboard.css";
+import defaultProfilePic from "../../Assets/ProfilePic.png";
+import Footer from "../Footer/Footer";
 
 const UserDashboard = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
@@ -12,22 +14,29 @@ const UserDashboard = () => {
     name: "",
     email: "",
     phone: "",
+    profilePic: defaultProfilePic,
     createdAt: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     const fetchUserDetails = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await axios.get("http://localhost:5000/user/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
-        setLoading(false);
       } catch (err) {
-        console.error("Error fetching user details", err);
+        Swal.fire("Error", "Failed to fetch user details.", "error");
+      } finally {
         setLoading(false);
       }
     };
@@ -45,114 +54,153 @@ const UserDashboard = () => {
         { name: user.name, email: user.email, phone: user.phone },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Profile updated successfully!");
+
+      Swal.fire("Success!", "Profile updated successfully.", "success");
       setIsEditing(false);
     } catch (err) {
-      console.error("Error updating user profile", err);
-      alert("Failed to update profile.");
+      Swal.fire("Error", "Failed to update profile.", "error");
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("token");
-    navigate("/login");
+  const handleDeleteAccount = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire("Error", "You must be logged in to delete your account.", "error");
+      return;
+    }
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action is irreversible. Your account will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete("http://localhost:5000/user/profile", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          Swal.fire("Deleted!", "Your account has been deleted.", "success");
+
+          // Remove user session and redirect to login
+          localStorage.removeItem("token");
+          navigate("/login");
+        } catch (err) {
+          Swal.fire("Error", "Failed to delete account. Please try again.", "error");
+        }
+      }
+    });
+  };
+
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const imageUrl = URL.createObjectURL(file);
+      setUser((prev) => ({ ...prev, profilePic: imageUrl }));
+    }
+  };
+
+  const handleUploadProfilePic = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("profilePic", selectedFile);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put("http://localhost:5000/user/profile-pic", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      Swal.fire("Success!", "Profile photo updated successfully.", "success");
+      setUser((prev) => ({ ...prev, profilePic: res.data.profilePic }));
+    } catch (err) {
+      Swal.fire("Error", "Failed to upload profile photo.", "error");
+    }
+
+    
   };
 
   return (
-    <div className={`dashboard-wrapper ${sidebarActive ? "sidebar-active" : ""}`}>
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarActive ? "active" : ""}`}>
-        <h2 className="logo">WorkSync</h2>
-        <ul>
-          <li className="active">Dashboard</li>
-          <li>User Reservations</li>
-          <li>Employee Reservations</li>
-          <li>Complaints</li>
-          <li>Emergency Reports</li>
-          <li>Financial</li>
-          <li onClick={handleLogout} className="logout">
-            <FaSignOutAlt /> Logout
-          </li>
-        </ul>
-      </aside>
+    <div className="user-dashboard-container">
+      <div className={`dashboard-wrapper ${sidebarActive ? "sidebar-active" : ""}`}>
+        <aside className={`sidebar ${sidebarActive ? "active" : ""}`}>
+          <h2 className="logo">User Profile</h2>
+          <ul>
+            <li className="active">Dashboard</li>
+            <li>User Reservations</li>
+            <li>Employee Reservations</li>
+            <li>Complaints</li>
+            <li>Emergency Reports</li>
+            <li>Financial</li>
+            <li onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/login");
+            }} className="logout">
+              <FaSignOutAlt /> Logout
+            </li>
+          </ul>
+        </aside>
 
-      {/* Main Content */}
-      <main className="content">
-        {/* Header */}
-        <header className="header">
-          <FaBars className="icon menu-icon" onClick={() => setSidebarActive(!sidebarActive)} />
-          <div className="search-container">
-            <input type="text" placeholder="Search" className="search-bar" />
-          </div>
-          <div className="header-right">
-            <div className="notification-icon">
+        <main className="content">
+          <header className="header">
+            <FaBars className="icon" onClick={() => setSidebarActive(!sidebarActive)} />
+            <div className="search-container">
+              <input type="text" placeholder="Search" className="search-bar" />
+              <FaSearch className="search-icon" />
+            </div>
+            <div className="header-right">
               <FaBell className="icon" />
+              <div className="profile">
+                <img src={user.profilePic || defaultProfilePic} alt="User" />
+                <span>{user.name || "User"}</span>
+              </div>
             </div>
-            <div className="profile-header">
-              <img src={profilepic} alt="User" />
-              <span>{user.name || "User"}</span>
-            </div>
-          </div>
-        </header>
+          </header>
 
-        <div className="dashboard-content">
-          {/* User Profile Section */}
           <section className="user-profile">
             {loading ? (
               <p className="loading">Loading profile...</p>
             ) : (
               <div className="profile-card">
-                <img src={profilepic} alt="User" className="profile-pic" />
+                <div className="profile-pic-container">
+                  <img src={user.profilePic || defaultProfilePic} alt="User" className="profile-pic" />
+                  <label className="upload-icon">
+                    <FaCamera />
+                    <input type="file" accept="image/*" onChange={handleProfilePicChange} />
+                  </label>
+                </div>
+                {selectedFile && (
+                  <button className="btn btn-upload" onClick={handleUploadProfilePic}>
+                    Upload Photo
+                  </button>
+                )}
                 <h3>{user.name || "User Name"}</h3>
-                <p>Joined: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "Invalid Date"}</p>
+                <p>Joined: {new Date(user.createdAt).toLocaleDateString()}</p>
               </div>
             )}
 
             <div className="profile-info">
               <h4>Profile Details</h4>
               <div className="user-details">
-                <div className="detail-item">
-                  <label>Name:</label>
-                  {isEditing ? (
-                    <input 
-                      type="text" 
-                      value={user.name} 
-                      onChange={(e) => setUser({ ...user, name: e.target.value })} 
-                    />
-                  ) : (
-                    <p>{user.name}</p>
-                  )}
-                </div>
+                <label>Name:</label>
+                {isEditing ? <input type="text" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} /> : <p>{user.name}</p>}
 
-                <div className="detail-item">
-                  <label>Email:</label>
-                  {isEditing ? (
-                    <input 
-                      type="email" 
-                      value={user.email} 
-                      onChange={(e) => setUser({ ...user, email: e.target.value })} 
-                    />
-                  ) : (
-                    <p>{user.email}</p>
-                  )}
-                </div>
+                <label>Email:</label>
+                {isEditing ? <input type="email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} /> : <p>{user.email}</p>}
 
-                <div className="detail-item">
-                  <label>Phone:</label>
-                  {isEditing ? (
-                    <input 
-                      type="text" 
-                      value={user.phone} 
-                      onChange={(e) => setUser({ ...user, phone: e.target.value })} 
-                    />
-                  ) : (
-                    <p>{user.phone}</p>
-                  )}
-                </div>
+                <label>Phone:</label>
+                {isEditing ? <input type="tel" value={user.phone} onChange={(e) => setUser({ ...user, phone: e.target.value })} /> : <p>{user.phone}</p>}
               </div>
 
-              {/* Edit & Save Buttons */}
               {isEditing ? (
                 <button className="btn btn-save" onClick={handleSave}>
                   <FaSave /> Save
@@ -162,10 +210,16 @@ const UserDashboard = () => {
                   <FaEdit /> Edit
                 </button>
               )}
+
+              <button className="btn btn-danger mt-3" onClick={handleDeleteAccount}>
+                <FaTrash /> Delete Account
+              </button>
             </div>
           </section>
-        </div>
-      </main>
+        </main>
+        
+      </div>
+      <Footer/>
     </div>
   );
 };

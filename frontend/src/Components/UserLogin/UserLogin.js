@@ -18,9 +18,7 @@ const Login = () => {
       alert("Login Successful");
 
       localStorage.setItem("token", res.data.token);
-
-      // Navigate to a general dashboard instead of role-based routing
-      navigate("/landingPage");
+      navigate("/userDashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login Failed");
     }
@@ -72,7 +70,7 @@ const Login = () => {
           <p>Don't have an account?</p>
           <button
             className="btn glass-btn-outline w-100"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("user/register")}
           >
             Register
           </button>

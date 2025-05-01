@@ -3,6 +3,7 @@ import './MadeReservations.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { QRCodeSVG } from 'qrcode.react';
 
 const URL = "http://localhost:5000/slots";
 
@@ -148,8 +149,13 @@ function MadeReservations() {
                                     <span className="value">{formatTime(reservation.entryTime)}</span>
                                 </div>
                                 <div className="sidebar-qr-preview">
-                                    <img src="/api/placeholder/50/50" alt="QR Preview" />
-                                    <div className="qr-text">View QR</div>
+                                    <QRCodeSVG 
+                                        value={`${window.location.origin}/endStay/${reservation.licensePlate}`}
+                                        size={100}
+                                        level="H"
+                                        includeMargin={true}
+                                    />
+                                    <div className="qr-text">Scan to End Stay</div>
                                 </div>
                             </div>
                             <div className="sidebar-detail-item">

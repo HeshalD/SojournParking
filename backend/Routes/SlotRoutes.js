@@ -10,5 +10,6 @@ router.get("/id/:id",SlotController.getById);
 router.put("/id/:id",SlotController.updateReservation);
 router.delete("/:id",SlotController.deleteReservation);
 router.put("/endstay/:lp",SlotController.endStay);
+router.delete("/", SlotController.deleteAllReservations);
 
 module.exports = router;

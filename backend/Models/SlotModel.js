@@ -16,10 +16,13 @@ const slotSchema = new mongoose.Schema({
     trim: true,
     minlength: [3, "User name must be at least 3 characters"],
   },
+  email: {
+    type: String,
+    required: true
+  },
   licensePlate: {
     type: String,
-    required: [true, "License plate is required"],
-    unique: true, // 
+    required: [true, "License plate is required"]
   },
   entryTime: {
     type: Date,
@@ -41,7 +44,6 @@ const slotSchema = new mongoose.Schema({
     },
   },
 }, { collection: "parkingSlots" });
-
 
 const Slot = mongoose.model("Slot", slotSchema);
 module.exports = Slot;
