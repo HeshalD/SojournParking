@@ -1,53 +1,53 @@
-import React, {useState,useEffect} from 'react'
-import './ServiceProviderProfile.css'
-import axios from "axios"
-import ServiceProvider from '../Provider/Provider'
+// ServiceProviderProfile.js
+import React, {useState, useEffect} from 'react';
+import './ServiceProviderProfile.css';
+import axios from "axios";
+import ServiceProviderCard from '../Provider/Provider';
 
+const URL = "http://localhost:4000/ServiceProviders";
 
-const URL ="http://localhost:4000/ServiceProviders";
-
-const fetchHandler = async () =>{
+const fetchHandler = async () => {
   return await axios.get(URL).then((res) => res.data);
-
-}
+};
 
 function ServiceProviderProfile() {
   const [serviceProviders, setServiceProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
- 
   useEffect(() => {
-    fetchHandler().then((data) => {
-      console.log("API Response:", data);
-      setServiceProviders(data.ServiceProviders);
-    });
+    fetchHandler()
+      .then((data) => {
+        setServiceProviders(data.ServiceProviders || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching service providers:", err);
+        setError(err.message);
+        setLoading(false);
+      });
   }, []);
-  
 
+  if (loading) return <div className="service-provider-profile-loading">Loading service providers...</div>;
+  if (error) return <div className="service-provider-profile-error">Error: {error}</div>;
+  if (!serviceProviders.length) return <div className="service-provider-profile-empty">No service providers found</div>;
 
   return (
-    <div>
-      <>
-  <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Service Providers Profiles</title>
-  <link rel="stylesheet" href="/medmech_profile.css" />
-  <div className="container">
-    <h2>Service Providers Profiles</h2>
-
-    <div>
-      {serviceProviders && serviceProviders.map((serviceProvider, i) => (
-        <div key={i}>
-          <ServiceProvider serviceProvider={serviceProvider}/>
+    <div className="service-provider-profile-page">
+      <div className="service-provider-profile-container">
+        <h1 className="service-provider-profile-header">Service Providers</h1>
+        
+        <div className="service-provider-profile-list">
+          {serviceProviders.map((serviceProvider, i) => (
+            <ServiceProviderCard 
+              key={serviceProvider._id || i} 
+              serviceProvider={serviceProvider} 
+            />
+          ))}
         </div>
-      ))}
+      </div>
     </div>
-
-    
-  </div>
-</>
-
-    </div>
-  )
+  );
 }
 
-export default ServiceProviderProfile
+export default ServiceProviderProfile;

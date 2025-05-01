@@ -1,111 +1,135 @@
-import React, { useState }   from 'react'
-import './AddServiceProvider.css'
-import {useNavigate} from "react-router";
+import React, { useState } from 'react';
+import './AddServiceProvider.css';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-
 function AddServiceProvider() {
-  const history =useNavigate();
-  const[inputs,setInputs] = useState({
-      
-      fullname:"",
-      contactnumber:"",
-      specialization:"",
-      location:"",
-  });
+    const navigate = useNavigate();
+    const [inputs, setInputs] = useState({
+        fullname: "",
+        contactnumber: "",
+        specialization: "",
+        location: "",
+    });
 
+    const [errors, setErrors] = useState({
+        contactnumber: "",
+    });
 
-   const handleChange = (e) =>{
-    setInputs((prevState)=> ({
-       ...prevState,
-       [e.target.name]: e.target.value,
-    }));
-   };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-   const handleSubmit = (e)=>{
-    e.preventDefault();
-    console.log(inputs);
-    sendRequest().then(()=>history('ServiceProviderProfile'))
-   };
+        if (name === "contactnumber") {
+            const phoneRegex = /^[0-9]{10}$/; // Accepts exactly 10 digits
+            if (!phoneRegex.test(value)) {
+                setErrors((prev) => ({
+                    ...prev,
+                    contactnumber: "Phone number must be exactly 10 digits.",
+                }));
+            } else {
+                setErrors((prev) => ({
+                    ...prev,
+                    contactnumber: "",
+                }));
+            }
+        }
 
-   const sendRequest = async()=>{
-    await axios.post("http://localhost:4000/ServiceProviders",{
-        fullname: String (inputs.fullname),
-        contactnumber: Number (inputs.contactnumber),
-        specialization: String (inputs.specialization),
-        location: String (inputs.location),
-    }).then(res => res.data);
-   };
+        setInputs((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (errors.contactnumber) return;
 
-  return (
-    <div>
-     <>
-  <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Mechanic/Medic</title>
-  <link rel="stylesheet" href="/addmed_mech.css" />
-  <div className="container">
-    <div className="header">Add a New Mechanic or Medic</div>
-    <form onSubmit={handleSubmit} id="addForm">
-      
-      <div className="form-group">
-        <label htmlFor="name">Full Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="fullname"
-          onChange={handleChange}
-          value={inputs.fullname}
-          placeholder="Enter full name"
-          required=""
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="contact">Contact Number:</label>
-        <input
-          type="text"
-          id="contact"
-          name="contactnumber"
-          onChange={handleChange}
-          value={inputs.contactnumber}
-          placeholder="Enter contact number"
-          required=""
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="specialization">Specialization:</label>
-        <input
-          type="text"
-          id="specialization"
-          name="specialization"
-          onChange={handleChange}
-          value={inputs.specialization}
-          placeholder="E.g., Engine Repair, First Aid"
-          required=""
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="location">Location:</label>
-        <input
-          type="text"
-          id="location"
-          name="location"
-          onChange={handleChange}
-          value={inputs.location}
-          placeholder="Enter location"
-          required=""
-        />
-      </div>
-      <button type="submit" className="btn">
-        Add to System
-      </button>
-    </form>
-  </div>
-</>
+        try {
+            await axios.post("http://localhost:4000/ServiceProviders", {
+                fullname: String(inputs.fullname),
+                contactnumber: Number(inputs.contactnumber),
+                specialization: String(inputs.specialization),
+                location: String(inputs.location),
+            });
+            navigate('/ListServiceProvider');
+        } catch (error) {
+            console.error('Error adding service provider:', error);
+        }
+    };
 
-    </div>
-  )
+    return (
+        <div className="add-service-provider-container">
+            <div className="add-service-provider-header">Add a New Service Provider</div>
+            <form onSubmit={handleSubmit}>
+                {/* Full Name */}
+                <div className="add-service-provider-form-group">
+                    <label className="add-service-provider-label">Full Name:</label>
+                    <input
+                        type="text"
+                        name="fullname"
+                        onChange={handleChange}
+                        value={inputs.fullname}
+                        placeholder="Enter full name"
+                        className="add-service-provider-input"
+                        required
+                    />
+                </div>
+
+                {/* Contact Number */}
+                <div className="add-service-provider-form-group">
+                    <label className="add-service-provider-label">Contact Number:</label>
+                    <input
+                        type="text"
+                        name="contactnumber"
+                        onChange={handleChange}
+                        value={inputs.contactnumber}
+                        placeholder="Enter 10-digit number"
+                        className="add-service-provider-input"
+                        required
+                    />
+                    {errors.contactnumber && (
+                        <p className="add-service-provider-error">{errors.contactnumber}</p>
+                    )}
+                </div>
+
+                {/* Specialization */}
+                <div className="add-service-provider-form-group">
+                    <label className="add-service-provider-label">Specialization:</label>
+                    <input
+                        type="text"
+                        name="specialization"
+                        onChange={handleChange}
+                        value={inputs.specialization}
+                        placeholder="E.g., Engine Repair, First Aid"
+                        className="add-service-provider-input"
+                        required
+                    />
+                </div>
+
+                {/* Location */}
+                <div className="add-service-provider-form-group">
+                    <label className="add-service-provider-label">Location:</label>
+                    <input
+                        type="text"
+                        name="location"
+                        onChange={handleChange}
+                        value={inputs.location}
+                        placeholder="Enter location"
+                        className="add-service-provider-input"
+                        required
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    className="add-service-provider-btn"
+                    disabled={Boolean(errors.contactnumber)}
+                >
+                    Add to System
+                </button>
+            </form>
+        </div>
+    );
 }
 
 export default AddServiceProvider;

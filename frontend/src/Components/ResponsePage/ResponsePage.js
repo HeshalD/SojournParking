@@ -1,43 +1,47 @@
-import React from 'react'
-import './ResponsePage.css'
-
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './ResponsePage.css';
 
 function ResponsePage() {
-  return (
-    <div>
-      <>
-  <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Emergency Assistance - Response</title>
-  <link rel="stylesheet" href="/responsepage.css" />
-  <div className="container">
-    <div className="header">Your Emergency Request is Received! </div>
-    <div className="description">
-      Thank you for reaching out. Our team is reviewing your request, and the
-      nearest available **medic** or **mechanic** will assist you shortly. Stay
-      calm, help is on the way! ⏳
-    </div>
-    <img className="img1" src="photos/white_tick-removebg-preview.png" alt="" />
-    <div className="response-box">
-      <strong>Submitted Details</strong>
-      <p>
-        <b>Lisence Plate Number:</b>{" "}
-      </p>
-      <p>
-        <b>Emergency Type:</b>{" "}
-      </p>
-      <p>
-        <b>Aditional Informations:</b>
-      </p>
-    </div>
-    <button className="btn" onclick="window.history.back()">
-      ⬅ Go Back
-    </button>
-  </div>
-</>
+  const navigate = useNavigate();
 
+  const handleEdit = () => {
+    // This will be enhanced to properly handle edit navigation
+    navigate('/DisplayMedIssue'); // Goes back to previous page
+  };
+
+  const handleGoBack = () => {
+    navigate('/'); // Returns to home page
+  };
+
+  return (
+    <div className="response-confirmation">
+      <div className="response-confirmation__card">
+        <h1 className="response-confirmation__title">Your Emergency Request is Received!</h1>
+        <p className="response-confirmation__message">
+          Thank you for reaching out. Our team is reviewing your request, and the
+          nearest available responder will assist you shortly. Stay calm, help is on the way!
+        </p>
+        
+        
+        
+        <div className="response-confirmation__actions">
+          <button 
+            className="response-confirmation__button response-confirmation__button--edit"
+            onClick={handleEdit}
+          >
+            Edit Request
+          </button>
+          <button 
+            className="response-confirmation__button response-confirmation__button--home"
+            onClick={handleGoBack}
+          >
+            Return to Home
+          </button>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default ResponsePage
+export default ResponsePage;

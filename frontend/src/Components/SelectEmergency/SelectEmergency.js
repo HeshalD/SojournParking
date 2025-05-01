@@ -1,28 +1,43 @@
-import React from 'react'
-import './SelectEmergency.css'
+import React from 'react';
+import { useNavigate } from "react-router";
+import './SelectEmergency.css';
 
 function SelectEmergency() {
-    return (
-        <div>
-            <>
-                <meta charSet="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Emergency Assistance</title>
-                <link rel="stylesheet" href="homepage.css" />
-                <img src="/new21.png" alt="" className="img1" />
-                <div className="container">
-                    <div className="header">EMERGENCY ASSISTANCE</div>
-                    <div className="container1">
-                        <button className="btn"> Medical Emergency</button>
-                        <button className="btn"> Mechanical Issue</button>
-                        <button className="btn"> Security Concern</button>
-                    </div>
-                    <button className="btn1">Live Agent Support</button>
-                </div>
-            </>
+    const navigate = useNavigate();
 
+    return (
+        <div className="emergency-page">
+            <div className="emergency-page__content">
+                
+                <div className="emergency-page__card">
+                    <h1 className="emergency-page__title">EMERGENCY ASSISTANCE</h1>
+                    <div className="emergency-page__options">
+                        <button 
+                            className="emergency-page__button"
+                            onClick={() => navigate('/medical-emergency')}
+                        >
+                            Medical Emergency
+                        </button>
+                        <button 
+                            className="emergency-page__button"
+                            onClick={() => navigate('/mechanical-issue')}
+                        >
+                            Mechanical Issue
+                        </button>
+                        <button 
+                            className="emergency-page__button"
+                            onClick={() => navigate('/security-issue')}
+                        >
+                            Security Concern
+                        </button>
+                    </div>
+                    <button className="emergency-page__button emergency-page__button--primary">
+                        Live Agent Support
+                    </button>
+                </div>
+            </div>
         </div>
-    )
+    );
 }
 
-export default SelectEmergency
+export default SelectEmergency;

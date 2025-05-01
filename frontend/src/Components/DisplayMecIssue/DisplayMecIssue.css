@@ -1,0 +1,147 @@
+/* DisplayMecIssue.css - Updated to match medical style */
+.mec-issues-page {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #2D2A2A;
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.mec-issues-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.mec-issues-header {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #50B087;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #50B087;
+    padding-bottom: 0.5rem;
+}
+
+.mec-issues-loading,
+.mec-issues-error,
+.mec-issues-empty {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 2rem;
+    background-color: #353232;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.mec-issues-error {
+    color: #d9534f;
+}
+
+.mec-issues-empty {
+    color: #95a5a6;
+}
+
+.mec-issues-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.mec-issue-card {
+    background-color: #353232;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #50B087;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mec-issue-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.mec-issue-card__content {
+    margin-bottom: 1.5rem;
+}
+
+.mec-issue-card__field {
+    display: flex;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+}
+
+.mec-issue-card__label {
+    font-weight: 600;
+    color: #50B087;
+    min-width: 150px;
+}
+
+.mec-issue-card__value {
+    flex: 1;
+    word-break: break-word;
+}
+
+.mec-issue-card__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.mec-issue-card__button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+    min-width: 120px;
+    border: none;
+}
+
+.mec-issue-card__button--update {
+    background-color: #50B087;
+    color: white;
+}
+
+.mec-issue-card__button--update:hover {
+    background-color: #3d8c6e;
+    transform: translateY(-2px);
+}
+
+.mec-issue-card__button--delete {
+    background-color: #d9534f;
+    color: white;
+}
+
+.mec-issue-card__button--delete:hover {
+    background-color: #c9302c;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .mec-issues-page {
+        padding: 1rem;
+    }
+    
+    .mec-issue-card__field {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .mec-issue-card__label {
+        min-width: auto;
+    }
+    
+    .mec-issue-card__actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .mec-issue-card__button {
+        width: 100%;
+    }
+}

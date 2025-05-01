@@ -1,0 +1,146 @@
+/* DisplayMedIssue.css */
+/* Scoped styles for medical issues display page */
+
+.med-issues-page {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #2D2A2A;
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+.med-issues-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.med-issues-header {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #50B087;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 2px solid #50B087;
+    padding-bottom: 0.5rem;
+}
+
+.med-issues-loading,
+.med-issues-error,
+.med-issues-empty {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 2rem;
+    background-color: #353232;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.med-issues-error {
+    color: #d9534f;
+}
+
+.med-issues-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.med-issue-card {
+    background-color: #353232;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid #50B087;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.med-issue-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.med-issue-card__content {
+    margin-bottom: 1.5rem;
+}
+
+.med-issue-card__field {
+    display: flex;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+}
+
+.med-issue-card__label {
+    font-weight: 600;
+    color: #50B087;
+    min-width: 150px;
+}
+
+.med-issue-card__value {
+    flex: 1;
+    word-break: break-word;
+}
+
+.med-issue-card__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.med-issue-card__button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+    min-width: 120px;
+}
+
+.med-issue-card__button--update {
+    background-color: #50B087;
+    color: white;
+    border: none;
+}
+
+.med-issue-card__button--update:hover {
+    background-color: #3d8c6e;
+    transform: translateY(-2px);
+}
+
+.med-issue-card__button--delete {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+}
+
+.med-issue-card__button--delete:hover {
+    background-color: #c9302c;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .med-issues-page {
+        padding: 1rem;
+    }
+    
+    .med-issue-card__field {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    
+    .med-issue-card__label {
+        min-width: auto;
+    }
+    
+    .med-issue-card__actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .med-issue-card__button {
+        width: 100%;
+    }
+}

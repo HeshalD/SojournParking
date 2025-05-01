@@ -1,86 +1,126 @@
-import React from 'react'
-import './SecurityIssue.css'
+import React, { useState } from 'react';
+import { useNavigate } from "react-router";
+import axios from 'axios';
+import './SecurityIssue.css';
 
 function SecurityIssue() {
-  return (
-    <div>
-      <>
-  <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security Issue Form</title>
-  <link rel="stylesheet" href="/security.css" />
-  <img src="photos/secuirty.png" alt="" />
-  <div className="container">
-    <div className="header">
-      <div className="header-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={24}
-          height={24}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <path d="M12 8v4" />
-          <path d="M12 16h.01" />
-        </svg>
-      </div>
-      <div className="header-text">Security Issue</div>
-    </div>
-    <div className="form-title">Fill the form</div>
-    <form>
-      <div className="form-group">
-        <label className="form-label">License Plate Number:</label>
-        <div className="dropdown3">
-          <input
-            type="text"
-            placeholder="Enter The License Plate Number"
-            className="form-control"
-          />
-        </div>
-      </div>
-      <div className="form-group">
-        <label className="form-label">Emergency Type</label>
-        <div className="dropdown">
-          <select className="form-control">
-            <option value="" selected="" disabled="">
-              Select emergency type
-            </option>
-            <option value="intrusion">Intrusion</option>
-            <option value="suspicious">Suspicious Activity</option>
-            <option value="theft">Theft</option>
-            <option value="vandalism">Vandalism</option>
-            <option value="device">Security Device Malfunction</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-      </div>
-      <div className="form-group">
-        <label className="form-label">Additional Notes</label>
-        <textarea
-          className="form-control"
-          placeholder="Enter any additional information here..."
-          defaultValue={""}
-        />
-      </div>
-      <div className="button-group">
-        <button type="button" className="btn btn-secondary">
-          Cancel
-        </button>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </div>
-    </form>
-  </div>
-</>
+  const navigate = useNavigate();
+  const [inputs, setInputs] = useState({
+    lpname: "",
+    email: "",
+    etype: "",
+    anote: "",
+  });
 
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:4000/secIssues", {
+        lpname: inputs.lpname,
+        email: inputs.email,
+        etype: inputs.etype,
+        anote: inputs.anote,
+      });
+      navigate('/responseS');
+    } catch (err) {
+      console.error("Submission error:", err);
+      // Add user feedback here
+    }
+  };
+
+  return (
+    <div className="security-issue">
+      <div className="security-issue__card">
+        <h2 className="security-issue__title">Security Issue Report</h2>
+        
+        <form onSubmit={handleSubmit} className="security-issue__form">
+          <div className="security-issue__form-group">
+            <label className="security-issue__label">
+              License Plate Number:
+              <input
+                type="text"
+                name="lpname"
+                onChange={handleChange}
+                value={inputs.lpname}
+                placeholder="Enter license plate number"
+                className="security-issue__input"
+                required
+              />
+            </label>
+          </div>
+
+          <div className="security-issue__form-group">
+            <label className="security-issue__label">
+              Email:
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                value={inputs.email}
+                placeholder="Enter your email"
+                className="security-issue__input"
+                required
+              />
+            </label>
+          </div>
+
+          <div className="security-issue__form-group">
+            <label className="security-issue__label">
+              Emergency Type
+              <select
+                name="etype"
+                className="security-issue__select"
+                onChange={handleChange}
+                value={inputs.etype}
+                required
+              >
+                <option value="" disabled>Select emergency type</option>
+                <option value="theft">Theft</option>
+                <option value="vandalism">Vandalism</option>
+                <option value="suspicious_activity">Suspicious Activity</option>
+                <option value="accident">Accident</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="security-issue__form-group">
+            <label className="security-issue__label">
+              Additional Notes
+              <textarea
+                name="anote"
+                onChange={handleChange}
+                value={inputs.anote}
+                placeholder="Enter additional notes"
+                className="security-issue__textarea"
+                required
+              />
+            </label>
+          </div>
+
+          <div className="security-issue__actions">
+            <button
+              type="button"
+              onClick={() => navigate('/')}
+              className="security-issue__button security-issue__button--secondary"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="security-issue__button security-issue__button--primary"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  )
+  );
 }
 
-export default SecurityIssue
+export default SecurityIssue;
