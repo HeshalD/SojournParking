@@ -6,11 +6,11 @@ import{ useParams} from 'react-router';
 function UpdateComplaint() {
 	const [inputs, setInputs] = useState({
 		date:"",
+		email:"",
 		comp:"",
 		describe:"",
 		solution:"",
 	});
-
 
 	const history = useNavigate();
 	const id = useParams().id;
@@ -28,6 +28,7 @@ function UpdateComplaint() {
 		await axios
 			.put(`http://localhost:5000/complaint/${id}`, {
 				date: inputs.date,
+				email: String(inputs.email),
 				comp: String(inputs.comp),
 				describe: String(inputs.describe),
 				solution: String(inputs.solution),
@@ -60,6 +61,17 @@ function UpdateComplaint() {
 						onChange={handleChange}
 						value={inputs?.date || ""}
 						required=""
+					/>
+				</div>
+				<div className="form-group">
+					<label>Email Address</label>
+					<input
+						type="email"
+						name="email"
+						onChange={handleChange}
+						value={inputs?.email || ""}
+						required=""
+						placeholder="Enter your email address"
 					/>
 				</div>
 				<div className="section-title">Complaint Details</div>

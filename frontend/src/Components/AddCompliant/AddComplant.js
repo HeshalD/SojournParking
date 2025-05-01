@@ -7,34 +7,81 @@ function Complaint() {
 	const history = useNavigate();
 	const [inputs, setInputs] = useState({
 		date: '',
+		email: '',
 		comp: '',
 		describe: '',
 		solution: '',
 	});
+
+	const [errors, setErrors] = useState({
+		describe: '',
+		solution: '',
+	});
 	
+	const validateForm = () => {
+		let isValid = true;
+		const newErrors = {
+			describe: '',
+			solution: '',
+		};
+
+		// Validate describe field
+		if (inputs.describe.length < 20) {
+			newErrors.describe = 'Description must be at least 20 characters long';
+			isValid = false;
+		} else if (inputs.describe.length > 500) {
+			newErrors.describe = 'Description cannot exceed 500 characters';
+			isValid = false;
+		}
+
+		// Validate solution field
+		if (inputs.solution.length < 10) {
+			newErrors.solution = 'Solution must be at least 10 characters long';
+			isValid = false;
+		} else if (inputs.solution.length > 300) {
+			newErrors.solution = 'Solution cannot exceed 300 characters';
+			isValid = false;
+		}
+
+		setErrors(newErrors);
+		return isValid;
+	};
+
 	const handleChange = (e) => {
+		const { name, value } = e.target;
 		setInputs((prevState) => ({
 			...prevState,
-			[e.target.name]: e.target.value,
+			[name]: value,
 		}));
+
+		// Clear error when user starts typing
+		if (errors[name]) {
+			setErrors((prevErrors) => ({
+				...prevErrors,
+				[name]: '',
+			}));
+		}
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(inputs);
-		sendRequest().then(() => history('/displayComplaint'));
+		if (validateForm()) {
+			console.log(inputs);
+			sendRequest().then(() => history('/displayComplaint'));
+		}
 	};
 
 	const sendRequest = async () => {
         try {
             const response = await axios.post("http://localhost:5000/complaint", {
                 date: inputs.date,
+                email: inputs.email,
                 comp: inputs.comp,
                 describe: inputs.describe,
                 solution: inputs.solution,
             });
     
-            console.log("Response:", response.data); // Debugging
+            console.log("Response:", response.data);
             return response.data;
         } catch (error) {
             console.error("Error submitting complaint:", error.response ? error.response.data : error.message);
@@ -62,6 +109,18 @@ function Complaint() {
 							className="complaint-input"
 						/>
 					</div>
+					<div className="complaint-form-group">
+						<label className="complaint-label">Email Address</label>
+						<input
+							type="email"
+							name="email"
+							onChange={handleChange}
+							value={inputs.email}
+							required=""
+							className="complaint-input"
+							placeholder="Enter your email address"
+						/>
+					</div>
 					<div className="complaint-section-title">Complaint Details</div>
 					<div className="complaint-form-group">
 						<label className="complaint-label">What is the nature of your complaint?</label>
@@ -81,8 +140,10 @@ function Complaint() {
 							name="describe"
 							onChange={handleChange}
 							value={inputs.describe}
-							className="complaint-textarea"
+							className={`complaint-textarea ${errors.describe ? 'error' : ''}`}
+							placeholder="Please provide a detailed description (minimum 20 characters)"
 						/>
+						{errors.describe && <div className="error-message">{errors.describe}</div>}
 					</div>
 					<div className="complaint-form-group">
 						<label className="complaint-label">What resolution are you seeking?</label>
@@ -91,8 +152,10 @@ function Complaint() {
 							name="solution"
 							onChange={handleChange}
 							value={inputs.solution}
-							className="complaint-textarea"
+							className={`complaint-textarea ${errors.solution ? 'error' : ''}`}
+							placeholder="Please describe your desired resolution (minimum 10 characters)"
 						/>
+						{errors.solution && <div className="error-message">{errors.solution}</div>}
 					</div>
 					<button type="submit" className="complaint-button">Submit</button>
 				</form>

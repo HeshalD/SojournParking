@@ -70,6 +70,17 @@
 	resize: vertical;
 }
 
+.complaint-textarea.error {
+	border-color: #ff4444;
+	background-color: #fff5f5;
+}
+
+.error-message {
+	color: #ff4444;
+	font-size: 14px;
+	margin-top: 5px;
+}
+
 .complaint-button {
 	background-color: #50b087;
 	color: white;
