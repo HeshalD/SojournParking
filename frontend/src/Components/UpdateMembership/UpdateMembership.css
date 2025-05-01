@@ -1,0 +1,179 @@
+/* UpdateMembership.css - Scoped Styles */
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+    font-weight: 700;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+    font-weight: 500;
+    font-display: swap;
+  }
+  
+  /* Main Container */
+  .um-container {
+    font-family: 'GothamMedium', sans-serif;
+    background-color: #1E1E1E;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  /* Form Wrapper */
+  .um-form-wrapper {
+    width: 100%;
+    max-width: 500px;
+    background-color: #2D2D2D;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Form Title */
+  .um-form-title {
+    font-family: 'GothamBold', sans-serif;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  /* Form Groups */
+  .um-form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Input Fields */
+  .um-form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #3A3A3A;
+    color: #FFFFFF;
+    font-family: 'GothamMedium', sans-serif;
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+  }
+  
+  .um-form-input:focus {
+    outline: none;
+    border-color: #50B087;
+    box-shadow: 0 0 0 2px rgba(80, 176, 135, 0.2);
+  }
+  
+  .um-form-input::placeholder {
+    color: #A0A0A0;
+  }
+
+  /* Add this to your existing CSS */
+.um-form-input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.um-form-input[type="email"]:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+  
+  /* File Upload */
+  .um-upload-container {
+    position: relative;
+    margin: 1.5rem 0;
+  }
+  
+  .um-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1rem;
+    background-color: #3A3A3A;
+    border: 1px dashed #555;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'GothamMedium', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .um-upload-label:hover {
+    background-color: #444;
+    border-color: #50B087;
+  }
+  
+  .um-upload-icon {
+    margin-right: 0.5rem;
+    color: #50B087;
+  }
+  
+  /* Image Preview */
+  .um-image-preview {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .um-image-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 1px solid #444;
+  }
+  
+  /* Submit Button */
+  .um-submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #50B087;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'GothamBold', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .um-submit-btn:hover {
+    background-color: #3E8A67;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(80, 176, 135, 0.3);
+  }
+  
+  /* Error Messages */
+  .um-error-msg {
+    color: #FF6B6B;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    font-family: 'GothamMedium', sans-serif;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .um-form-wrapper {
+      padding: 1.5rem;
+      border-radius: 12px;
+    }
+    
+    .um-form-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .um-form-group {
+      margin-bottom: 1.25rem;
+    }
+  }

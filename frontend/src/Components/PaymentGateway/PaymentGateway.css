@@ -1,120 +1,205 @@
 @font-face {
     font-family: "GothamBold";
-    src: url("./Gotham-Bold.ttf");
+    src: url("./Gotham-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "GothamMedium";
-    src: url("./Gotham-Medium.ttf");
+    src: url("./Gotham-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "GothamLight";
-    src: url("./Gotham-Light.ttf");
+    src: url("./Gotham-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "GothamThin";
-    src: url("./Gotham-Thin.ttf");
+    src: url("./Gotham-Thin.ttf") format("truetype");
+    font-weight: 200;
+    font-display: swap;
 }
 
 @font-face {
     font-family: "GothamXLight";
-    src: url("./Gotham-XLight.ttf");
+    src: url("./Gotham-XLight.ttf") format("truetype");
+    font-weight: 100;
+    font-display: swap;
 }
 
-/* Used 'pg-' prefix (payment gateway) for all class names to prevent conflicts */
+
+:root {
+    --pg-primary: #50B087;
+    --pg-primary-dark: #3E8A67;
+    --pg-bg-dark: #1E1E1E;
+    --pg-card-bg: #2D2D2D;
+    --pg-text-light: #FFFFFF;
+    --pg-text-muted: rgba(255, 255, 255, 0.7);
+    --pg-border-color: rgba(255, 255, 255, 0.15);
+    --pg-error: #FF6B6B;
+    --pg-success: #50B087;
+    --pg-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --pg-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
 .pg-payment-container {
-    background: #1e1e1e;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+    background: var(--pg-card-bg);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: var(--pg-shadow);
     width: 100%;
-    max-width: 500px;
-    text-align: center;
-    margin: auto;
-    color: #ffffff;
-    font-family: 'Gotham', sans-serif;
+    max-width: 32rem;
+    margin: 0 auto;
+    color: var(--pg-text-light);
+    font-family: 'GothamMedium', -apple-system, BlinkMacSystemFont, sans-serif;
+    border: 1px solid var(--pg-border-color);
 }
 
 .pg-form-title {
-    font-size: 28px;
-    color: #4CAF50;
-    margin-bottom: 25px;
-    font-weight: bold;
+    font-size: 1.75rem;
+    color: var(--pg-primary);
+    margin-bottom: 1.75rem;
+    font-weight: 700;
     font-family: 'GothamBold', sans-serif;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
 }
 
 .pg-form-group {
-    margin-bottom: 15px;
-    text-align: left;
-    padding: 0 0 15px 0;
-}
-
-.pg-label {
-    font-weight: bold;
-    color: #ffffff;
-    display: block;
-    margin-bottom: 5px;
-    font-family: 'GothamMedium', sans-serif;
-}
-
-.pg-input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    font-size: 16px;
-    font-family: 'GothamMedium', sans-serif;
-}
-
-.pg-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1.25rem;
+    position: relative;
 }
 
 .pg-form-row {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .pg-half {
-    width: 48%;
+    flex: 1;
+    min-width: 0;
+}
+
+.pg-label {
+    font-weight: 500;
+    color: var(--pg-text-light);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: 'GothamMedium', sans-serif;
+    font-size: 0.9375rem;
+}
+
+.pg-input {
+    width: 100%;
+    padding: 0.9375rem 1rem;
+    border: 1px solid var(--pg-border-color);
+    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--pg-text-light);
+    font-size: 0.9375rem;
+    font-family: 'GothamMedium', sans-serif;
+    transition: var(--pg-transition);
+}
+
+.pg-input:focus {
+    outline: none;
+    border-color: var(--pg-primary);
+    box-shadow: 0 0 0 2px rgba(80, 176, 135, 0.2);
+}
+
+.pg-input::placeholder {
+    color: var(--pg-text-muted);
+    font-family: 'GothamLight', sans-serif;
+}
+
+.pg-input.error {
+    border-color: var(--pg-error);
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+.error-message {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--pg-error);
+    font-size: 0.875rem;
+    font-family: 'GothamLight', sans-serif;
 }
 
 .pg-pay-btn {
-    width: 60%;
-    padding: 14px;
-    background: #4CAF50;
+    width: 100%;
+    padding: 1rem;
+    background: var(--pg-primary);
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 18px;
+    border-radius: 0.5rem;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background 0.3s ease-in-out;
-    margin-top: 20px;
-    font-family: 'GothamMedium', sans-serif;
+    transition: var(--pg-transition);
+    margin-top: 1rem;
+    font-family: 'GothamBold', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .pg-pay-btn:hover {
-    background: #388E3C;
+    background: var(--pg-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(80, 176, 135, 0.3);
 }
 
-/* Responsive Design */
-@media (max-width: 500px) {
-    .pg-payment-container {
-        padding: 20px;
-    }
+.pg-pay-btn:active {
+    transform: translateY(0);
+}
 
+.pg-pay-btn:disabled {
+    background: var(--pg-text-muted);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 640px) {
+    .pg-payment-container {
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+    }
+    
+    .pg-form-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
     .pg-form-row {
         flex-direction: column;
-        gap: 15px;
+        gap: 1rem;
     }
-
+    
     .pg-half {
         width: 100%;
     }
+}
+
+.pg-text-center {
+    text-align: center;
+}
+
+.pg-mt-2 {
+    margin-top: 2rem;
+}
+
+@keyframes pg-fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pg-payment-container {
+    animation: pg-fadeIn 0.4s ease-out forwards;
 }

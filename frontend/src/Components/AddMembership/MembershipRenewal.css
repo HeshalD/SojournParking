@@ -136,6 +136,20 @@
     color: white;
 }
 
+.form-group input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .form-group input[type="email"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+  }
+
 .membership-renewal .image-preview {
     margin-top: 10px;
     display: flex;

@@ -8,7 +8,7 @@ function MembershipRenewal() {
   const [inputs, setInputs] = useState({
     EmployeeID: "",
     LicensePlateNo: "",
-    Slip: "",
+    Email: ""
   });
 
   const [slip, setSlip] = useState(null);
@@ -40,13 +40,17 @@ function MembershipRenewal() {
     } else if (!/^[A-Z0-9-]+$/.test(inputs.LicensePlateNo)) {
       newErrors.LicensePlateNo = "Invalid license plate format";
     }
+    if (!inputs.Email) {
+      newErrors.Email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.Email)) {
+      newErrors.Email = "Invalid email format";
+    }
     if (!slip) {
       newErrors.Slip = "Payment slip is required";
     }
     setErrors(newErrors);
     
     if (Object.keys(newErrors).length > 0) {
-      // Show an alert if validation fails
       let errorMessage = "Please fix the following errors:\n";
       for (let key in newErrors) {
         errorMessage += `- ${newErrors[key]}\n`;
@@ -69,16 +73,32 @@ function MembershipRenewal() {
       const formData = new FormData();
       formData.append("EmployeeID", inputs.EmployeeID);
       formData.append("LicensePlateNo", inputs.LicensePlateNo);
+      formData.append("Email", inputs.Email);
       formData.append("Slip", slip);
       
-      await axios.post("http://localhost:5000/member", formData, {
+      const response = await axios.post("http://localhost:5000/member", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+      return response.data;
     } catch (error) {
       console.error("There was an error sending the request", error);
-      alert("Error submitting the form. Please try again.");
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error("Error response:", error.response.data);
+        alert(`Error: ${error.response.data.message || 'Failed to submit form'}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        alert("No response from server. Please check if the server is running.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up request:", error.message);
+        alert("Error setting up request. Please try again.");
+      }
+      throw error;
     }
   };
 
@@ -110,6 +130,18 @@ function MembershipRenewal() {
               />
               {errors.LicensePlateNo && (
                 <p className="error">{errors.LicensePlateNo}</p>
+              )}
+            </div>
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Email"
+                name="Email"
+                onChange={handleChange}
+                value={inputs.Email}
+              />
+              {errors.Email && (
+                <p className="error">{errors.Email}</p>
               )}
             </div>
             <div className="form-group upload-container">

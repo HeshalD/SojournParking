@@ -36,6 +36,8 @@ import AddReview from './Components/AddReview/AddReview';
 import DisplayReview from './Components/DisplayReview/DisplayReview';
 import UpdateReview from './Components/UpdateReview/UpdateReview';
 import ReservationTable from './Components/ReservationTable/ReservationTable';
+import PaymentTable from './Components/PaymentTable/PaymentTable';
+import ProfitLossStatement from './Components/ProfitLossStatement/ProfitLossStatement';
 
 
 function App() {
@@ -78,6 +80,8 @@ function App() {
           <Route path="/displayReview" element={<DisplayReview/>}/>
           <Route path="/updateReview/:id" element={<UpdateReview/>}/>
           <Route path="/reservationTable" element={<ReservationTable/>}/>
+          <Route path="/paymentTable" element={<PaymentTable/>}/>
+          <Route path="/profitLossStatement" element={<ProfitLossStatement/>}/>
         </Routes>
       </React.Fragment>
     </div>

@@ -2,20 +2,26 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const memberSchema = new Schema({
-    EmployeeID:{
-        type:String,//data type
-        required:true,//validation
+    EmployeeID: {
+        type: String,
+        required: true,
     },
-    LicensePlateNo:{
-        type:String,//data type
-        required:true,//validation
+    LicensePlateNo: {
+        type: String,
+        required: true,
     },
-    Slip:{
-        type:String,//data type
+    Slip: {
+        type: String,
+        required: true
+    },
+    Email: {  // Added email field
+        type: String,
+        required: true,
+        unique: true  // Ensures email is unique
     }
 });
 
 module.exports = mongoose.model(
-    "MembershipModel", //file name
-     memberSchema //function name
-)
+    "MembershipModel",
+    memberSchema
+);

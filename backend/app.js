@@ -10,9 +10,25 @@ const membershipRouter = require("./Routes/MembershipRoutes");
 const paymentRouter = require("./Routes/PayFormRoute");
 const complaintRouter = require("./Routes/ComplaintRoutes");
 const reviewRouter = require("./Routes/ReviewRoutes");
+const payFormRoutes = require("./Routes/PayFormRoute");
+const multer = require('multer');
+const path = require('path');
+const paymentRoutes = require('./Routes/PaymentRoutes');
 
 const app = express();
 const cors = require("cors");
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 app.use(cors({
     origin: "http://localhost:3000",
@@ -20,6 +36,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
 
 app.use(session({
     secret: '12345',
@@ -36,9 +53,10 @@ app.use("/user", userRouter);
 app.use("/ServiceProviders",serviceProviderRouter);
 app.use("/employee",employeeRouter);
 app.use("/member",membershipRouter);
-app.use("/pay",paymentRouter);
 app.use("/complaint",complaintRouter);
 app.use("/Review",reviewRouter);
+app.use('/api/payments', payFormRoutes);
+app.use('/payment', paymentRoutes);
 
 // Session routes
 sessionRouter.post('/sessions', (req, res) => {

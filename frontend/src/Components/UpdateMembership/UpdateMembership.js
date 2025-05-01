@@ -19,11 +19,19 @@ function UpdateMembership() {
   }, [id]);
 
   const sendRequest = async () => {
+    const formData = new FormData();
+    formData.append("EmployeeID", String(inputs.EmployeeID));
+    formData.append("LicensePlateNo", String(inputs.LicensePlateNo));
+    formData.append("Email", String(inputs.Email)); // Added email
+    if (slip) {
+      formData.append("Slip", slip);
+    }
+    
     await axios
-      .put(`http://localhost:5000/member/${id}`, {
-        EmployeeID: String(inputs.EmployeeID),
-        LicensePlateNo: String(inputs.LicensePlateNo),
-        Slip: String(inputs.Slip),
+      .put(`http://localhost:5000/member/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((res) => res.data);
   };
@@ -35,12 +43,6 @@ function UpdateMembership() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Correct the typo here
-    console.log(inputs);
-    sendRequest().then(() => history("/DisplayMembership"));
-  };
-
   const [slip, setSlip] = useState(null);
   const [preview, setPreview] = useState(null);
   const [errors, setErrors] = useState({});
@@ -49,7 +51,7 @@ function UpdateMembership() {
     const file = e.target.files[0];
     if (file) {
       setSlip(file);
-      setPreview(URL.createObjectURL(file)); // Show image preview
+      setPreview(URL.createObjectURL(file));
     }
   };
 
@@ -57,56 +59,90 @@ function UpdateMembership() {
     let newErrors = {};
     if (!inputs.EmployeeID) {
       newErrors.EmployeeID = "Employee ID is required";
+    } else if (!/^[A-Z]{3}[0-9]{3}$/.test(inputs.EmployeeID)) {
+      newErrors.EmployeeID = "Employee ID must be 3 capital letters followed by 3 digits (e.g., ABC123)";
     }
+    
     if (!inputs.LicensePlateNo) {
       newErrors.LicensePlateNo = "License plate number is required";
     } else if (!/^[A-Z0-9-]+$/.test(inputs.LicensePlateNo)) {
-      newErrors.LicensePlateNo = "Invalid license plate format";
+      newErrors.LicensePlateNo = "Invalid license plate format (only letters, numbers, and hyphens allowed)";
     }
-    if (!inputs.Slip) {
-      newErrors.Slip = "Payment slip is required";
+    
+    if (!inputs.Email) {
+      newErrors.Email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.Email)) {
+      newErrors.Email = "Invalid email format";
     }
+    
+    if (!slip && !preview && !inputs.Slip) {
+      newErrors.Slip = "Payment slip is required (JPEG or PNG only)";
+    }
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      console.log(inputs);
+      sendRequest().then(() => history("/DisplayMembership"));
+    }
+  };
+
   return (
-    <div>
+    <div className="um-container">
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Membership Renewal</title>
-      <link rel="stylesheet" href="./membership.css" />
-      <div className="container">
-        <div className="background-card">
-          <h1 className="form-title">MEMBERSHIP RENEWAL</h1>
-          <form className="form-group" onSubmit={handleSubmit}>
-            <div className="form-group">
+      <link rel="stylesheet" href="./UpdateMembership.css" />
+      <div className="um-form-wrapper">
+        <div className="um-form-card">
+          <h1 className="um-form-title">MEMBERSHIP RENEWAL</h1>
+          <form className="um-form" onSubmit={handleSubmit}>
+            <div className="um-form-group">
               <input
+                className="um-form-input"
                 type="text"
                 placeholder="Employee ID"
                 name="EmployeeID"
                 onChange={handleChange}
-                value={inputs.EmployeeID}
+                value={inputs.EmployeeID || ""}
               />
               {errors.EmployeeID && (
-                <p className="error">{errors.EmployeeID}</p>
+                <p className="um-error-msg">{errors.EmployeeID}</p>
               )}
             </div>
-            <div className="form-group">
+            <div className="um-form-group">
               <input
+                className="um-form-input"
                 type="text"
                 placeholder="License plate no"
                 name="LicensePlateNo"
                 onChange={handleChange}
-                value={inputs.LicensePlateNo}
+                value={inputs.LicensePlateNo || ""}
               />
               {errors.LicensePlateNo && (
-                <p className="error">{errors.LicensePlateNo}</p>
+                <p className="um-error-msg">{errors.LicensePlateNo}</p>
               )}
             </div>
-            <div className="form-group upload-container">
-              <label htmlFor="fileInput" className="upload-label">
-                <i className="fas fa-paperclip upload-icon"></i> Attach Slip
+            <div className="um-form-group">
+              <input
+                className="um-form-input"
+                type="email"
+                placeholder="Email"
+                name="Email"
+                onChange={handleChange}
+                value={inputs.Email || ""}
+              />
+              {errors.Email && (
+                <p className="um-error-msg">{errors.Email}</p>
+              )}
+            </div>
+            <div className="um-upload-container">
+              <label htmlFor="fileInput" className="um-upload-label">
+                <i className="fas fa-paperclip um-upload-icon"></i> Attach Slip
               </label>
               <input
                 type="file"
@@ -115,15 +151,20 @@ function UpdateMembership() {
                 style={{ display: "none" }}
                 onChange={handleFileChange}
               />
-              {errors.Slip && <p className="error">{errors.Slip}</p>}
+              {errors.Slip && <p className="um-error-msg">{errors.Slip}</p>}
             </div>
             {preview && (
-              <div className="image-preview">
+              <div className="um-image-preview">
                 <img src={preview} alt="Slip Preview" />
               </div>
             )}
-            <button id="submitBtn" type="submit">
-              Submit
+            {inputs.Slip && !preview && (
+              <div className="um-image-preview">
+                <p>Current Slip: {inputs.Slip}</p>
+              </div>
+            )}
+            <button className="um-submit-btn" type="submit">
+              Update
             </button>
           </form>
         </div>

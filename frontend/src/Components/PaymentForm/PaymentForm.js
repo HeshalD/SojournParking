@@ -24,39 +24,51 @@ function PaymentForm() {
       return;
     }
 
-    const fetchReservation = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/slots/license/${licensePlate}`);
-        const { slot } = response.data;
-
-        setReservation({
-          LicensePlateNo: slot.licensePlate,
-          EntryTime: new Date(slot.entryTime).toISOString().slice(0, 16), // Convert to input datetime format
-          ExitTime: new Date(slot.exitTime).toISOString().slice(0, 16)
-        });
-      } catch (err) {
-        setError("Failed to fetch reservation details. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReservation();
-  }, [licensePlate]);
+    // Use the passed reservation data
+    setReservation({
+      LicensePlateNo: licensePlate,
+      EntryTime: location.state?.entryTime || "",
+      ExitTime: location.state?.exitTime || ""
+    });
+    setLoading(false);
+  }, [licensePlate, location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      await axios.post("http://localhost:5000/pay", {
-        LicensePlateNo: reservation.LicensePlateNo,
-        EntryTime: reservation.EntryTime,
-        ExitTime: reservation.ExitTime
+      // Use the passed slot data to create payment
+      const response = await axios.post("http://localhost:5000/api/payments", {
+        slotId: location.state?.slotId // Pass the slot ID from the state
       });
 
-      navigate("/paymentReceipt", { state: { user: reservation } });
+      console.log("Payment creation response:", response.data);
+
+      if (response.data.success) {
+        alert("Payment processed successfully!");
+        navigate("/paymentReceipt", { 
+          state: { 
+            payment: response.data.data,
+            user: reservation 
+          } 
+        });
+      } else {
+        throw new Error(response.data.message || "Payment processing failed");
+      }
     } catch (err) {
-      setError("Payment processing failed. Please try again.");
+      console.error("Payment error details:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        config: err.config
+      });
+      const errorMessage = err.response?.data?.message || err.message || "Payment processing failed. Please try again.";
+      setError(errorMessage);
+      alert(`Payment Error: ${errorMessage}`);
+    } finally {
+      setLoading(false);
     }
   };
 

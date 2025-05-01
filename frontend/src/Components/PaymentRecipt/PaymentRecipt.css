@@ -23,16 +23,27 @@
     src: url("./Gotham-XLight.ttf");
 }
 
+:root {
+    --pg-bg-dark: #1a1a1a;
+    --pg-card-bg: #2d2d2d;
+    --pg-text-light: #ffffff;
+    --pg-text-muted: #a0a0a0;
+    --pg-primary: #50B087;
+    --pg-border-color: #404040;
+    --pg-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --pg-transition: all 0.3s ease;
+}
+
 /* Prefix all class names with 'pr-' (payment receipt) to avoid conflicts */
 
 .pr-receipt-container {
-    background-color: #1e1e1e;
+    background-color: var(--pg-bg-dark);
     margin: 40px auto;
     padding: 25px;
     width: 80%;
     max-width: 900px;
     border-radius: 10px;
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--pg-shadow);
     font-family: "GothamMedium", Arial, sans-serif;
     height: auto;
 }
@@ -44,13 +55,13 @@
 
 .pr-receipt-header h1 {
     font-size: 26px;
-    color: #4CAF50;
+    color: var(--pg-primary);
     font-family: "GothamBold", Arial, sans-serif;
     margin-bottom: 10px;
 }
 
 .pr-receipt-header p {
-    color: #aaa;
+    color: var(--pg-text-muted);
     font-size: 14px;
     font-family: "GothamLight", Arial, sans-serif;
 }
@@ -61,19 +72,19 @@
 
 .pr-receipt-details p {
     font-size: 14px; 
-    color: #ccc;
+    color: var(--pg-text-light);
     margin: 8px 0;
     font-family: "GothamMedium", Arial, sans-serif;
 }
 
 .pr-label {
     font-weight: bold;
-    color: #4CAF50;
+    color: var(--pg-text-muted);
     font-family: "GothamBold", Arial, sans-serif;
 }
 
 .pr-value {
-    color: #ccc;
+    font-weight: 500;
 }
 
 .pr-receipt-total {
@@ -87,7 +98,7 @@
     text-align: center;
     margin-top: 25px; 
     font-size: 12px;
-    color: #aaa;
+    color: var(--pg-text-muted);
     font-family: "GothamLight", Arial, sans-serif;
 }
 
@@ -95,7 +106,7 @@
     display: block;
     width: 100%;
     padding: 15px;
-    background-color: #4CAF50;
+    background-color: var(--pg-primary);
     color: white;
     text-align: center;
     border: none;
@@ -104,12 +115,42 @@
     font-family: "GothamMedium", Arial, sans-serif;
     cursor: pointer;
     margin-top: 30px;
-    transition: background-color 0.3s ease;
+    transition: var(--pg-transition);
     text-transform: uppercase;
 }
 
 .pr-pay-btn:hover {
-    background-color: #388E3C;
+    background-color: var(--pg-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(80, 176, 135, 0.3);
+}
+
+.pr-pay-btn:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    text-align: center;
+    color: var(--pg-text-light);
+}
+
+.error-message h2 {
+    color: #ff4444;
+    margin-bottom: 1rem;
+}
+
+.error-message button {
+    background: var(--pg-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: var(--pg-transition);
+}
+
+.error-message button:hover {
+    background: var(--pg-primary-dark);
 }
 
 @media (max-width: 768px) {
@@ -157,5 +198,24 @@
     .pr-pay-btn {
         font-size: 14px;
         padding: 10px;
+    }
+}
+
+@media (max-width: 640px) {
+    .pr-receipt-container {
+        padding: 1rem;
+    }
+
+    .pr-receipt-details {
+        padding: 1.5rem;
+    }
+
+    .pr-receipt-details p {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .pr-receipt-details p .pr-value {
+        text-align: right;
     }
 }
