@@ -194,3 +194,72 @@ button:hover {
     color: #ff6b6b;
     margin-bottom: 10px;
 }
+
+.parking-instructions {
+    text-align: center;
+    color: #666;
+    margin: 10px 0 20px;
+    font-size: 1.1em;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-instructions {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+
+.selected-slot-info {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="datetime-local"]:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+button[type="submit"]:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}

@@ -3,6 +3,9 @@ import './LandingPage.css'
 import {Link} from "react-router-dom"
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
+import Lottie from 'lottie-react'
+import parkingAnimation from '../../Assets/Animations/parkingAnimation.json'
+import whyChooseAnimation from '../../Assets/Animations/whyChooseAnimation.json'
 
 function LandingPage() {
   return (
@@ -12,83 +15,96 @@ function LandingPage() {
       {/* Hero Section */}
       <section className="landing-hero">
         <div className="landing-hero-content">
-          <h1>Welcome to Sojourn Parking</h1>
-          <p>
-            Find the perfect parking spot with ease. Our smart parking system
-            helps you save time and reduce stress by quickly finding available
-            parking spaces. Reserve your spot in advance and enjoy a hassle-free
-            parking experience.
-          </p>
-          <Link to="/chooseParking" className="landing-btn landing-btn-primary">
-            Reserve Now
-          </Link>
+          <div className="landing-hero-text">
+            <h1>Welcome to Sojourn Parking</h1>
+            <p>
+              Find the perfect parking spot with ease. Our smart parking system
+              helps you save time and reduce stress by quickly finding available
+              parking spaces. Reserve your spot in advance and enjoy a hassle-free
+              parking experience.
+            </p>
+            <Link to="/chooseParking" className="landing-btn landing-btn-primary">
+              Reserve Now
+            </Link>
+          </div>
+          <div className="landing-hero-animation">
+            <Lottie animationData={parkingAnimation} loop={true} />
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
       <section className="landing-features">
         <div className="landing-features-container">
-          <h2>Why Choose Sojourn Parking?</h2>
-          <div className="landing-features-grid">
-            <div className="landing-feature-card">
-              <h3>Smart Parking</h3>
-              <p>Real-time availability tracking and smart reservation system for a seamless parking experience.</p>
+          <div className="landing-features-content">
+            <div className="landing-features-animation">
+              <Lottie animationData={whyChooseAnimation} loop={true} />
             </div>
-            <div className="landing-feature-card">
-              <h3>24/7 Security</h3>
-              <p>State-of-the-art surveillance and security measures to ensure your vehicle's safety.</p>
-            </div>
-            <div className="landing-feature-card">
-              <h3>Easy Payment</h3>
-              <p>Multiple payment options and automated billing for your convenience.</p>
-            </div>
-            <div className="landing-feature-card">
-              <h3>Emergency Services</h3>
-              <p>24/7 emergency assistance for jump starts, flat tires, and other vehicle issues.</p>
+            <div className="landing-features-text">
+              <h2>Why Choose Sojourn Parking?</h2>
+              <div className="landing-features-grid">
+                <div className="landing-feature-card">
+                  <h3>Smart Parking</h3>
+                  <p>Real-time availability tracking and smart reservation system for a seamless parking experience.</p>
+                </div>
+                <div className="landing-feature-card">
+                  <h3>24/7 Security</h3>
+                  <p>State-of-the-art surveillance and security measures to ensure your vehicle's safety.</p>
+                </div>
+                <div className="landing-feature-card">
+                  <h3>Easy Payment</h3>
+                  <p>Multiple payment options and automated billing for your convenience.</p>
+                </div>
+                <div className="landing-feature-card">
+                  <h3>Emergency Services</h3>
+                  <p>24/7 emergency assistance for jump starts, flat tires, and other vehicle issues.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="landing-contact">
-        <div className="landing-contact-container">
-          <h2>Get in Touch</h2>
-          <div className="landing-contact-grid">
-            <div className="landing-contact-form">
-              <h3>Send Us a Message</h3>
-              <form>
-                <div className="landing-form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <input type="text" id="name" placeholder="Your name" />
-                </div>
-                <div className="landing-form-group">
-                  <label htmlFor="email">Email</label>
-                  <input type="email" id="email" placeholder="Your email" />
-                </div>
-                <div className="landing-form-group">
-                  <label htmlFor="message">Message</label>
-                  <textarea id="message" placeholder="Your message"></textarea>
-                </div>
-                <button type="submit" className="landing-btn landing-btn-primary">Send Message</button>
-              </form>
+      {/* About Us Section */}
+      <section className="landing-about">
+        <div className="landing-about-container">
+          <h2>About Sojourn Parking</h2>
+          <div className="landing-about-content">
+            <div className="landing-about-text">
+              <h3>Our Story</h3>
+              <p>
+                Founded in 2024, Sojourn Parking emerged from a simple observation: finding parking in urban areas shouldn't be a stressful experience. 
+                We've revolutionized the parking industry by combining cutting-edge technology with exceptional customer service.
+              </p>
+              <h3>Our Mission</h3>
+              <p>
+                We're committed to making parking simple, secure, and stress-free. Our mission is to provide innovative parking solutions that save time, 
+                reduce environmental impact, and enhance the overall parking experience for everyone.
+              </p>
+              <h3>Our Values</h3>
+              <ul>
+                <li>Customer Satisfaction: We prioritize your convenience and peace of mind</li>
+                <li>Innovation: Constantly evolving to provide better parking solutions</li>
+                <li>Sustainability: Committed to reducing environmental impact</li>
+                <li>Security: Ensuring the safety of your vehicle is our top priority</li>
+              </ul>
             </div>
-            <div className="landing-contact-info">
-              <div className="landing-info-item">
-                <i className="fas fa-map-marker-alt"></i>
-                <p>123 Parking Avenue, Downtown, City, 10001</p>
+            <div className="landing-about-stats">
+              <div className="landing-stat-item">
+                <h3>10,000+</h3>
+                <p>Happy Customers</p>
               </div>
-              <div className="landing-info-item">
-                <i className="fas fa-phone"></i>
-                <p>(555) 123-4567</p>
+              <div className="landing-stat-item">
+                <h3>50+</h3>
+                <p>Parking Locations</p>
               </div>
-              <div className="landing-info-item">
-                <i className="fas fa-envelope"></i>
-                <p>info@sojournparking.com</p>
+              <div className="landing-stat-item">
+                <h3>24/7</h3>
+                <p>Customer Support</p>
               </div>
-              <div className="landing-info-item">
-                <i className="fas fa-clock"></i>
-                <p>24/7 Operation</p>
+              <div className="landing-stat-item">
+                <h3>99%</h3>
+                <p>Satisfaction Rate</p>
               </div>
             </div>
           </div>

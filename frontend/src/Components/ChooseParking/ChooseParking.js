@@ -173,6 +173,7 @@ function ChooseParking() {
         <><Header />
             <div className="parking-container">
                 <h2>CHOOSE A PARKING SLOT</h2>
+                <p className="parking-instructions">Select an available parking slot to make your reservation. Reserved slots are marked in red.</p>
                 {error && <p className="error-message">{error}</p>}
                 <div className="icon">
                     <img src="/Icons/door.png" alt="Building" />
@@ -220,41 +221,54 @@ function ChooseParking() {
                                 X
                             </span>
                             <h3>Reserve Parking Slot</h3>
-                            <p>Slot: {selectedSlot}</p>
+                            <p className="selected-slot-info">Selected Slot: {selectedSlot}</p>
+                            <p className="form-instructions">Please fill in your details to complete the reservation.</p>
                             <form onSubmit={submitForm}>
-                                <input
-                                    name="name"
-                                    type="text"
-                                    id="name"
-                                    placeholder="Your Name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleInputChange} />
-                                <input
-                                    name="email"
-                                    type="email"
-                                    id="email"
-                                    placeholder="Your Email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleInputChange} />
-                                <input
-                                    name="licensePlate"
-                                    type="text"
-                                    id="licensePlate"
-                                    placeholder="License Plate Number"
-                                    required
-                                    value={formData.licensePlate}
-                                    onChange={handleInputChange} />
-                                <input
-                                    name="entryDateTime"
-                                    type="datetime-local"
-                                    id="entryDateTime"
-                                    required
-                                    value={formData.entryDateTime}
-                                    onChange={handleInputChange} />
+                                <div className="form-group">
+                                    <label htmlFor="name">Full Name</label>
+                                    <input
+                                        name="name"
+                                        type="text"
+                                        id="name"
+                                        placeholder="Enter your full name"
+                                        required
+                                        value={formData.name}
+                                        onChange={handleInputChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="email">Email Address</label>
+                                    <input
+                                        name="email"
+                                        type="email"
+                                        id="email"
+                                        placeholder="Enter your email address"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleInputChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="licensePlate">License Plate Number</label>
+                                    <input
+                                        name="licensePlate"
+                                        type="text"
+                                        id="licensePlate"
+                                        placeholder="Format: XXX-0000 or XX-0000"
+                                        required
+                                        value={formData.licensePlate}
+                                        onChange={handleInputChange} />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="entryDateTime">Entry Date & Time</label>
+                                    <input
+                                        name="entryDateTime"
+                                        type="datetime-local"
+                                        id="entryDateTime"
+                                        required
+                                        value={formData.entryDateTime}
+                                        onChange={handleInputChange} />
+                                </div>
                                 <button type="submit" disabled={loading}>
-                                    {loading ? 'Reserving...' : 'Reserve'}
+                                    {loading ? 'Processing Reservation...' : 'Confirm Reservation'}
                                 </button>
                             </form>
                         </div>
