@@ -320,6 +320,20 @@ body {
 
 
 
+.restore-btn {
+  padding: 5px 10px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.restore-btn:hover {
+  background-color: #219150;
+}
+
+
+
 
 
 

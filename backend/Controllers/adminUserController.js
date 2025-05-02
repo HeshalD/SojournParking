@@ -27,22 +27,22 @@ exports.adminLogin = (req, res) => {
   });
 };
 
-// Get user summary for admin dashboard
 exports.getUserSummary = async (req, res) => {
   try {
-    // Total registered users
-    const totalUsers = await User.countDocuments();
+    const allUsers = await User.find();
+    const totalUsers = allUsers.length;
+    const liveUsers = allUsers.filter((user) => !user.isDeleted).length;
+    const deletedUsers = allUsers.filter((user) => user.isDeleted).length;
 
-    // Total live users (You might track this via a field or socket status)
-    const liveUsers = await User.countDocuments({ isOnline: true });
-
-    // Total deleted users (Assuming you have a deleted field or status)
-    const deletedUsers = await User.countDocuments({ isDeleted: true });
-
-    // Fetching user details for the summary table
-    const userDetails = await User.find()
-      .select('fullName email phone createdAt isOnline isDeleted')
-      .limit(10);  // You can paginate or limit the result if needed
+    const userDetails = allUsers.map((user) => ({
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      createdAt: user.createdAt,
+      isOnline: user.isOnline,
+      isDeleted: user.isDeleted,
+      _id: user._id,
+    }));
 
     res.json({
       success: true,
@@ -50,15 +50,57 @@ exports.getUserSummary = async (req, res) => {
         totalUsers,
         liveUsers,
         deletedUsers,
-        userDetails
-      }
+        userDetails,
+      },
     });
-  } catch (err) {
-    console.error("Error fetching user summary:", err);
-    res.status(500).json({
-      success: false,
-      message: "Server error occurred while fetching user summary"
-    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+
+
+
+exports.adminDeleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "User marked as deleted" });
+  } catch (err) {
+    console.error("Admin delete error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+exports.restoreUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isDeleted: false },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "User restored successfully" });
+  } catch (err) {
+    console.error("Restore user error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
 

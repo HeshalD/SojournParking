@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBell, FaBars, FaEdit, FaSave, FaSignOutAlt, FaTimes, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
+import { FaSignOutAlt, FaTrashAlt, FaBars, FaTimes, FaBell, FaEdit, FaSave } from "react-icons/fa";
 import "./userdash.css";
-import profilepic from "../../Assets/ProfilePic.png";
+
+// Import the local placeholder image
+import placeholderImage from '../../Assets/ProfilePic.png';
 
 const UserDashboardNew = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
@@ -12,7 +14,7 @@ const UserDashboardNew = () => {
     email: "",
     phone: "",
     createdAt: "",
-    profilePic: "",
+    profilePhoto: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -32,6 +34,11 @@ const UserDashboardNew = () => {
     };
     fetchUser();
   }, []);
+
+const getProfilePhotoUrl = (photoPath) => {
+
+  return photoPath?.startsWith("http") ? photoPath : `http://localhost:5001${photoPath}`;
+};
 
   const handleSave = async () => {
     try {
@@ -57,11 +64,10 @@ const UserDashboardNew = () => {
 
   const handleProfilePhotoChange = async (e) => {
     const file = e.target.files[0];
+    const objectUrl = URL.createObjectURL(file);  // Create a local URL for the selected image
+    setProfilePhoto(objectUrl);  // Update the profile photo immediately with the new image
 
-    // Set the profile photo locally for preview
-    const objectUrl = URL.createObjectURL(file);
-    setProfilePhoto(objectUrl);
-
+    // Form data for uploading the photo to the backend
     const formData = new FormData();
     formData.append("profilePic", file);
 
@@ -71,8 +77,8 @@ const UserDashboardNew = () => {
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
       });
 
-      // Update user state with the uploaded photo URL
-      setUser((prevUser) => ({ ...prevUser, profilePic: res.data.profilePic }));
+      // Use the returned path from the backend to update the profile photo
+      setUser((prevUser) => ({ ...prevUser, profilePhoto: res.data.profilePhoto }));
       alert("Profile photo updated successfully!");
     } catch (err) {
       console.error(err);
@@ -127,7 +133,16 @@ const UserDashboardNew = () => {
           <div className="userdash-header-icons">
             <FaBell className="userdash-bell-icon" />
             <div className="userdash-profile-pic">
-              <img src={profilePhoto || user.profilePic || profilepic} alt="User" />
+            <img
+  src={profilePhoto || getProfilePhotoUrl(user.profilePhoto)}
+  alt="User"
+  onError={(e) => {
+    e.target.onerror = null;
+    // Use the local placeholder image on error
+    e.target.src = placeholderImage;
+  }}
+/>
+
             </div>
           </div>
         </header>
@@ -135,7 +150,15 @@ const UserDashboardNew = () => {
         <div className="userdash-dashboard-content">
           <div className="userdash-profile-section">
             <div className="userdash-profile-card">
-              <img src={profilePhoto || user.profilePic || profilepic} alt="Profile" />
+              <img
+                src={profilePhoto || getProfilePhotoUrl(user.profilePhoto)}
+                alt="User"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  // Use the local placeholder image on error
+                  e.target.src = placeholderImage;
+                }}
+              />
               <h3>{user.name || "User Name"}</h3>
             </div>
 
@@ -184,7 +207,6 @@ const UserDashboardNew = () => {
               <div className="userdash-profile-info-item">
                 <label>Profile Photo:</label>
                 <input type="file" onChange={handleProfilePhotoChange} />
-                
               </div>
 
               <div className="userdash-profile-buttons">
