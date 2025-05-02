@@ -7,14 +7,46 @@ function DisplayMedIssue() {
   const [medIssues, setMedIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const fetchMedIssues = async () => {
+    const fetchCurrentUser = async () => {
       try {
-        console.log('Fetching medical issues...');
+        const response = await axios.get('http://localhost:5000/sessions/current');
+        if (response.data.user) {
+          setCurrentUser(response.data.user);
+          fetchMedIssues(response.data.user.email);
+        } else {
+          setError("Please login to view your medical issues");
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('Error fetching user session:', err);
+        setError("Please login to view your medical issues");
+        setLoading(false);
+      }
+    };
+
+    const fetchMedIssues = async (userEmail) => {
+      try {
+        console.log('Fetching medical issues for user:', userEmail);
         const response = await axios.get('http://localhost:5000/MedIssues');
-        console.log('API Response:', response.data);
-        setMedIssues(response.data);
+        console.log('All medical issues from API:', response.data);
+        
+        // Normalize email comparison
+        const normalizedUserEmail = userEmail.toLowerCase().trim();
+        const userMedIssues = response.data.filter(issue => {
+          const normalizedIssueEmail = issue.email?.toLowerCase().trim();
+          console.log('Comparing emails:', {
+            userEmail: normalizedUserEmail,
+            issueEmail: normalizedIssueEmail,
+            match: normalizedIssueEmail === normalizedUserEmail
+          });
+          return normalizedIssueEmail === normalizedUserEmail;
+        });
+        
+        console.log('Filtered medical issues:', userMedIssues);
+        setMedIssues(userMedIssues);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching medical issues:', err);
@@ -23,7 +55,7 @@ function DisplayMedIssue() {
       }
     };
 
-    fetchMedIssues();
+    fetchCurrentUser();
   }, []);
 
   const handleDelete = async (id) => {
@@ -38,12 +70,12 @@ function DisplayMedIssue() {
 
   if (loading) return <div className="med-issues-loading">Loading medical issues...</div>;
   if (error) return <div className="med-issues-error">Error: {error}</div>;
-  if (!medIssues || medIssues.length === 0) return <div className="med-issues-empty">No medical issues found</div>;
+  if (!medIssues || medIssues.length === 0) return <div className="med-issues-empty">No medical issues reported by you</div>;
 
   return (
     <div className="med-issues-page">
       <div className="med-issues-container">
-        <h2 className="med-issues-header">Medical Issues</h2>
+        <h2 className="med-issues-header">Your Medical Issues</h2>
         <div className="med-issues-list">
           {medIssues.map((issue) => (
             <div key={issue._id} className="med-issue-card">

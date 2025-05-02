@@ -7,6 +7,10 @@ const MedIssueSchema = new Schema({
         type:String,
         required:true,
     },
+    email:{
+        type:String,
+        required:true,
+    },
     etype:{
         type:String,
         required:true,

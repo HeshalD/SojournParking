@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './LandingPage.css'
 import {Link} from "react-router-dom"
 import Header from '../Header/Header'
@@ -6,8 +6,36 @@ import Footer from '../Footer/Footer'
 import Lottie from 'lottie-react'
 import parkingAnimation from '../../Assets/Animations/parkingAnimation.json'
 import whyChooseAnimation from '../../Assets/Animations/whyChooseAnimation.json'
+import axios from 'axios'
 
 function LandingPage() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async () => {
+    try {
+      console.log("LandingPage: Fetching current user session...");
+      const response = await axios.get('http://localhost:5000/sessions/current');
+      console.log("LandingPage: Session response:", response.data);
+      if (response.data.user) {
+        console.log("LandingPage: Setting current user:", response.data.user);
+        setCurrentUser(response.data.user);
+      } else {
+        console.log("LandingPage: No user session found");
+      }
+    } catch (err) {
+      console.error("LandingPage: Error fetching user session:", err);
+    }
+  };
+
+  // Add console log for currentUser state changes
+  useEffect(() => {
+    console.log("LandingPage: Current user state updated:", currentUser);
+  }, [currentUser]);
+
   return (
     <div className="landing-page">
       <Header/>
@@ -23,7 +51,11 @@ function LandingPage() {
               parking spaces. Reserve your spot in advance and enjoy a hassle-free
               parking experience.
             </p>
-            <Link to="/chooseParking" className="landing-btn landing-btn-primary">
+            <Link 
+              to="/chooseParking" 
+              className="landing-btn landing-btn-primary"
+              state={{ currentUser }}
+            >
               Reserve Now
             </Link>
           </div>

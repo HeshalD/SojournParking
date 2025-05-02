@@ -1,0 +1,360 @@
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Player } from "@lottiefiles/react-lottie-player";
+import axios from "axios";
+import { FaGoogle, FaFacebookF, FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+import "./AuthLoginRegMern.css";
+import loginAnimation from "../../animations/Car.json";
+import registerAnimation from "../../animations/Car.json";
+
+const AuthLoginRegMern = () => {
+  const [isLoginMern, setIsLoginMern] = useState(true);
+  const [errorMern, setErrorMern] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found. Redirecting to login.");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const toggleFormMern = () => setIsLoginMern(!isLoginMern);
+
+  return (
+    <div className="auth-mern-body">
+      <div className="auth-mern-container">
+        <div className="auth-mern-box">
+          <AnimatePresence mode="wait">
+            {isLoginMern ? (
+              <motion.div
+                key="login-mern"
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.3 }}
+                className="auth-mern-form-wrapper"
+              >
+                <LoginFormMern toggleFormMern={toggleFormMern} setErrorMern={setErrorMern} errorMern={errorMern} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="register-mern"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+                className="auth-mern-form-wrapper"
+              >
+                <RegisterFormMern toggleFormMern={toggleFormMern} setErrorMern={setErrorMern} errorMern={errorMern} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
+  const [emailMern, setEmailMern] = useState("");
+  const [passwordMern, setPasswordMern] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [requires2FA, setRequires2FA] = useState(false);
+  const [twoFAToken, setTwoFAToken] = useState("");
+  const [twoFACode, setTwoFACode] = useState("");
+
+  const handleLoginMern = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMern("");
+
+    try {
+      console.log("Attempting login with:", { email: emailMern, password: passwordMern });
+      const res = await axios.post("http://localhost:5000/api/users/login", {
+        email: emailMern,
+        password: passwordMern,
+      });
+      console.log("Login response:", res.data);
+
+      if (res.data.requires2FA) {
+        setRequires2FA(true);
+        setTwoFAToken(res.data.tempToken);
+      } else {
+        // Store the token
+        localStorage.setItem("token", res.data.token);
+        
+        // Create the session with name and email
+        await axios.post("http://localhost:5000/sessions", {
+          name: res.data.user.name,
+          email: res.data.user.email
+        });
+        
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error("Login error:", error.response?.data || error);
+      setErrorMern(error.response?.data?.error || "Login failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handle2FASubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMern("");
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/verify2FA", {
+        tempToken: twoFAToken,
+        code: twoFACode,
+      });
+
+      // Store the token
+      localStorage.setItem("token", res.data.token);
+      
+      // Create the session with name and email
+      await axios.post("http://localhost:5000/sessions", {
+        name: res.data.user.name,
+        email: res.data.user.email
+      });
+      
+      window.location.href = "/userDashboard";
+    } catch (error) {
+      setErrorMern(error.response?.data?.error || "Verification failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOAuthLoginMern = (provider) => {
+    window.open(`http://localhost:5000/api/users/${provider}`, "_self");
+  };
+
+  if (requires2FA) {
+    return (
+      <form onSubmit={handle2FASubmit} className="auth-mern-glass-card">
+        <div className="auth-mern-lottie-container">
+          <Player autoplay loop src={loginAnimation} style={{ height: "150px" }} />
+        </div>
+        <button type="button" className="auth-mern-btn-back" onClick={() => setRequires2FA(false)}>
+          <FaArrowLeft style={{ marginRight: "8px" }} />
+          Back to Login
+        </button>
+        <h1 className="auth-mern-text-center auth-mern-mb-4">Two-Factor Authentication</h1>
+        <p className="auth-mern-text-center auth-mern-mb-4">
+          We've sent a verification code to your email
+        </p>
+        {errorMern && <div className="auth-mern-alert auth-mern-mb-3">{errorMern}</div>}
+        <input
+          type="text"
+          placeholder="Enter 6-digit code"
+          className="auth-mern-input auth-mern-mb-3"
+          value={twoFACode}
+          onChange={(e) => setTwoFACode(e.target.value)}
+          required
+          maxLength="6"
+        />
+        <button className="auth-mern-btn auth-mern-btn-primary auth-mern-w-100" disabled={isLoading}>
+          {isLoading ? "Verifying..." : "Verify Code"}
+        </button>
+        <p className="auth-mern-text-center auth-mern-mt-3">
+          Didn't receive a code?{" "}
+          <button type="button" className="auth-mern-btn-link" onClick={handleLoginMern} disabled={isLoading}>
+            Resend Code
+          </button>
+        </p>
+      </form>
+    );
+  }
+
+  return (
+    <form onSubmit={handleLoginMern} className="auth-mern-glass-card">
+      <div className="auth-mern-lottie-container">
+        <Player autoplay loop src={loginAnimation} style={{ height: "150px" }} />
+      </div>
+      <h1 className="auth-mern-text-center auth-mern-mb-4">Login</h1>
+      {errorMern && <div className="auth-mern-alert auth-mern-mb-3">{errorMern}</div>}
+      <input
+        type="email"
+        placeholder="Email"
+        className="auth-mern-input auth-mern-mb-3"
+        value={emailMern}
+        onChange={(e) => setEmailMern(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        className="auth-mern-input auth-mern-mb-3"
+        value={passwordMern}
+        onChange={(e) => setPasswordMern(e.target.value)}
+        required
+      />
+      <button className="auth-mern-btn auth-mern-btn-primary auth-mern-w-100" disabled={isLoading}>
+        {isLoading ? "Logging in..." : "Login"}
+      </button>
+      <div className="auth-mern-social-container">
+        <button
+          type="button"
+          className="auth-mern-btn auth-mern-social-btn auth-mern-google-btn"
+          onClick={() => handleOAuthLoginMern("google")}
+          disabled={isLoading}
+        >
+          <FaGoogle style={{ marginRight: "8px" }} /> Google
+        </button>
+        <button
+          type="button"
+          className="auth-mern-btn auth-mern-social-btn auth-mern-facebook-btn"
+          onClick={() => handleOAuthLoginMern("facebook")}
+          disabled={isLoading}
+        >
+          <FaFacebookF style={{ marginRight: "8px" }} /> Facebook
+        </button>
+      </div>
+      <p className="auth-mern-text-center auth-mern-mt-3">
+        Don't have an account?{" "}
+        <button type="button" className="auth-mern-btn-link" onClick={toggleFormMern} disabled={isLoading}>
+          Register
+        </button>
+      </p>
+      <p className="auth-mern-text-center auth-mern-mt-2">
+        <a href="/forgot-password" className="auth-mern-btn-link">
+          Forgot Password?
+        </a>
+      </p>
+    </form>
+  );
+};
+
+const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
+  const [fullNameMern, setFullNameMern] = useState("");
+  const [emailMern, setEmailMern] = useState("");
+  const [phoneMern, setPhoneMern] = useState("");
+  const [passwordMern, setPasswordMern] = useState("");
+  const [confirmPasswordMern, setConfirmPasswordMern] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleRegisterMern = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrorMern("");
+
+    // Validate all fields
+    if (!fullNameMern || !emailMern || !passwordMern || !phoneMern) {
+      setErrorMern("All fields are required");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailMern)) {
+      setErrorMern("Please enter a valid email address");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate password length
+    if (passwordMern.length < 6) {
+      setErrorMern("Password must be at least 6 characters long");
+      setIsLoading(false);
+      return;
+    }
+
+    // Validate phone number format (basic validation)
+    const phoneRegex = /^[0-9]{10,}$/;
+    if (!phoneRegex.test(phoneMern.replace(/\D/g, ''))) {
+      setErrorMern("Please enter a valid phone number");
+      setIsLoading(false);
+      return;
+    }
+
+    if (passwordMern !== confirmPasswordMern) {
+      setErrorMern("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/register", {
+        fullName: fullNameMern.trim(),
+        email: emailMern.toLowerCase().trim(),
+        phone: phoneMern.trim(),
+        password: passwordMern,
+      });
+
+      localStorage.setItem("token", res.data.token);
+      window.location.href = "/login";
+    } catch (error) {
+      setErrorMern(error.response?.data?.error || "Registration failed");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleRegisterMern} className="auth-mern-glass-card">
+      <div className="auth-mern-lottie-container">
+        <Player autoplay loop src={registerAnimation} style={{ height: "150px" }} />
+      </div>
+      <h1 className="auth-mern-text-center auth-mern-mb-4">Register</h1>
+      {errorMern && <div className="auth-mern-alert auth-mern-mb-3">{errorMern}</div>}
+      <input
+        type="text"
+        placeholder="Full Name"
+        className="auth-mern-input auth-mern-mb-3"
+        value={fullNameMern}
+        onChange={(e) => setFullNameMern(e.target.value)}
+        required
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        className="auth-mern-input auth-mern-mb-3"
+        value={emailMern}
+        onChange={(e) => setEmailMern(e.target.value)}
+        required
+      />
+      <input
+        type="tel"
+        placeholder="Phone Number"
+        className="auth-mern-input auth-mern-mb-3"
+        value={phoneMern}
+        onChange={(e) => setPhoneMern(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        className="auth-mern-input auth-mern-mb-3"
+        value={passwordMern}
+        onChange={(e) => setPasswordMern(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        className="auth-mern-input auth-mern-mb-3"
+        value={confirmPasswordMern}
+        onChange={(e) => setConfirmPasswordMern(e.target.value)}
+        required
+      />
+      <button className="auth-mern-btn auth-mern-btn-primary auth-mern-w-100" disabled={isLoading}>
+        {isLoading ? "Registering..." : "Register"}
+      </button>
+      <p className="auth-mern-text-center auth-mern-mt-3">
+        Already have an account?{" "}
+        <button type="button" className="auth-mern-btn-link" onClick={toggleFormMern}>
+          Login
+        </button>
+      </p>
+    </form>
+  );
+};
+
+export default AuthLoginRegMern;

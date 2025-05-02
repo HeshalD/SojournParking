@@ -1,16 +1,55 @@
 const Slot = require("../Models/SlotModel");
 const { sendReservationEmail } = require("../config/emailConfig");
+const mongoose = require("mongoose");
 
 const getAllReservations = async (req, res, next) => {
   try {
-    const slots = await Slot.find();
-    if (!slots || slots.length === 0) {
-      return res.status(404).json({ message: "No reservations found" });
+    console.log("Starting getAllReservations...");
+    console.log("Mongoose connection state:", mongoose.connection.readyState);
+    
+    // Check if mongoose is connected
+    if (mongoose.connection.readyState !== 1) {
+      console.error("Database is not connected. Connection state:", mongoose.connection.readyState);
+      return res.status(500).json({ 
+        message: "Database connection error",
+        error: "Database is not connected"
+      });
     }
+
+    console.log("Attempting to fetch slots from database...");
+    const slots = await Slot.find().lean();
+    console.log("Query completed. Found slots:", slots ? slots.length : 0);
+    
+    if (!slots || slots.length === 0) {
+      console.log("No slots found in database");
+      return res.status(200).json({ message: "No reservations found", slots: [] });
+    }
+    
+    console.log("Successfully retrieved slots");
     return res.status(200).json({ slots });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error in getAllReservations:", err);
+    console.error("Error details:", {
+      name: err.name,
+      message: err.message,
+      code: err.code,
+      codeName: err.codeName,
+      stack: err.stack
+    });
+    
+    // Check for specific error types
+    if (err.name === 'MongoError') {
+      console.error("MongoDB specific error:", {
+        code: err.code,
+        codeName: err.codeName,
+        driverError: err.driverError
+      });
+    }
+    
+    return res.status(500).json({ 
+      message: "Server error", 
+      error: process.env.NODE_ENV === 'development' ? err.message : undefined 
+    });
   }
 };
 

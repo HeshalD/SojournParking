@@ -15,9 +15,16 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:5000/user/login", { email, password });
 
-      alert("Login Successful");
-
+      // Store the token
       localStorage.setItem("token", res.data.token);
+      
+      // Create the session with name and email
+      await axios.post("http://localhost:5000/sessions", {
+        name: res.data.user.name,
+        email: res.data.user.email
+      });
+
+      alert("Login Successful");
       navigate("/userDashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login Failed");

@@ -1,34 +1,63 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router";
 import axios from 'axios';
 import './SecurityIssue.css';
 
 function SecurityIssue() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [error, setError] = useState(null);
   const [inputs, setInputs] = useState({
-    lpname: "",
-    email: "",
-    etype: "",
-    anote: "",
+    lpname: '',
+    email: '',
+    etype: '',
+    anote: ''
   });
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async () => {
+    try {
+      console.log("SecurityIssue: Fetching current user session...");
+      const response = await axios.get('http://localhost:5000/sessions/current');
+      console.log("SecurityIssue: Session response:", response.data);
+      if (response.data.user) {
+        console.log("SecurityIssue: Setting current user:", response.data.user);
+        setCurrentUser(response.data.user);
+        setInputs(prev => ({
+          ...prev,
+          email: response.data.user.email
+        }));
+      } else {
+        console.log("SecurityIssue: No user session found");
+        setError("Please login to access emergency services.");
+      }
+    } catch (err) {
+      console.error("SecurityIssue: Error fetching user session:", err);
+      setError("Please login to access emergency services.");
+    }
+  };
+
   const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setInputs(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/secIssues", {
-        lpname: inputs.lpname,
-        email: inputs.email,
-        etype: inputs.etype,
-        anote: inputs.anote,
-      });
+      const response = await axios.post('http://localhost:5000/SecIssues/', inputs);
+      console.log("Security issue submitted:", response.data);
       navigate('/responseS');
     } catch (err) {
-      console.error("Submission error:", err);
-      // Add user feedback here
+      console.error("Error submitting security issue:", err);
+      setError("Failed to submit security emergency report. Please try again.");
     }
   };
 
@@ -36,7 +65,14 @@ function SecurityIssue() {
     <div className="security-issue">
       <div className="security-issue__card">
         <h2 className="security-issue__title">Security Issue Report</h2>
-        
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+            <button onClick={() => navigate('/login')} className="login-btn">
+              Login
+            </button>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="security-issue__form">
           <div className="security-issue__form-group">
             <label className="security-issue__label">
@@ -59,10 +95,9 @@ function SecurityIssue() {
               <input
                 type="email"
                 name="email"
-                onChange={handleChange}
                 value={inputs.email}
-                placeholder="Enter your email"
                 className="security-issue__input"
+                readOnly
                 required
               />
             </label>

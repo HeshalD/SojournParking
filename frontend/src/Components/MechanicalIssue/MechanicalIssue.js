@@ -1,34 +1,63 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router";
 import axios from 'axios';
 import './MechanicalIssue.css';
 
 function MechanicalIssue() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [error, setError] = useState(null);
   const [inputs, setInputs] = useState({
-    lpname: "",
-    email: "",
-    etype: "",
-    anote: "",
+    lpname: '',
+    email: '',
+    etype: '',
+    anote: ''
   });
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async () => {
+    try {
+      console.log("MechanicalIssue: Fetching current user session...");
+      const response = await axios.get('http://localhost:5000/sessions/current');
+      console.log("MechanicalIssue: Session response:", response.data);
+      if (response.data.user) {
+        console.log("MechanicalIssue: Setting current user:", response.data.user);
+        setCurrentUser(response.data.user);
+        setInputs(prev => ({
+          ...prev,
+          email: response.data.user.email
+        }));
+      } else {
+        console.log("MechanicalIssue: No user session found");
+        setError("Please login to access emergency services.");
+      }
+    } catch (err) {
+      console.error("MechanicalIssue: Error fetching user session:", err);
+      setError("Please login to access emergency services.");
+    }
+  };
+
   const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setInputs(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/mecIssues", {
-        lpname: inputs.lpname,
-        email: inputs.email,
-        etype: inputs.etype,
-        anote: inputs.anote,
-      });
+      const response = await axios.post('http://localhost:5000/MecIssues/', inputs);
+      console.log("Mechanical issue submitted:", response.data);
       navigate('/responseM');
     } catch (err) {
-      console.error("Submission error:", err);
-      // Add user feedback here
+      console.error("Error submitting mechanical issue:", err);
+      setError("Failed to submit mechanical emergency report. Please try again.");
     }
   };
 
@@ -36,7 +65,14 @@ function MechanicalIssue() {
     <div className="mechanical-issue">
       <div className="mechanical-issue__card">
         <h2 className="mechanical-issue__title">Mechanical Issue Report</h2>
-        
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+            <button onClick={() => navigate('/login')} className="login-btn">
+              Login
+            </button>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="mechanical-issue__form">
           <div className="mechanical-issue__form-group">
             <label className="mechanical-issue__label">
@@ -59,10 +95,9 @@ function MechanicalIssue() {
               <input
                 type="email"
                 name="email"
-                onChange={handleChange}
                 value={inputs.email}
-                placeholder="Enter your email"
                 className="mechanical-issue__input"
+                readOnly
                 required
               />
             </label>

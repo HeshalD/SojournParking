@@ -1,0 +1,350 @@
+/* AuthLoginRegMern.css - Professional full-screen login design */
+
+/* Base Styles */
+.auth-mern-body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #000000, #284631);
+  min-height: 100vh;
+  min-width: 200vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: #2D2A2A;
+}
+
+/* Main Container */
+.auth-mern-container {
+  width: 100%;
+  min-width: 200vh;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.3);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+/* Auth Box */
+.auth-mern-box {
+  display: flex;
+  width: 100%;
+  transition: all 0.6s ease-in-out;
+  position: relative;
+  z-index: 2;
+}
+
+/* Form Container */
+.auth-mern-form-wrapper {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: 100%;
+  min-width: 2000px;
+  z-index: 3;
+}
+
+/* Glass Card */
+.auth-mern-glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.1), 0 20px 60px rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+  padding: 50px;
+  backdrop-filter: blur(20px);
+  min-width: 200px;
+  max-width: 800px;
+  width: 500px;
+  margin: auto;
+  animation: auth-mern-float 4s ease-in-out infinite;
+  position: relative;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Input Fields */
+.auth-mern-input {
+  padding: 15px;
+  border: 1px solid rgba(89, 184, 122, 0.3);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background-color: rgba(241, 253, 245, 0.1);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(91, 184, 122, 0.1);
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.auth-mern-input[type="text"],
+.auth-mern-input[type="email"],
+.auth-mern-input[type="tel"],
+.auth-mern-input[type="password"] {
+  padding: 15px;
+  border: 1px solid rgba(89, 184, 122, 0.3);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background-color: rgba(241, 253, 245, 0.1);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(91, 184, 122, 0.1);
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.auth-mern-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-mern-input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 2px rgba(89, 184, 122, 0.5);
+  border-color: rgba(89, 184, 122, 0.5);
+}
+
+/* Remove default input styling */
+.auth-mern-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: rgba(255, 255, 255, 0.7);
+}
+.auth-mern-input::-moz-placeholder { /* Firefox 19+ */
+  color: rgba(255, 255, 255, 0.7);
+}
+.auth-mern-input:-ms-input-placeholder { /* IE 10+ */
+  color: rgba(255, 255, 255, 0.7);
+}
+.auth-mern-input:-moz-placeholder { /* Firefox 18- */
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Buttons */
+.auth-mern-btn {
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.auth-mern-btn-primary {
+  background-color: rgba(59, 105, 73, 0.9);
+  color: white;
+}
+
+.auth-mern-btn-primary:hover {
+  background-color: rgba(80, 176, 135, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(80, 176, 135, 0.3);
+}
+
+.auth-mern-btn-success {
+  background-color: rgba(21, 58, 34, 0.9);
+  color: white;
+}
+
+.auth-mern-btn-success:hover {
+  background-color: rgba(3, 160, 87, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(3, 160, 87, 0.3);
+}
+
+.auth-mern-btn-link {
+  background: none;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.auth-mern-btn-link:hover {
+  color: rgba(80, 176, 135, 0.9);
+}
+
+/* Social Login */
+.auth-mern-social-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.auth-mern-social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.auth-mern-google-btn {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #3B6949;
+  border: 2px solid rgba(59, 105, 73, 0.3);
+}
+
+.auth-mern-google-btn:hover {
+  background-color: #3B6949;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.auth-mern-facebook-btn {
+  background-color: rgba(59, 105, 73, 0.9);
+  color: white;
+}
+
+.auth-mern-facebook-btn:hover {
+  background-color: rgba(118, 131, 116, 0.9);
+  transform: translateY(-2px);
+}
+
+/* Alert */
+.auth-mern-alert {
+  padding: 15px;
+  color: white;
+  background-color: rgba(244, 67, 54, 0.9);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes auth-mern-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes auth-mern-wave {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-30px) scale(1.05); }
+}
+
+@keyframes auth-mern-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Decorative Elements */
+.auth-mern-container::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(170deg, rgba(43, 141, 74, 0.8), rgba(11, 15, 12, 0.8));
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  z-index: 0;
+  animation: auth-mern-wave 3s ease-in-out infinite alternate;
+  opacity: 0.8;
+}
+
+.auth-mern-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(circle at center, rgba(21, 179, 69, 0.2) 10%, transparent 75%);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: auth-mern-rotate 60s linear infinite;
+  z-index: 0;
+}
+
+/* Lottie Animation */
+.auth-mern-lottie-container {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Utility Classes */
+.auth-mern-text-center {
+  text-align: center;
+  color: white;
+}
+
+.auth-mern-glass-card h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.auth-mern-glass-card p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.auth-mern-btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* 2FA Specific Styles */
+.auth-mern-btn-back {
+  background: none;
+  border: none;
+  color: #4a6bff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.auth-mern-btn-back:hover {
+  text-decoration: underline;
+}
+
+/* Loading state styles */
+.auth-mern-btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Alert styles */
+.auth-mern-alert {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  background-color: #ffebee;
+  color: #c62828;
+  font-size: 0.9rem;
+}

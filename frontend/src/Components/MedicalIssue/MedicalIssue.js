@@ -1,36 +1,64 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router";
 import axios from 'axios';
 import './MedicalIssue.css';
 
 function MedicalIssue() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [error, setError] = useState(null);
   const [inputs, setInputs] = useState({
-    lpname: "",
-    email: "",
-    etype: "",
-    pcon: "",
-    anote: "",
+    lpname: '',
+    email: '',
+    etype: '',
+    pcon: '',
+    anote: ''
   });
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async () => {
+    try {
+      console.log("MedicalIssue: Fetching current user session...");
+      const response = await axios.get('http://localhost:5000/sessions/current');
+      console.log("MedicalIssue: Session response:", response.data);
+      if (response.data.user) {
+        console.log("MedicalIssue: Setting current user:", response.data.user);
+        setCurrentUser(response.data.user);
+        setInputs(prev => ({
+          ...prev,
+          email: response.data.user.email
+        }));
+      } else {
+        console.log("MedicalIssue: No user session found");
+        setError("Please login to access emergency services.");
+      }
+    } catch (err) {
+      console.error("MedicalIssue: Error fetching user session:", err);
+      setError("Please login to access emergency services.");
+    }
+  };
+
   const handleChange = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setInputs(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/medIssues", {
-        lpname: inputs.lpname,
-        email: inputs.email,
-        etype: inputs.etype,
-        pcon: inputs.pcon,
-        anote: inputs.anote,
-      });
+      const response = await axios.post('http://localhost:5000/MedIssues/', inputs);
+      console.log("Medical issue submitted:", response.data);
       navigate('/response');
     } catch (err) {
-      console.error("Submission error:", err);
-      // Add user feedback here
+      console.error("Error submitting medical issue:", err);
+      setError("Failed to submit medical emergency report. Please try again.");
     }
   };
 
@@ -38,7 +66,14 @@ function MedicalIssue() {
     <div className="medical-emergency">
       <div className="medical-emergency__card">
         <h2 className="medical-emergency__title">Medical Emergency Report</h2>
-        
+        {error && (
+          <div className="error-message">
+            <p>{error}</p>
+            <button onClick={() => navigate('/login')} className="login-btn">
+              Login
+            </button>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="medical-emergency__form">
           <div className="medical-emergency__form-group">
             <label className="medical-emergency__label">
@@ -61,10 +96,9 @@ function MedicalIssue() {
               <input
                 type="email"
                 name="email"
-                onChange={handleChange}
                 value={inputs.email}
-                placeholder="Enter your email"
                 className="medical-emergency__input"
+                readOnly
                 required
               />
             </label>

@@ -1,25 +1,20 @@
-.user-dashboard-container {
+.userdash-wrapper {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #2D2A2A;
   min-height: 100vh;
+  display: flex;
+  color: #ffffff;
 }
 
 /* Reset all elements within the container */
-.user-dashboard-container * {
+.userdash-wrapper * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Dashboard wrapper */
-.user-dashboard-container .dashboard-wrapper {
-  display: flex;
-  min-height: 100vh;
-  background-color: #2D2A2A;
-}
-
 /* Sidebar */
-.user-dashboard-container .sidebar {
+.userdash-sidebar {
   background-color: #3b6949;
   color: white;
   width: 210px;
@@ -32,23 +27,23 @@
   transform: translateX(-100%);
 }
 
-.user-dashboard-container .sidebar.active {
+.userdash-wrapper.sidebar-open .userdash-sidebar {
   transform: translateX(0);
 }
 
-.user-dashboard-container .logo {
+.userdash-logo {
   padding: 20px;
   font-size: 22px;
   font-weight: 600;
   text-align: left;
 }
 
-.user-dashboard-container .sidebar ul {
+.userdash-sidebar-nav {
   list-style: none;
   padding: 0;
 }
 
-.user-dashboard-container .sidebar li {
+.userdash-sidebar-item {
   padding: 15px 20px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -57,22 +52,22 @@
   gap: 10px;
 }
 
-.user-dashboard-container .sidebar li:hover, 
-.user-dashboard-container .sidebar li.active {
+.userdash-sidebar-item:hover, 
+.userdash-sidebar-item.active {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.user-dashboard-container .sidebar li.active {
+.userdash-sidebar-item.active {
   border-left: 4px solid white;
 }
 
-.user-dashboard-container .sidebar li.logout {
+.userdash-logout {
   margin-top: 30px;
   color: white;
 }
 
 /* Main content area */
-.user-dashboard-container .content {
+.userdash-main-content {
   flex: 1;
   margin-left: 0;
   transition: margin-left 0.3s ease;
@@ -82,283 +77,261 @@
   width: 100%;
 }
 
-.user-dashboard-container .sidebar-active .content {
+.userdash-wrapper.sidebar-open .userdash-main-content {
   margin-left: 210px;
   width: calc(100% - 210px);
 }
 
-/* Header - Updated for more professional, compact look */
-.user-dashboard-container .header {
+/* Header */
+.userdash-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px; /* Reduced padding */
+  padding: 10px 16px;
   background-color: #2D2A2A;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 90;
-  height: 60px; /* Fixed height for consistency */
+  height: 60px;
+  color: #ffffff;
 }
 
-.user-dashboard-container .menu-icon {
-  font-size: 18px; /* Slightly smaller */
+.userdash-menu-icon {
+  font-size: 18px;
   cursor: pointer;
-  color: #555;
+  color: #ffffff;
 }
 
-.user-dashboard-container .search-container {
+.userdash-search-bar {
   flex: 1;
-  max-width: 300px; /* Slightly narrower */
+  max-width: 300px;
   margin: 0 16px;
-  position: relative; /* For positioning the search icon */
 }
 
-.user-dashboard-container .search-bar {
+.userdash-search-bar input {
   width: 100%;
-  padding: 6px 12px; /* Smaller padding */
+  padding: 6px 12px;
   border: 1px solid #ddd;
-  border-radius: 4px; /* Less rounded for more professional look */
-  font-size: 13px; /* Smaller font */
+  border-radius: 4px;
+  font-size: 13px;
   outline: none;
   background-color: rgba(255, 255, 255, 0.9);
 }
 
-.user-dashboard-container .search-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #555;
-  font-size: 14px;
-}
-
-.user-dashboard-container .header-right {
+.userdash-header-icons {
   display: flex;
   align-items: center;
-  gap: 16px; /* Reduced gap */
+  gap: 16px;
 }
 
-.user-dashboard-container .notification-icon {
-  position: relative;
+.userdash-bell-icon {
+  font-size: 16px;
+  color: #ffffff;
   cursor: pointer;
 }
 
-.user-dashboard-container .icon {
-  font-size: 16px; /* Smaller icon */
-  color: #555;
-  cursor: pointer;
-}
-
-.user-dashboard-container .profile {
+.userdash-profile-pic {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 }
 
-.user-dashboard-container .profile img {
-  width: 28px; /* Smaller profile pic */
+.userdash-profile-pic img {
+  width: 28px;
   height: 28px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.user-dashboard-container .profile span {
-  font-size: 13px; /* Smaller text */
-  color: #ddd;
-  font-weight: 500;
-}
-
 /* Dashboard Content */
-.user-dashboard-container .dashboard-content {
+.userdash-dashboard-content {
   padding: 20px;
+  background-color: #2D2A2A;
+  color: #ffffff;
 }
 
 /* User Profile */
-.user-dashboard-container .user-profile {
+.userdash-profile-section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  padding: 20px;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 40px;
+  padding: 30px;
   background-color: #2D2A2A;
+  color: #ffffff;
+  min-height: calc(100vh - 60px);
 }
 
 /* Profile Card */
-.user-dashboard-container .profile-card {
-  background: #ffffff;
-  border: white solid 1px;
-  padding: 30px;
-  border-radius: 15px;
-  width: 500px;
-  max-width: 90%;
+.userdash-profile-card {
+  background: #2D2A2A;
+  border: none;
+  padding: 40px;
+  border-radius: 20px;
+  width: 45%;
+  max-width: 500px;
   text-align: center;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: sticky;
+  top: 30px;
 }
 
-.user-dashboard-container .profile-card .profile-pic {
-  width: 120px;
-  height: 120px;
+.userdash-profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.userdash-profile-card img {
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   object-fit: cover;
+  border: 5px solid #3b6949;
 }
 
-.user-dashboard-container .profile-card h3 {
-  margin-bottom: 5px;
-  color: #3b6949;
-  font-size: 22px;
-}
-
-.user-dashboard-container .profile-card p {
-  color: #666;
-  font-size: 14px;
+.userdash-profile-card h3 {
+  margin-bottom: 8px;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 600;
 }
 
 /* Profile Info */
-.user-dashboard-container .profile-info {
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  width: 500px;
-  max-width: 90%;
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+.userdash-profile-info {
+  background: #2D2A2A;
+  padding: 35px;
+  border-radius: 20px;
+  width: 45%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.user-dashboard-container .profile-info h4 {
-  margin-bottom: 20px;
+.userdash-profile-info h4 {
+  margin-bottom: 25px;
   color: #3b6949;
-  font-size: 20px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  border-bottom: 2px solid #3b6949;
+  padding-bottom: 15px;
 }
 
-/* User Details */
-.user-dashboard-container .user-details {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Profile Info Items */
+.userdash-profile-info-item {
+  margin-bottom: 20px;
 }
 
-.user-dashboard-container .detail-item {
-  margin-bottom: 15px;
-}
-
-.user-dashboard-container .user-details label {
-  font-weight: bold;
+.userdash-profile-info-item label {
+  font-weight: 600;
   color: #3b6949;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 15px;
 }
 
-.user-dashboard-container .user-details p {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #f9f9f9;
-}
-
-.user-dashboard-container .user-details input {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.userdash-profile-info-item input {
+  padding: 12px 15px;
+  border: 1px solid #3b6949;
+  border-radius: 8px;
   font-size: 16px;
   width: 100%;
   outline: none;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  background-color: #2D2A2A;
+  color: #ffffff;
 }
 
-.user-dashboard-container .user-details input:focus {
-  border-color: #50b087;
+.userdash-profile-info-item input:focus {
+  border-color: #3b6949;
 }
 
 /* Buttons */
-.user-dashboard-container .btn {
+.userdash-profile-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.userdash-profile-actions button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 15px;
-  padding: 12px;
-  width: 100%;
+  gap: 10px;
+  padding: 14px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  font-weight: 500;
-  transition: 0.3s;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.user-dashboard-container .btn-edit {
-  background: #50b087;
+.userdash-profile-actions .btn-edit {
+  background: #3b6949;
   color: white;
 }
 
-.user-dashboard-container .btn-edit:hover {
-  background: #3b6949;
+.userdash-profile-actions .btn-edit:hover {
+  background: #2d5238;
+  transform: translateY(-2px);
 }
 
-.user-dashboard-container .btn-save {
+.userdash-profile-actions .btn-save {
   background: #2daa2a;
   color: white;
 }
 
-.user-dashboard-container .btn-save:hover {
+.userdash-profile-actions .btn-save:hover {
   background: #208a22;
+  transform: translateY(-2px);
 }
 
-.user-dashboard-container .btn-danger {
+.userdash-profile-actions .btn-danger {
   background: #d9534f;
   color: white;
 }
 
-.user-dashboard-container .btn-danger:hover {
+.userdash-profile-actions .btn-danger:hover {
   background: #c9302c;
-}
-
-.user-dashboard-container .btn-upload {
-  background: #5bc0de;
-  color: white;
-  margin-bottom: 15px;
-}
-
-.user-dashboard-container .btn-upload:hover {
-  background: #46b8da;
-}
-
-/* Loading state */
-.user-dashboard-container .loading {
-  padding: 20px;
-  text-align: center;
-  color: #666;
+  transform: translateY(-2px);
 }
 
 /* Profile pic container and upload icon */
-.user-dashboard-container .profile-pic-container {
+.userdash-profile-pic-container {
   position: relative;
   display: inline-block;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-.user-dashboard-container .upload-icon {
+.userdash-upload-icon {
   position: absolute;
   bottom: 0;
   right: 0;
-  background: #50b087;
+  background: #3b6949;
   color: white;
-  width: 36px;
-  height: 36px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   border: 3px solid white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 }
 
-.user-dashboard-container .upload-icon input {
+.userdash-upload-icon:hover {
+  background: #2d5238;
+  transform: scale(1.1);
+}
+
+.userdash-upload-icon input {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -366,49 +339,316 @@
   cursor: pointer;
 }
 
+/* Loading state */
+.userdash-loading {
+  padding: 30px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 16px;
+}
+
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
-  .user-dashboard-container .profile-card, 
-  .user-dashboard-container .profile-info {
-    width: 100%;
-    padding: 20px;
+  .userdash-profile-section {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .user-dashboard-container .header {
+  .userdash-profile-card,
+  .userdash-profile-info {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    top: 0;
+  }
+
+  .userdash-profile-card img {
+    width: 200px;
+    height: 200px;
+  }
+
+  .userdash-header {
     padding: 8px 10px; /* Even smaller on mobile */
     height: 50px;
   }
   
-  .user-dashboard-container .search-container {
+  .userdash-search-bar {
     max-width: 200px;
     margin: 0 10px;
   }
 
-  .user-dashboard-container .profile-card .profile-pic {
+  .userdash-main-content .profile-card .profile-pic {
     width: 100px;
     height: 100px;
   }
 
-  .user-dashboard-container .profile-card h3 {
+  .userdash-main-content .profile-card h3 {
     font-size: 18px;
   }
 
-  .user-dashboard-container .profile-info h4 {
+  .userdash-main-content .profile-info h4 {
     font-size: 18px;
   }
 
-  .user-dashboard-container .btn {
+  .userdash-main-content .btn {
     font-size: 14px;
     padding: 10px;
   }
   
-  .user-dashboard-container .sidebar-active .content {
+  .userdash-wrapper.sidebar-open .userdash-main-content {
     margin-left: 0;
     width: 100%;
   }
   
-  .user-dashboard-container .sidebar-active .sidebar {
+  .userdash-wrapper.sidebar-open .userdash-sidebar {
     width: 100%;
     max-width: 250px;
   }
+}
+
+/* Reservation Styles */
+.userdash-reservations-section {
+    padding: 20px;
+}
+
+.userdash-reservations-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.userdash-reservation-card {
+    max-width: 30%;
+    margin-bottom: 20px;
+    background-color: #2D2A2A;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-size: 14px;
+    border: solid 1px white;
+}
+
+.userdash-reservation-header {
+    background-color: #2D2A2A;
+    color: white;
+    padding: 12px 15px;
+}
+
+.userdash-reservation-header h3 {
+    margin: 0;
+    font-family: 'GothamMedium';
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+.userdash-reservation-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'GothamMedium';
+}
+
+.userdash-reservation-status.active {
+    background-color: #50B087;
+    color: white;
+}
+
+.userdash-reservation-details {
+    padding: 12px 15px;
+}
+
+.userdash-reservation-details p {
+    font-family: 'GothamMedium';
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.userdash-reservation-details strong {
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.userdash-reservation-actions {
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid #eee;
+    background-color: #2D2A2A;
+}
+
+.userdash-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    font-size: 11px;
+    font-family: 'GothamMedium';
+    text-align: center;
+}
+
+.userdash-primary-btn {
+    background-color: #50B087;
+    color: white;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.userdash-primary-btn:hover {
+    background-color: #3e8a67;
+}
+
+.userdash-secondary-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.userdash-secondary-btn:hover {
+    background-color: #50B087;
+    color: #ffffff;
+    transition: 0.5s;
+}
+
+.userdash-cancel-btn {
+    background-color: #dc3545;
+    color: white;
+    margin-bottom: 10px;
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.userdash-cancel-btn:hover {
+    background-color: #c82333;
+}
+
+.userdash-no-reservations {
+    max-width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #2D2A2A;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border: solid 1px white;
+}
+
+.userdash-no-reservations-icon {
+    font-size: 48px;
+    color: #50B087;
+    margin-bottom: 15px;
+}
+
+.userdash-no-reservations p {
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-family: 'GothamMedium';
+}
+
+.userdash-section-title {
+    color: #ffffff;
+    font-family: 'GothamMedium';
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.emergencies-section {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.emergencies-section h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.emergency-category {
+    margin-bottom: 2rem;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.emergency-category h4 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.emergency-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.emergency-card {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 4px solid #007bff;
+}
+
+.emergency-card p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.emergency-card strong {
+    color: #333;
+    margin-right: 0.5rem;
+}
+
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.error-message p {
+    color: #dc3545;
+    margin-bottom: 1rem;
+}
+
+.login-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
 }

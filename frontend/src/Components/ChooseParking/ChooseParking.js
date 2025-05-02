@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ChooseParking.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from "../Header/Header"
 import Footer from "../Footer/Footer"
 
@@ -9,19 +9,51 @@ function ChooseParking() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState('');
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
         licensePlate: '',
         entryDateTime: ''
     });
     const [slots, setSlots] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
+        // Check for passed session data from landing page
+        console.log("ChooseParking: Location state:", location.state);
+        if (location.state?.currentUser) {
+            console.log("ChooseParking: Using passed session data:", location.state.currentUser);
+            setCurrentUser(location.state.currentUser);
+        } else {
+            console.log("ChooseParking: No passed session data, fetching...");
+            fetchCurrentUser();
+        }
         fetchSlots();
-    }, []);
+    }, [location.state]);
+
+    const fetchCurrentUser = async () => {
+        try {
+            console.log("ChooseParking: Fetching current user session...");
+            const response = await axios.get('http://localhost:5000/sessions/current');
+            console.log("ChooseParking: Session response:", response.data);
+            if (response.data.user) {
+                console.log("ChooseParking: Setting current user:", response.data.user);
+                setCurrentUser(response.data.user);
+            } else {
+                console.log("ChooseParking: No user session found");
+                setError("Please login to make a reservation.");
+            }
+        } catch (err) {
+            console.error("ChooseParking: Error fetching user session:", err);
+            setError("Please login to make a reservation.");
+        }
+    };
+
+    // Add console log for currentUser state changes
+    useEffect(() => {
+        console.log("ChooseParking: Current user state updated:", currentUser);
+    }, [currentUser]);
 
     const fetchSlots = async () => {
         try {
@@ -54,10 +86,6 @@ function ChooseParking() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === "name") {
-            if (!/^[A-Za-z\s]*$/.test(value)) return;
-        }
 
         if (name === "licensePlate") {
             const upperValue = value.toUpperCase();
@@ -96,25 +124,27 @@ function ChooseParking() {
             
             const reservationData = {
                 slotId: selectedSlot,
-                userName: formData.name,
-                email: formData.email,
+                userName: currentUser.name,
+                email: currentUser.email,
                 licensePlate: formData.licensePlate,
                 entryTime: entryDateTime,
                 isReserved: true
             };
 
-            const response = await axios.post("http://Localhost:5000/slots", reservationData);
-
-            await axios.post("http://localhost:5000/sessions", {
-                name: formData.name,
-                licensePlate: formData.licensePlate
-            });
+            console.log("Sending reservation data:", reservationData);
+            const response = await axios.post("http://localhost:5000/slots", reservationData);
+            console.log("Reservation response:", response.data);
 
             return response.data;
 
         } catch (err) {
             console.error("Error making reservation:", err);
-            setError("Failed to reserve parking slot");
+            if (err.response) {
+                console.error("Server response:", err.response.data);
+                setError(err.response.data.message || "Failed to reserve parking slot");
+            } else {
+                setError("Failed to reserve parking slot");
+            }
             throw err;
         } finally {
             setLoading(false);
@@ -124,17 +154,11 @@ function ChooseParking() {
     const submitForm = async (e) => {
         e.preventDefault();
 
-        const { name, email, licensePlate, entryDateTime } = formData;
+        const { licensePlate, entryDateTime } = formData;
 
-        if (!name.trim()) {
-            setError("Name cannot be empty.");
-            return;
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            setError("Please enter a valid email address.");
+        if (!currentUser) {
+            setError("User session not found. Please login again.");
+            navigate('/login');
             return;
         }
 
@@ -163,7 +187,8 @@ function ChooseParking() {
             await sendRequest();
             closeForm();
             fetchSlots();
-            navigate('/madeReservations');
+            // Redirect to UserDashboard with reservations section active
+            navigate('/userDashboard', { state: { activeSection: 'reservations' } });
         } catch (err) {
             console.error("Error:", err);
         }
@@ -174,7 +199,14 @@ function ChooseParking() {
             <div className="parking-container">
                 <h2>CHOOSE A PARKING SLOT</h2>
                 <p className="parking-instructions">Select an available parking slot to make your reservation. Reserved slots are marked in red.</p>
-                {error && <p className="error-message">{error}</p>}
+                {error && (
+                    <div className="error-message">
+                        <p>{error}</p>
+                        <button onClick={() => navigate('/login')} className="login-btn">
+                            Login
+                        </button>
+                    </div>
+                )}
                 <div className="icon">
                     <img src="/Icons/door.png" alt="Building" />
                     <p>Building Entrance</p>
@@ -224,28 +256,6 @@ function ChooseParking() {
                             <p className="selected-slot-info">Selected Slot: {selectedSlot}</p>
                             <p className="form-instructions">Please fill in your details to complete the reservation.</p>
                             <form onSubmit={submitForm}>
-                                <div className="form-group">
-                                    <label htmlFor="name">Full Name</label>
-                                    <input
-                                        name="name"
-                                        type="text"
-                                        id="name"
-                                        placeholder="Enter your full name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="email">Email Address</label>
-                                    <input
-                                        name="email"
-                                        type="email"
-                                        id="email"
-                                        placeholder="Enter your email address"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleInputChange} />
-                                </div>
                                 <div className="form-group">
                                     <label htmlFor="licensePlate">License Plate Number</label>
                                     <input
