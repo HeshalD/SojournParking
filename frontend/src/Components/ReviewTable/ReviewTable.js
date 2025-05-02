@@ -27,7 +27,7 @@ const ReviewTable = () => {
                     .map(review => ({
                         ...review,
                         // Ensure we have a valid date
-                        sortDate: review.createdAt ? new Date(review.createdAt) : new Date(0)
+                        sortDate: review.date ? new Date(review.date) : new Date(0)
                     }))
                     .sort((a, b) => b.sortDate - a.sortDate)
                 : [];
@@ -53,9 +53,9 @@ const ReviewTable = () => {
         selectedDate.setHours(0, 0, 0, 0);
 
         return reviews.filter(review => {
-            if (!review || !review.createdAt) return false;
+            if (!review || !review.date) return false;
             
-            const reviewDate = new Date(review.createdAt);
+            const reviewDate = new Date(review.date);
             if (isNaN(reviewDate.getTime())) return false;
             reviewDate.setHours(0, 0, 0, 0);
 
@@ -64,9 +64,9 @@ const ReviewTable = () => {
                     return reviewDate.getTime() === selectedDate.getTime();
                 case 'week':
                     const weekStart = new Date(selectedDate);
-                    weekStart.setDate(selectedDate.getDate() - selectedDate.getDay()); // Start of the week (Sunday)
+                    weekStart.setDate(selectedDate.getDate() - selectedDate.getDay());
                     const weekEnd = new Date(weekStart);
-                    weekEnd.setDate(weekStart.getDate() + 6); // End of the week (Saturday)
+                    weekEnd.setDate(weekStart.getDate() + 6);
                     return reviewDate >= weekStart && reviewDate <= weekEnd;
                 case 'month':
                     const monthStart = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
@@ -90,19 +90,19 @@ const ReviewTable = () => {
         switch (dateFilter) {
             case 'week':
                 if (direction === 'prev') {
-                    newDate.setDate(currentDate.getDate() - 7); // Skip back one week
+                    newDate.setDate(currentDate.getDate() - 7);
                 } else {
-                    newDate.setDate(currentDate.getDate() + 7); // Skip forward one week
+                    newDate.setDate(currentDate.getDate() + 7);
                 }
                 break;
             case 'month':
                 if (direction === 'prev') {
-                    newDate.setMonth(currentDate.getMonth() - 1); // Skip back one month
+                    newDate.setMonth(currentDate.getMonth() - 1);
                 } else {
-                    newDate.setMonth(currentDate.getMonth() + 1); // Skip forward one month
+                    newDate.setMonth(currentDate.getMonth() + 1);
                 }
                 break;
-            default: // For 'today' and 'all'
+            default:
                 if (direction === 'prev') {
                     newDate.setDate(currentDate.getDate() - 1);
                 } else {
@@ -118,29 +118,32 @@ const ReviewTable = () => {
         
         // Add title
         doc.setFontSize(16);
-        doc.text('Reviews Report', 14, 15);
+        doc.text('Parking Service Reviews Report', 14, 15);
         
         // Add date
         doc.setFontSize(10);
         doc.text(`Generated on: ${format(new Date(), 'yyyy-MM-dd HH:mm')}`, 14, 25);
         
-        // Prepare table data with proper date validation
+        // Prepare table data
         const tableData = reviews.map(review => {
-            const formattedDate = review.createdAt && !isNaN(new Date(review.createdAt).getTime())
-                ? format(new Date(review.createdAt), 'yyyy-MM-dd HH:mm')
+            const formattedDate = review.date && !isNaN(new Date(review.date).getTime())
+                ? format(new Date(review.date), 'yyyy-MM-dd')
                 : 'N/A';
             
             return [
-                review.userName || 'N/A',
+                review.parkingLocation || 'N/A',
                 review.rating || 'N/A',
-                review.comment || 'N/A',
+                review.vehicleType || 'N/A',
+                review.parkingDuration || 'N/A',
+                review.paymentMethod || 'N/A',
+                review.RService || 'N/A',
                 formattedDate
             ];
         });
         
         // Add table using autoTable
         autoTable(doc, {
-            head: [['User', 'Rating', 'Comment', 'Date']],
+            head: [['Location', 'Rating', 'Vehicle Type', 'Duration', 'Payment', 'Recommendation', 'Date']],
             body: tableData,
             startY: 35,
             theme: 'grid',
@@ -149,13 +152,13 @@ const ReviewTable = () => {
         });
         
         // Save the PDF
-        doc.save('reviews_report.pdf');
+        doc.save('parking_reviews_report.pdf');
     };
 
     const handleDeleteReview = async (reviewId) => {
         if (window.confirm('Are you sure you want to delete this review?')) {
             try {
-                await axios.delete(`/api/reviews/${reviewId}`);
+                await axios.delete(`http://localhost:5000/Review/${reviewId}`);
                 fetchReviews();
             } catch (err) {
                 console.error('Error deleting review:', err);
@@ -169,7 +172,7 @@ const ReviewTable = () => {
 
     return (
         <div className="review-container">
-            <h1>Reviews</h1>
+            <h1>Parking Service Reviews</h1>
             
             <div className="controls-container">
                 <div className="date-filter-buttons">
@@ -228,31 +231,39 @@ const ReviewTable = () => {
                 <table className="review-table">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th>Location</th>
                             <th>Rating</th>
-                            <th>Comment</th>
+                            <th>Vehicle Type</th>
+                            <th>Duration</th>
+                            <th>Payment</th>
+                            <th>Recommendation</th>
                             <th>Date</th>
+                            <th>Comments</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {reviews.length === 0 ? (
                             <tr>
-                                <td colSpan="5" className="no-reviews">
+                                <td colSpan="9" className="no-reviews">
                                     No reviews found
                                 </td>
                             </tr>
                         ) : (
                             reviews.map(review => (
                                 <tr key={review._id}>
-                                    <td>{review.userName || 'N/A'}</td>
+                                    <td>{review.parkingLocation || 'N/A'}</td>
                                     <td>{review.rating || 'N/A'}/5</td>
-                                    <td>{review.comment || 'N/A'}</td>
+                                    <td>{review.vehicleType || 'N/A'}</td>
+                                    <td>{review.parkingDuration || 'N/A'}</td>
+                                    <td>{review.paymentMethod || 'N/A'}</td>
+                                    <td>{review.RService || 'N/A'}</td>
                                     <td>
-                                        {review.createdAt && !isNaN(new Date(review.createdAt).getTime())
-                                            ? format(new Date(review.createdAt), 'yyyy-MM-dd HH:mm')
+                                        {review.date && !isNaN(new Date(review.date).getTime())
+                                            ? format(new Date(review.date), 'yyyy-MM-dd')
                                             : 'N/A'}
                                     </td>
+                                    <td>{review.RThought || 'N/A'}</td>
                                     <td>
                                         <button
                                             className="action-btn delete"

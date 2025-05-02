@@ -9,18 +9,23 @@ function Complaint({complaint ={}}) {
 
 	const history = useNavigate();
 
-	const deleteHandler = async(_id) => {
-        console.log(_id);
-        try {
-          const response = await axios.delete(`http://localhost:5000/complaint/${_id}`);
-          if (response.status === 200) {
-            console.log({message:"Deletion Successful"})
-            window.location.reload();
-          } else {
-            console.log({message:""})
-          }
-        } catch (err) {
-          console.error("Error deleting service provider:", err);
+	const deleteHandler = async () => {
+        if (!_id || _id === "N/A") {
+            console.error("Invalid complaint ID");
+            return;
+        }
+
+        if (window.confirm('Are you sure you want to delete this complaint?')) {
+            try {
+                const response = await axios.delete(`http://localhost:5000/complaint/${_id}`);
+                if (response.status === 200) {
+                    console.log("Deletion Successful");
+                    window.location.reload();
+                }
+            } catch (err) {
+                console.error("Error deleting complaint:", err);
+                alert("Failed to delete complaint. Please try again.");
+            }
         }
     }
 
