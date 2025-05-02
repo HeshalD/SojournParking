@@ -13,7 +13,8 @@ function AddReview() {
 		parkingDuration: '',
 		vehicleType: '',
 		paymentMethod: '',
-		date: new Date().toISOString().split('T')[0]
+		date: new Date().toISOString().split('T')[0],
+		email: ''
 	});
 	const [errors, setErrors] = useState({});
 	const [hoverRating, setHoverRating] = useState(0);
@@ -24,6 +25,13 @@ function AddReview() {
 		// Rating validation
 		if (inputs.rating === 0) {
 			newErrors.rating = 'Please provide a rating';
+		}
+
+		// Email validation
+		if (!inputs.email) {
+			newErrors.email = 'Please provide your email address';
+		} else if (!/\S+@\S+\.\S+/.test(inputs.email)) {
+			newErrors.email = 'Please enter a valid email address';
 		}
 
 		// Parking Location validation
@@ -114,7 +122,8 @@ function AddReview() {
 				parkingDuration: inputs.parkingDuration,
 				vehicleType: inputs.vehicleType,
 				paymentMethod: inputs.paymentMethod,
-				date: inputs.date
+				date: inputs.date,
+				email: inputs.email
 			})
 			.then((res) => res.data);
 	};
@@ -122,9 +131,23 @@ function AddReview() {
 	return (
 		<div className="review-component-container">
 			<div className="container">
-				<h1>Parking Service Review</h1>
+				<h1>Submit Your Review</h1>
 				<form id="serviceReviewForm" onSubmit={handleSubmit}>
 					<div className="form-group">
+						<div className="form-field">
+							<label>Email Address</label>
+							<input
+								type="email"
+								name="email"
+								value={inputs.email}
+								onChange={handleChange}
+								placeholder="Enter your email address"
+								className={errors.email ? 'error' : ''}
+								required
+							/>
+							{errors.email && <span className="error-message">{errors.email}</span>}
+						</div>
+
 						<div className="parking-details">
 							<div className="form-field">
 								<label htmlFor="parkingLocation">Parking Location *</label>
@@ -215,11 +238,9 @@ function AddReview() {
 							</div>
 						</div>
 
-						<div className="rating-section">
-							<div className="rating-title">
-								How would you rate your parking experience? *
-							</div>
-							<div className="stars-container">
+						<div className="rating">
+							<div className="rating-title">How would you rate your experience? *</div>
+							<div className="stars">
 								{[1, 2, 3, 4, 5].map((star) => (
 									<span
 										key={star}

@@ -1,4 +1,5 @@
 const Review = require('../Models/ReviewModel');
+const { sendReviewConfirmationEmail } = require('../config/emailConfig');
 
 const getAllReview = async (req, res, next) => {
 	let review;
@@ -25,7 +26,8 @@ const DisReview = async (req, res, next) => {
 		parkingDuration, 
 		vehicleType, 
 		paymentMethod, 
-		date 
+		date,
+		email
 	} = req.body;
 
 	let review;
@@ -39,9 +41,24 @@ const DisReview = async (req, res, next) => {
 			parkingDuration,
 			vehicleType,
 			paymentMethod,
-			date: new Date(date)
+			date: new Date(date),
+			email
 		});
 		await review.save();
+
+		if (email) {
+			try {
+				const reviewDetails = {
+					rating,
+					RService,
+					RThought,
+					date: new Date(date)
+				};
+				await sendReviewConfirmationEmail(email, reviewDetails);
+			} catch (emailError) {
+				console.error('Error sending review confirmation email:', emailError);
+			}
+		}
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ message: 'Error saving review' });
