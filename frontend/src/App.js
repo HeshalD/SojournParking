@@ -113,6 +113,9 @@ function App() {
           <Route path="/reservationTable" element={<ReservationTable/>}/>
           <Route path="/complaintTable" element={<ComplaintTable/>}/>
           <Route path="/reviewTable" element={<ReviewTable/>}/>
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/adminDashboard" element={<Dashboard/>}/>
+          <Route path='/adminLogin' element={<AdminLogin/>}/>
         </Routes>
       </React.Fragment>
     </div>

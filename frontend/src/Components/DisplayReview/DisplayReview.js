@@ -2,9 +2,12 @@
 // Then update your component:
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './DisplayReview.css'
 import axios from 'axios';
 import Review from '../Review/Review';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 
 const URL = 'http://localhost:5000/Review';
 
@@ -23,9 +26,16 @@ function DisplayReview() {
     }, []);
 
     return (
+        <>
+        <Header/>
         <div className="display-review-container">
             <div>
-                <h1>Review Details display page</h1>
+                <div className="review-header">
+                    <h1>Review Details display page</h1>
+                    <Link to="/addReview" className="add-review-btn">
+                        Add Review
+                    </Link>
+                </div>
                 <div>
                     {review &&
                         review.map((review, i) => (
@@ -36,6 +46,8 @@ function DisplayReview() {
                 </div>
             </div>
         </div>
+        <Footer/>
+        </>
     );
 }
 

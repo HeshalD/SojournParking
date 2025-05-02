@@ -17,13 +17,13 @@
 .userdash-sidebar {
   background-color: #3b6949;
   color: white;
-  width: 210px;
+  width: 250px;
   height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
   transition: all 0.3s ease;
-  z-index: 100;
+  z-index: 1000;
   transform: translateX(-100%);
 }
 
@@ -31,16 +31,28 @@
   transform: translateX(0);
 }
 
-.userdash-logo {
+.userdash-sidebar-header {
   padding: 20px;
-  font-size: 22px;
-  font-weight: 600;
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.userdash-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.userdash-close-icon {
+  cursor: pointer;
+  font-size: 1.2rem;
 }
 
 .userdash-sidebar-nav {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .userdash-sidebar-item {
@@ -52,7 +64,7 @@
   gap: 10px;
 }
 
-.userdash-sidebar-item:hover, 
+.userdash-sidebar-item:hover,
 .userdash-sidebar-item.active {
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -78,8 +90,8 @@
 }
 
 .userdash-wrapper.sidebar-open .userdash-main-content {
-  margin-left: 210px;
-  width: calc(100% - 210px);
+  margin-left: 250px;
+  width: calc(100% - 250px);
 }
 
 /* Header */
@@ -87,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 10px 20px;
   background-color: #2D2A2A;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -98,9 +110,9 @@
 }
 
 .userdash-menu-icon {
-  font-size: 18px;
+  font-size: 1.2rem;
   cursor: pointer;
-  color: #ffffff;
+  color: white;
 }
 
 .userdash-search-bar {
@@ -146,10 +158,19 @@
 }
 
 /* Dashboard Content */
+.userdash-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 60px); /* Subtract header height */
+  position: relative;
+}
+
 .userdash-dashboard-content {
+  flex: 1;
   padding: 20px;
   background-color: #2D2A2A;
   color: #ffffff;
+  min-height: calc(100vh - 120px); /* Subtract header and footer height */
 }
 
 /* User Profile */
@@ -651,4 +672,13 @@
 
 .login-btn:hover {
     background-color: #0056b3;
+}
+
+/* Footer styles */
+.userdash-content-wrapper > footer {
+  width: 100%;
+  background-color: #3b6949;
+  color: white;
+  padding: 20px;
+  margin-top: auto;
 }

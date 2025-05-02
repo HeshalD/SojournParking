@@ -12,7 +12,7 @@ function Header() {
         <nav className="nav-links">
           <Link to="/chooseParking">Reservations</Link>
           <Link to="/select-emergency">Emergency Services</Link>
-          <Link to="/chooseParking">Discounts &amp; Promos</Link>
+          <Link to="/displayReview">Reviews</Link>
           <Link to="/chooseParking">Customer Care</Link>
         </nav>
         

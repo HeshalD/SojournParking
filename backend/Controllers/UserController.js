@@ -2,10 +2,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 const axios = require("axios");
 const User = require("../Models/User");
 const generateToken = require("../utils/generateToken");
-const sendEmail = require("../utils/sendEmail");
+const { transporter } = require("../config/emailConfig");
+const path = require('path');
+
+
 
 // Register
 exports.register = async (req, res) => {
@@ -267,7 +271,8 @@ exports.changePassword = async (req, res) => {
 };
 
 
-const path = require('path');
+
+
 
 exports.updateProfilePhoto = async (req, res) => {
   try {
@@ -275,8 +280,10 @@ exports.updateProfilePhoto = async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    const filePath = `/Users/yasirunisal/Downloads/SojournParking-MAR22/SojournParking-MAR22/backend/uploads/${req.file.filename}`;
+    // Construct a public URL path that the frontend can use
+    const filePath = `/uploads/${req.file.filename}`;
 
+    // Update the user's profilePhoto in the database
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { profilePhoto: filePath },
@@ -287,6 +294,7 @@ exports.updateProfilePhoto = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    // Respond with the file path
     res.json({ message: "Profile photo updated", profilePhoto: filePath });
   } catch (err) {
     console.error("Profile photo error:", err);
@@ -331,53 +339,54 @@ exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    if (!user) return res.status(404).json({ error: "User not found" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
-    // Setup email transporter
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER, // Your email address
-        pass: process.env.EMAIL_PASS, // Your email password (or app password)
-      },
-    });
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save();
 
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+    const message = `Click the following link to reset your password: ${resetUrl}`;
 
     await transporter.sendMail({
-      to: email,
+      from: process.env.EMAIL_USER,
+      to: user.email,
       subject: "Password Reset Request",
-      html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+      text: message
     });
 
-    res.json({ message: "Password reset link has been sent to your email." });
-  } catch (error) {
-    console.error("Error in forgotPassword:", error);
-    res.status(500).json({ error: "Something went wrong" });
+    res.json({ message: "Password reset email sent" });
+  } catch (err) {
+    console.error('Error in forgot-password:', err);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
+
+
+
 exports.resetPassword = async (req, res) => {
-  const { token } = req.params;
-  const { password } = req.body;
+  const { token, newPassword } = req.body;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
 
-    user.password = password; // You should hash the password here before saving
+    if (!user) return res.status(400).json({ error: "Invalid or expired token" });
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
     await user.save();
 
-    res.json({ message: "Password has been successfully reset." });
-  } catch (error) {
-    console.error("Error in resetPassword:", error);
-    res.status(500).json({ error: "Something went wrong" });
+    res.json({ message: "Password reset successfully" });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
   }
 };

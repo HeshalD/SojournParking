@@ -4,6 +4,10 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import axios from "axios";
 import { FaGoogle, FaFacebookF, FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import PhoneInput from "react-phone-number-input";
+import { isValidPhoneNumber } from 'libphonenumber-js';
+
+import "react-phone-number-input/style.css";
 
 import "./AuthLoginRegMern.css";
 import loginAnimation from "../../animations/Car.json";
@@ -138,13 +142,19 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
   if (requires2FA) {
     return (
       <form onSubmit={handle2FASubmit} className="auth-mern-glass-card">
-        <div className="auth-mern-lottie-container">
-          <Player autoplay loop src={loginAnimation} style={{ height: "150px" }} />
-        </div>
-        <button type="button" className="auth-mern-btn-back" onClick={() => setRequires2FA(false)}>
+        <button
+          type="button"
+          className="auth-mern-btn-back"
+          onClick={() => setRequires2FA(false)}
+          style={{ position: "absolute", top: "8px", left: "10px", zIndex: 0 }}
+        >
           <FaArrowLeft style={{ marginRight: "8px" }} />
           Back to Login
         </button>
+    
+        <div className="auth-mern-lottie-container" style={{ marginTop: "40px" }}>
+          <Player autoplay loop src={loginAnimation} style={{ height: "150px" }} />
+        </div>
         <h1 className="auth-mern-text-center auth-mern-mb-4">Two-Factor Authentication</h1>
         <p className="auth-mern-text-center auth-mern-mb-4">
           We've sent a verification code to your email
@@ -164,12 +174,18 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
         </button>
         <p className="auth-mern-text-center auth-mern-mt-3">
           Didn't receive a code?{" "}
-          <button type="button" className="auth-mern-btn-link" onClick={handleLoginMern} disabled={isLoading}>
+          <button
+            type="button"
+            className="auth-mern-btn-link"
+            onClick={handleLoginMern}
+            disabled={isLoading}
+          >
             Resend Code
           </button>
         </p>
       </form>
     );
+    
   }
 
   return (
@@ -198,24 +214,7 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
       <button className="auth-mern-btn auth-mern-btn-primary auth-mern-w-100" disabled={isLoading}>
         {isLoading ? "Logging in..." : "Login"}
       </button>
-      <div className="auth-mern-social-container">
-        <button
-          type="button"
-          className="auth-mern-btn auth-mern-social-btn auth-mern-google-btn"
-          onClick={() => handleOAuthLoginMern("google")}
-          disabled={isLoading}
-        >
-          <FaGoogle style={{ marginRight: "8px" }} /> Google
-        </button>
-        <button
-          type="button"
-          className="auth-mern-btn auth-mern-social-btn auth-mern-facebook-btn"
-          onClick={() => handleOAuthLoginMern("facebook")}
-          disabled={isLoading}
-        >
-          <FaFacebookF style={{ marginRight: "8px" }} /> Facebook
-        </button>
-      </div>
+      
       <p className="auth-mern-text-center auth-mern-mt-3">
         Don't have an account?{" "}
         <button type="button" className="auth-mern-btn-link" onClick={toggleFormMern} disabled={isLoading}>
@@ -241,7 +240,6 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
 
   const handleRegisterMern = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setErrorMern("");
 
     // Validate all fields
@@ -280,6 +278,12 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
       return;
     }
 
+    if (passwordMern !== confirmPasswordMern) {
+      setErrorMern("Passwords do not match.");
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const res = await axios.post("http://localhost:5000/api/users/register", {
         fullName: fullNameMern.trim(),
@@ -320,12 +324,12 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
         onChange={(e) => setEmailMern(e.target.value)}
         required
       />
-      <input
-        type="tel"
-        placeholder="Phone Number"
-        className="auth-mern-input auth-mern-mb-3"
+      <PhoneInput
+        placeholder="Enter phone number"
         value={phoneMern}
-        onChange={(e) => setPhoneMern(e.target.value)}
+        onChange={setPhoneMern}
+        defaultCountry="LK"
+        className="auth-mern-input auth-mern-mb-3"
         required
       />
       <input
@@ -349,7 +353,7 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
       </button>
       <p className="auth-mern-text-center auth-mern-mt-3">
         Already have an account?{" "}
-        <button type="button" className="auth-mern-btn-link" onClick={toggleFormMern}>
+        <button type="button" className="auth-mern-btn-link" onClick={toggleFormMern} disabled={isLoading}>
           Login
         </button>
       </p>

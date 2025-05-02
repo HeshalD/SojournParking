@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema(
     isOnline: { type: Boolean, default: false },  // Tracks whether the user is online
     isDeleted: { type: Boolean, default: false }, // Tracks whether the user is deleted
     deletedAt: { type: Date, default: null },     // Time when the user was marked for deletion
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    
   },
   {
     timestamps: true,

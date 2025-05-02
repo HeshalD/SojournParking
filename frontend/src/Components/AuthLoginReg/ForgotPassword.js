@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./FandR.css";  // You can style this component as you like
 
+
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
