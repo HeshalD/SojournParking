@@ -1,55 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBell, FaBars, FaEdit, FaSave, FaSignOutAlt } from "react-icons/fa";
+import { FaBell, FaBars, FaEdit, FaSave, FaSignOutAlt, FaTimes, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
 import "./userdash.css";
 import profilepic from "../../Assets/ProfilePic.png";
 
-const UserDashboard = () => {
+const UserDashboardNew = () => {
   const [sidebarActive, setSidebarActive] = useState(false);
-  const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
     email: "",
     phone: "",
     createdAt: "",
+    profilePic: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/user/profile", {
+        const res = await axios.get("http://localhost:5001/api/users/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
-        setLoading(false);
       } catch (err) {
-        console.error("Error fetching user details", err);
-        setLoading(false);
+        console.error(err);
       }
     };
-
-    fetchUserDetails();
-  }, [navigate]);
-
-  const handleEdit = () => setIsEditing(true);
+    fetchUser();
+  }, []);
 
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "http://localhost:5000/user/profile",
+        "http://localhost:5001/api/users/profile",
         { name: user.name, email: user.email, phone: user.phone },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Profile updated successfully!");
       setIsEditing(false);
     } catch (err) {
-      console.error("Error updating user profile", err);
-      alert("Failed to update profile.");
+      console.error(err);
+      alert("Profile update failed!");
     }
   };
 
@@ -59,115 +55,158 @@ const UserDashboard = () => {
     navigate("/login");
   };
 
+  const handleProfilePhotoChange = async (e) => {
+    const file = e.target.files[0];
+
+    // Set the profile photo locally for preview
+    const objectUrl = URL.createObjectURL(file);
+    setProfilePhoto(objectUrl);
+
+    const formData = new FormData();
+    formData.append("profilePic", file);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post("http://localhost:5001/api/users/profile-photo", formData, {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+      });
+
+      // Update user state with the uploaded photo URL
+      setUser((prevUser) => ({ ...prevUser, profilePic: res.data.profilePic }));
+      alert("Profile photo updated successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Profile photo update failed!");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete your account?");
+    if (confirmDelete) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete("http://localhost:5001/api/users/delete-account", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        alert("Account deleted successfully!");
+        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("token");
+        navigate("/login");
+      } catch (err) {
+        console.error(err);
+        alert("Account deletion failed!");
+      }
+    }
+  };
+
   return (
-    <div className={`dashboard-wrapper ${sidebarActive ? "sidebar-active" : ""}`}>
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarActive ? "active" : ""}`}>
-        <h2 className="logo">WorkSync</h2>
-        <ul>
-          <li className="active">Dashboard</li>
-          <li>User Reservations</li>
-          <li>Employee Reservations</li>
-          <li>Complaints</li>
-          <li>Emergency Reports</li>
-          <li>Financial</li>
-          <li onClick={handleLogout} className="logout">
+    <div className={`userdash-wrapper ${sidebarActive ? "sidebar-open" : ""}`}>
+      <aside className="userdash-sidebar">
+        <div className="userdash-sidebar-header">
+          <div className="userdash-logo">WorkSync</div>
+          <FaTimes className="userdash-close-icon" onClick={() => setSidebarActive(false)} />
+        </div>
+        <ul className="userdash-sidebar-nav">
+          <li className="userdash-sidebar-item active">Dashboard</li>
+          <li className="userdash-sidebar-item">Reservations</li>
+          <li className="userdash-sidebar-item">Complaints</li>
+          <li className="userdash-sidebar-item">Reports</li>
+          <li className="userdash-sidebar-item">Financials</li>
+          <li className="userdash-sidebar-item userdash-logout" onClick={handleLogout}>
             <FaSignOutAlt /> Logout
           </li>
         </ul>
       </aside>
 
-      {/* Main Content */}
-      <main className="content">
-        {/* Header */}
-        <header className="header">
-          <FaBars className="icon menu-icon" onClick={() => setSidebarActive(!sidebarActive)} />
-          <div className="search-container">
-            <input type="text" placeholder="Search" className="search-bar" />
+      <div className="userdash-main-content">
+        <header className="userdash-header">
+          <FaBars className="userdash-menu-icon" onClick={() => setSidebarActive(true)} />
+          <div className="userdash-search-bar">
+            <input type="text" placeholder="Search..." />
           </div>
-          <div className="header-right">
-            <div className="notification-icon">
-              <FaBell className="icon" />
-            </div>
-            <div className="profile-header">
-              <img src={profilepic} alt="User" />
-              <span>{user.name || "User"}</span>
+          <div className="userdash-header-icons">
+            <FaBell className="userdash-bell-icon" />
+            <div className="userdash-profile-pic">
+              <img src={profilePhoto || user.profilePic || profilepic} alt="User" />
             </div>
           </div>
         </header>
 
-        <div className="dashboard-content">
-          {/* User Profile Section */}
-          <section className="user-profile">
-            {loading ? (
-              <p className="loading">Loading profile...</p>
-            ) : (
-              <div className="profile-card">
-                <img src={profilepic} alt="User" className="profile-pic" />
-                <h3>{user.name || "User Name"}</h3>
-                <p>Joined: {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "Invalid Date"}</p>
-              </div>
-            )}
-
-            <div className="profile-info">
-              <h4>Profile Details</h4>
-              <div className="user-details">
-                <div className="detail-item">
-                  <label>Name:</label>
-                  {isEditing ? (
-                    <input 
-                      type="text" 
-                      value={user.name} 
-                      onChange={(e) => setUser({ ...user, name: e.target.value })} 
-                    />
-                  ) : (
-                    <p>{user.name}</p>
-                  )}
-                </div>
-
-                <div className="detail-item">
-                  <label>Email:</label>
-                  {isEditing ? (
-                    <input 
-                      type="email" 
-                      value={user.email} 
-                      onChange={(e) => setUser({ ...user, email: e.target.value })} 
-                    />
-                  ) : (
-                    <p>{user.email}</p>
-                  )}
-                </div>
-
-                <div className="detail-item">
-                  <label>Phone:</label>
-                  {isEditing ? (
-                    <input 
-                      type="text" 
-                      value={user.phone} 
-                      onChange={(e) => setUser({ ...user, phone: e.target.value })} 
-                    />
-                  ) : (
-                    <p>{user.phone}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Edit & Save Buttons */}
-              {isEditing ? (
-                <button className="btn btn-save" onClick={handleSave}>
-                  <FaSave /> Save
-                </button>
-              ) : (
-                <button className="btn btn-edit" onClick={handleEdit}>
-                  <FaEdit /> Edit
-                </button>
-              )}
+        <div className="userdash-dashboard-content">
+          <div className="userdash-profile-section">
+            <div className="userdash-profile-card">
+              <img src={profilePhoto || user.profilePic || profilepic} alt="Profile" />
+              <h3>{user.name || "User Name"}</h3>
             </div>
-          </section>
+
+            <div className="userdash-profile-info">
+              <h4>Profile Details</h4>
+
+              <div className="userdash-profile-info-item">
+                <label>Name:</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={user.name}
+                    onChange={(e) => setUser({ ...user, name: e.target.value })}
+                  />
+                ) : (
+                  <p>{user.name}</p>
+                )}
+              </div>
+
+              <div className="userdash-profile-info-item">
+                <label>Email:</label>
+                {isEditing ? (
+                  <input
+                    type="email"
+                    value={user.email}
+                    onChange={(e) => setUser({ ...user, email: e.target.value })}
+                  />
+                ) : (
+                  <p>{user.email}</p>
+                )}
+              </div>
+
+              <div className="userdash-profile-info-item">
+                <label>Phone:</label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={user.phone}
+                    onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                  />
+                ) : (
+                  <p>{user.phone || "Not Provided"}</p>
+                )}
+              </div>
+
+              <div className="userdash-profile-info-item">
+                <label>Profile Photo:</label>
+                <input type="file" onChange={handleProfilePhotoChange} />
+                
+              </div>
+
+              <div className="userdash-profile-buttons">
+                {isEditing ? (
+                  <button className="userdash-btn userdash-save-btn" onClick={handleSave}>
+                    <FaSave /> Save
+                  </button>
+                ) : (
+                  <button className="userdash-btn userdash-edit-btn" onClick={() => setIsEditing(true)}>
+                    <FaEdit /> Edit
+                  </button>
+                )}
+                <button className="userdash-btn userdash-delete-btn" onClick={handleDeleteAccount}>
+                  <FaTrashAlt /> Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
 
-export default UserDashboard;
+export default UserDashboardNew;
