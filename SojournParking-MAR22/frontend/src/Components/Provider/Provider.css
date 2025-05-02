@@ -1,0 +1,66 @@
+/* Provider.css - Component-scoped styles */
+.provider-card {
+    background-color: #333;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 20px;
+    color: white;
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
+  }
+  
+  .provider-id {
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .provider-name {
+    color: #4CAF50;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .provider-details {
+    margin-bottom: 20px;
+  }
+  
+  .detail-row {
+    margin-bottom: 10px;
+  }
+  
+  .detail-label {
+    font-weight: bold;
+    display: inline-block;
+  }
+  
+  .provider-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-update {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  .btn-delete {
+    background-color: #f44336;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }

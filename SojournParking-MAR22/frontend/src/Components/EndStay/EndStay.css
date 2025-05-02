@@ -1,0 +1,45 @@
+.end-stay-container {
+    width: 90%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 10px;
+    text-align: center;
+    background: #1E1C1C;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.end-stay-container h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.end-stay-container input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background: #333;
+    color: white;
+}
+
+.end-stay-container button {
+    background: #ff6b6b;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.end-stay-container button:hover {
+    background: #ff4c4c;
+}
+
+.status-message {
+    color: #66b3ff;
+    margin-top: 10px;
+}

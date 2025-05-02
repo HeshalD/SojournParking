@@ -1,0 +1,330 @@
+
+/* AuthLoginRegMern.css - Unique class names with original design preserved */
+
+/* Base Styles */
+.auth-mern-body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #000000, #284631);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  color: #2D2A2A;
+}
+
+/* Main Container */
+.auth-mern-container {
+  width: 1000px;
+  height: 600px;
+  background-color: #fff;
+  display: flex;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+/* Auth Box */
+.auth-mern-box {
+  display: flex;
+  width: 100%;
+  transition: all 0.6s ease-in-out;
+  position: relative;
+  z-index: 2;
+}
+
+/* Form Container */
+.auth-mern-form-wrapper {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  max-height: 100%;
+  z-index: 3;
+}
+
+/* Glass Card */
+.auth-mern-glass-card {
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2), 0 12px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  padding: 40px;
+  backdrop-filter: blur(25px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: auto;
+  animation: auth-mern-float 3s ease-in-out infinite;
+  position: relative;
+  width: 380px;
+  height: auto;
+}
+
+/* Input Fields */
+.auth-mern-input {
+  padding: 12px;
+  border: 1px solid #59B87A;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  background-color: #f1fdf5;
+  color: #2D2A2A;
+  box-shadow: 0 2px 10px rgba(91, 184, 122, 0.2);
+  width: 90%;
+  font-size: 16px;
+}
+
+.auth-mern-input::placeholder {
+  color: #3b3a3a;
+  opacity: 0.7;
+}
+
+.auth-mern-input:focus {
+  outline: none;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px #59B87A;
+}
+
+.auth-mern-PhoneInput{
+  padding: 12px;
+  border: 1px solid #59B87A;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  background-color: #f1fdf5;
+  color: #2D2A2A;
+  box-shadow: 0 2px 10px rgba(91, 184, 122, 0.2);
+  width: 90%;
+  font-size: 16px;
+}
+
+/* Buttons */
+.auth-mern-btn {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;/**/
+}
+
+.auth-mern-btn-primary {
+  background-color: #3B6949;
+  color: white;
+}
+
+.auth-mern-btn-primary:hover {
+  background-color: #50B087;
+}
+
+.auth-mern-btn-success {
+  background-color: #153a22;
+  color: white;
+}
+
+.auth-mern-btn-success:hover {
+  background-color: #03a057;
+}
+
+.auth-mern-btn-link {
+  background: none;
+  color: #3B6949;
+  font-weight: bold;
+  text-decoration: underline;
+  display: inline;
+  width: auto;
+  padding: 0;
+  margin: 0; 
+}
+
+.auth-mern-btn-link:hover {
+  color: #50B087;
+}
+
+/* Social Login */
+.auth-mern-social-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.auth-mern-social-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.auth-mern-google-btn {
+  background-color: #ffffff;
+  color: #3B6949;
+  border: 2px solid #3B6949;
+}
+
+.auth-mern-google-btn:hover {
+  background-color: #3B6949;
+  color: white;
+}
+
+.auth-mern-facebook-btn {
+  background-color: #3B6949;
+  color: white;
+}
+
+.auth-mern-facebook-btn:hover {
+  background-color: #768374;
+}
+
+/* Alert */
+.auth-mern-alert {
+  padding: 10px;
+  color: white;
+  background-color: #f44336;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* Animations */
+@keyframes auth-mern-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes auth-mern-wave {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-20px) scale(1.03); }
+}
+
+@keyframes auth-mern-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Decorative Elements */
+.auth-mern-container::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: linear-gradient(170deg, #2b8d4a, #0b0f0c);
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  z-index: 0;
+  animation: auth-mern-wave 2s ease-in-out infinite alternate;
+  opacity: 0.94;
+}
+
+.auth-mern-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160%;
+  height: 160%;
+  background-image: radial-gradient(circle at center, rgba(21, 179, 69, 0.3) 10%, transparent 75%);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: auth-mern-rotate 40s linear infinite;
+  z-index: 0;
+}
+
+/* Lottie Animation */
+.auth-mern-lottie-container {
+  width: 350px;
+  height: 350px;
+  margin: 10 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -60px;
+}
+
+/* Utility Classes */
+.auth-mern-text-center {
+  text-align: center;
+}
+
+.auth-mern-mb-3 {
+  margin-bottom: 15px;
+  
+}
+
+.auth-mern-mb-4 {
+  margin-bottom: 20px; 
+}
+
+.auth-mern-glass-card {
+  padding-top: 0px; 
+}
+
+
+
+.auth-mern-mt-3 {
+  margin-top: 5px;
+}
+
+.auth-mern-w-100 {
+  width: 100%;
+}
+
+/* Text Elements */
+.auth-mern-glass-card h1 {
+  color: #1f1e1e;
+  margin-bottom: 20px;
+  margin-top: -80px;
+}
+
+.auth-mern-glass-card p {
+  color: #0b0a0a;
+  opacity: 0.8;
+}
+
+
+/* 2FA Specific Styles */
+.auth-mern-btn-back {
+  background: none;
+  border: none;
+  color: #4a6bff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.auth-mern-btn-back:hover {
+  text-decoration: underline;
+}
+
+/* Loading state styles */
+.auth-mern-btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Alert styles */
+.auth-mern-alert {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  background-color: #ffebee;
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
+

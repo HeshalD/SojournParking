@@ -1,0 +1,217 @@
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+}
+
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+}
+
+@font-face {
+    font-family: "GothamLight";
+    src: url("./Gotham-Light.ttf");
+}
+
+@font-face {
+    font-family: "GothamThin";
+    src: url("./Gotham-Thin.ttf");
+}
+
+@font-face {
+    font-family: "GothamXLight";
+    src: url("./Gotham-XLight.ttf");
+}
+.sidebar-reservation {
+    max-width: 30%;
+    margin-bottom: 20px;
+    background-color: #2D2A2A;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-size: 14px;
+    border: solid 1px white
+}
+
+.sidebar-reservation-header {
+    background-color: #2D2A2A;
+    color: white;
+    padding: 12px 15px;
+}
+
+.sidebar-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-reservation-header h3 {
+    margin: 0;
+    font-family: 'GothamMedium';
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-reservation-id {
+    font-size: 12px;
+    opacity: 1;
+    margin-top: 3px;
+    font-size: 20px;
+}
+
+.sidebar-status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'GothamMedium';
+}
+
+.sidebar-status.active {
+    background-color: #50B087;
+    color: white;
+}
+
+.sidebar-reservation-details {
+    padding: 12px 15px;
+}
+
+.sidebar-detail-item {
+    font-family: 'GothamMedium';
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-detail-item .label {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.sidebar-detail-item .value {
+    color: #fcfcfc;
+    text-align: right;
+    font-size: 12px;
+}
+
+.sidebar-time-details {
+    background-color: rgba(80, 176, 135, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 3px solid #50B087;
+    margin: 10px 0;
+}
+
+.sidebar-reservation-actions {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border-top: 1px solid #eee;
+    background-color: #2D2A2A;
+}
+
+.sidebar-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    font-size: 11px;
+}
+
+.sidebar-btn-primary {
+    font-family: 'GothamMedium';
+    background-color: #50B087;
+    color: white;
+    margin-bottom: 10px; 
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.sidebar-btn-primary:hover {
+    background-color: #3e8a67;
+}
+
+.sidebar-btn-secondary {
+    font-family: 'GothamMedium';
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    margin-bottom: 10px; 
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+    margin-left: 20px;
+    border-radius: 5px;
+
+}
+
+.sidebar-btn-secondary:hover {
+    background-color: #50B087;
+    color:#ffffff;
+    transition: 0.5s;
+}
+
+.sidebar-qr-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-top: 1px solid #eee;
+    margin-top: 8px;
+}
+
+.sidebar-qr-preview img {
+    width: 50px;
+    height: 50px;
+}
+
+.sidebar-qr-preview .qr-text {
+    font-size: 11px;
+    color: #666;
+}
+
+.sidebar-qr-preview .qr-link {
+    color: #50B087;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.sidebar-qr-preview .qr-link:hover {
+    text-decoration: underline;
+}
+
+/* No Reservation State */
+.sidebar-no-reservation {
+     max-width: 50%;
+    margin-bottom: 20px;
+    background-color: #2D2A2A;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-size: 14px;
+    border: solid 1px white
+}
+
+.sidebar-no-reservation h4 {
+    margin: 0 0 8px 0;
+    color: #2D2A2A;
+    font-size: 14px;
+}
+
+.sidebar-no-reservation p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 12px;
+}

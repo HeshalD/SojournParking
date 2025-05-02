@@ -1,0 +1,120 @@
+@font-face {
+    font-family: "GothamBold";
+    src: url("./Gotham-Bold.ttf");
+}
+
+@font-face {
+    font-family: "GothamMedium";
+    src: url("./Gotham-Medium.ttf");
+}
+
+@font-face {
+    font-family: "GothamLight";
+    src: url("./Gotham-Light.ttf");
+}
+
+@font-face {
+    font-family: "GothamThin";
+    src: url("./Gotham-Thin.ttf");
+}
+
+@font-face {
+    font-family: "GothamXLight";
+    src: url("./Gotham-XLight.ttf");
+}
+
+/* Used 'pg-' prefix (payment gateway) for all class names to prevent conflicts */
+
+.pg-payment-container {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin: auto;
+    color: #ffffff;
+    font-family: 'Gotham', sans-serif;
+}
+
+.pg-form-title {
+    font-size: 28px;
+    color: #4CAF50;
+    margin-bottom: 25px;
+    font-weight: bold;
+    font-family: 'GothamBold', sans-serif;
+}
+
+.pg-form-group {
+    margin-bottom: 15px;
+    text-align: left;
+    padding: 0 0 15px 0;
+}
+
+.pg-label {
+    font-weight: bold;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.pg-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.pg-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.pg-form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.pg-half {
+    width: 48%;
+}
+
+.pg-pay-btn {
+    width: 60%;
+    padding: 14px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 20px;
+    font-family: 'GothamMedium', sans-serif;
+}
+
+.pg-pay-btn:hover {
+    background: #388E3C;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .pg-payment-container {
+        padding: 20px;
+    }
+
+    .pg-form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .pg-half {
+        width: 100%;
+    }
+}

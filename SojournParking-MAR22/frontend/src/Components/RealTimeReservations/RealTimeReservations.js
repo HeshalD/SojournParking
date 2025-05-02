@@ -1,0 +1,224 @@
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
+import './RealTimeReservations.css'
+
+function RealTimeReservations() {
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [selectedSlot, setSelectedSlot] = useState('');
+    const [formData, setFormData] = useState({
+        name: '',
+        licensePlate: '',
+        entryTime: '',
+        exitTime: ''
+    });
+    const [slots, setSlots] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();  // Initialize navigate hook
+
+    function getCurrentTime() {
+        const now = new Date();
+        return now.toTimeString().slice(0, 5); // Extracts HH:mm
+    }
+
+    // Fetch all slots on component mount
+    useEffect(() => {
+        fetchSlots();
+    }, []);
+
+    const fetchSlots = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/slots');
+            const data = await response.json();
+            setSlots(data.slots || []);
+        } catch (err) {
+            console.error("Error fetching slots:", err);
+            setError("Failed to load parking slots");
+        }
+    };
+
+    const openForm = (slotId) => {
+        setSelectedSlot(slotId);
+        setFormData({
+            ...formData,
+            entryTime: getCurrentTime()
+        })
+        setIsFormOpen(true);
+    };
+
+    const closeForm = () => {
+        setIsFormOpen(false);
+    };
+
+    const handleInputChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    // Check if a slot is reserved
+    const isSlotReserved = (slotId) => {
+        return slots.some(slot => slot.slotId === slotId && slot.isReserved);
+    };
+
+    // Generate slot element with appropriate class based on reservation status
+    const renderSlot = (slotId) => {
+        const reserved = isSlotReserved(slotId);
+        return (
+            <div 
+                key={slotId} 
+                className={`slot ${reserved ? 'reserved' : ''}`} 
+                onClick={() => !reserved && openForm(slotId)}
+            >
+                {slotId}
+            </div>
+        );
+    };
+
+    const sendRequest = async () => {
+        try {
+            setLoading(true);
+            // Prepare the data to match the server schema
+            const reservationData = {
+                slotId: selectedSlot,
+                userName: formData.name,
+                licensePlate: formData.licensePlate,
+                entryTime: new Date(`2023-01-01T${formData.entryTime}:00`), // Convert time to Date object
+                isReserved: true
+            };
+            
+            // Send the data to the server
+            const response = await axios.post("http://localhost:5000/slots", reservationData);
+
+            return response.data;
+            
+        } catch (err) {
+            console.error("Error making reservation:", err);
+            setError("Failed to reserve parking slot");
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const submitForm = async (e) => {
+        e.preventDefault(); // Corrected from prevDefault()
+        try {
+            await sendRequest();
+            closeForm();
+            fetchSlots(); // Refresh slots to show updated status
+            navigate('/realTimeReservationMade'); 
+        } catch (err) {
+            
+        }
+    };
+
+    return (
+        <div className="parking-container">
+            <h2>CHOOSE A PARKING SLOT</h2>
+            {error && <p className="error-message">{error}</p>}
+            <div className="icon">
+                <img src="/Icons/door.png" alt="Building" />
+                <p>Building Entrance</p>
+            </div>
+            <div className="parking-layout">
+                {/* First Row */}
+                <div className="row">
+                    <div className="icon entrance">
+                        <img src="/Icons/gate.png" alt="Entrance" />
+                        <p>Entrance</p>
+                    </div>
+                    {["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"].map(slot => 
+                        renderSlot(slot)
+                    )}
+                </div>
+                
+                {/* Second Row */}
+                <div className="row arrows">
+                    <span>➡</span>
+                    <span>➡</span>
+                    <span>➡</span>
+                </div>
+                <div className="row">
+                    {["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"].map(slot => 
+                        renderSlot(slot)
+                    )}
+                </div>
+                
+                {/* Third Row */}
+                <div className="row arrows">
+                    <span>⬅</span>
+                    <span>⬅</span>
+                    <span>⬅</span>
+                </div>
+                <div className="row">
+                    <div className="icon exit">
+                        <img src="/Icons/gate.png" alt="Exit" />
+                        <p>Exit</p>
+                    </div>
+                    {["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"].map(slot => 
+                        renderSlot(slot)
+                    )}
+                </div>
+                
+                {/* Form popup */}
+                {isFormOpen && (
+                    <div className="form-container">
+                        <div className="form-box">
+                            <span className="close-btn" onClick={closeForm}>
+                                X
+                            </span>
+                            <h3>Reserve Parking Slot</h3>
+                            <p>Slot: {selectedSlot}</p>
+                            <form onSubmit={submitForm}>
+                                <input 
+                                    name="name"
+                                    type="text" 
+                                    id="name" 
+                                    placeholder="Your Name" 
+                                    required
+                                    value="RealTimeReservation"
+                                    onChange={handleInputChange}
+                                    hidden
+                                />
+                                <input
+                                    name="licensePlate"
+                                    type="text"
+                                    id="licensePlate"
+                                    placeholder="License Plate Number"
+                                    required
+                                    value={formData.licensePlate}
+                                    onChange={handleInputChange}
+                                />
+                                <input 
+                                    name="entryTime"
+                                    type="time" 
+                                    id="entryTime" 
+                                    required
+                                    value={formData.entryTime}
+                                    readOnly
+                                />
+                                <input 
+                                    name="exitTime"
+                                    type="time" 
+                                    id="exitTime" 
+                                    required
+                                    value={formData.exitTime}
+                                    readOnly
+                                    hidden
+                                />
+                                <button type="submit" disabled={loading}>
+                                    {loading ? 'Reserving...' : 'Reserve'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+export default RealTimeReservations

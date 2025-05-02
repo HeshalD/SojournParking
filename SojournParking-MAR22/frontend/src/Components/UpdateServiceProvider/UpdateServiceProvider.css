@@ -1,0 +1,80 @@
+/* Scoped CSS for UpdateServiceProvider component */
+.update-page {
+    background-color: #1e1e1e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .update-container {
+    background-color: #2d2d2d;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .update-header {
+    text-align: center;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .update-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: white;
+    font-weight: normal;
+  }
+  
+  .update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-field label {
+    color: white;
+    font-size: 18px;
+    font-weight: normal;
+  }
+  
+  .form-field input {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2d2d2d;
+    font-size: 14px;
+    border: white 1px solid;
+  }
+  
+  .form-field input::placeholder {
+    color: #888;
+  }
+  
+  .update-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    text-transform: uppercase;
+  }
+  
+  .update-button:hover {
+    background-color: #3e8e41;
+  }
