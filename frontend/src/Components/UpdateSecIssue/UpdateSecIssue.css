@@ -1,0 +1,181 @@
+/* UpdateSecIssue.css - Scoped styles matching medical emergency page */
+
+.update-sec-issue-page {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #2D2A2A;
+    min-height: 100vh;
+    padding: 2rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.update-sec-issue-container {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+    padding: 2.5rem 3rem;
+    background-color: #2D2A2A;
+    border: 1px solid white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    margin: 2rem auto;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.update-sec-issue-container h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+
+.update-sec-issue-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #3d8c6e;
+}
+
+.update-sec-issue-form-group {
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.update-sec-issue-form-group:nth-child(1) { animation-delay: 0.1s; }
+.update-sec-issue-form-group:nth-child(2) { animation-delay: 0.2s; }
+.update-sec-issue-form-group:nth-child(3) { animation-delay: 0.3s; }
+.update-sec-issue-form-group:nth-child(4) { animation-delay: 0.4s; }
+
+.update-sec-issue-form-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #f0f0f0;
+}
+
+.update-sec-issue-form-control {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    transition: all 0.25s ease;
+    background-color: #353232;
+    color: white;
+}
+
+.update-sec-issue-form-control:focus {
+    border-color: #3d8c6e;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(61, 140, 110, 0.15);
+}
+
+.update-sec-issue-form-control::placeholder {
+    color: #a8b0bc;
+    opacity: 1;
+}
+
+.update-sec-issue-textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.update-sec-issue-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    cursor: pointer;
+}
+
+.update-sec-issue-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 6px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.update-sec-issue-btn-primary {
+    background-color: #3d8c6e;
+    color: white;
+    border: none;
+}
+
+.update-sec-issue-btn-primary:hover {
+    background-color: #50B087;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(61, 140, 110, 0.3);
+}
+
+.update-sec-issue-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .update-sec-issue-container {
+        max-width: 90%;
+        padding: 2rem;
+    }
+    
+    .update-sec-issue-container h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .update-sec-issue-container {
+        padding: 1.5rem;
+        margin: 1rem auto;
+    }
+    
+    .update-sec-issue-container h2 {
+        font-size: 1.25rem;
+    }
+    
+    .update-sec-issue-form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .update-sec-issue-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .update-sec-issue-form-control {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .update-sec-issue-select {
+        background-size: 0.8rem;
+    }
+}

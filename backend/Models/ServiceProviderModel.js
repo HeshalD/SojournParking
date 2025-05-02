@@ -5,29 +5,29 @@
     const ServiceProviderSchema = new Schema({
          
          fullname:{
-            type:String,//dataType
-            required:true,//validate
+            type:String,
+            required:true,
 
          },
          contactnumber:{
-            type:Number,//dataType
-            required:true,//validate
+            type:Number,
+            required:true,
 
          },
          specialization:{
-            type:String,//dataType
-            required:true,//validate
+            type:String,
+            required:true,
 
          },
          location:{
-            type:String,//dataType
-            required:true,//validate
+            type:String,
+            required:true,
 
          }
     });
 
     module.exports = mongoose.model(
-        "ServiceProviderModel",//file name
-        ServiceProviderSchema //function name
+        "ServiceProviderModel",
+        ServiceProviderSchema 
     )
 

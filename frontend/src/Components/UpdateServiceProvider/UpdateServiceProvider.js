@@ -1,118 +1,125 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import './UpdateServiceProvider.css'; // Will contain scoped styles
+import { useParams, useNavigate } from 'react-router-dom';
+import './UpdateServiceProvider.css';
 
 function UpdateServiceProvider() {
-  const [inputs, setInputs] = useState({
-    fullname: "",
-    contactnumber: "",
-    specialization: "",
-    location: "",
-  });
-  
-  const navigate = useNavigate();
-  const id = useParams().id;
+    const [inputs, setInputs] = useState({
+        fullname: "",
+        contactnumber: "",
+        specialization: "",
+        location: "",
+    });
+    const navigate = useNavigate();
+    const { id } = useParams();
 
-  useEffect(() => {
-    const fetchHandler = async () => {
-      await axios
-        .get(`http://localhost:5000/ServiceProviders/${id}`)
-        .then((res) => res.data)
-        .then((data) => setInputs(data.ServiceProviders));
+    useEffect(() => {
+        const fetchHandler = async () => {
+            try {
+                console.log("Fetching service provider with ID:", id);
+                const response = await axios.get(`http://localhost:5000/ServiceProviders/${id}`);
+                console.log("Response data:", response.data);
+                
+                if (response.data && response.data.serviceProviders) {
+                    const providerData = response.data.serviceProviders;
+                    console.log("Setting provider data:", providerData);
+                    setInputs({
+                        fullname: providerData.fullname || "",
+                        contactnumber: providerData.contactnumber || "",
+                        specialization: providerData.specialization || "",
+                        location: providerData.location || "",
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching service provider:", error);
+            }
+        };
+        fetchHandler();
+    }, [id]);
+
+    const handleChange = (e) => {
+        setInputs((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
     };
-    fetchHandler();
-  }, [id]);
 
-  const sendRequest = async () => {
-    await axios
-      .put(`http://localhost:5000/ServiceProviders/${id}`, {
-        fullname: String(inputs.fullname),
-        contactnumber: Number(inputs.contactnumber),
-        specialization: String(inputs.specialization),
-        location: String(inputs.location),
-      })
-      .then((res) => res.data);
-  };
-  
-  const handleChange = (e) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            console.log("Updating service provider with data:", inputs);
+            await axios.put(`http://localhost:5000/ServiceProviders/${id}`, {
+                fullname: inputs.fullname,
+                contactnumber: inputs.contactnumber,
+                specialization: inputs.specialization,
+                location: inputs.location,
+            });
+            navigate('/addserviceproviderresponse');
+        } catch (error) {
+            console.error("Error updating service provider:", error);
+        }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(inputs);
-    sendRequest().then(() =>
-      navigate('/ServiceProviderProfile'));
-  };
-
-  return (
-    <div className="update-page">
-      <div className="update-container">
-        <div className="update-header">
-          <h2>Add a New Mechanic or Medic</h2>
+    return (
+        <div className="update-provider-container">
+            <div className="container">
+                <div className="header">Update Service Provider</div>
+                <form onSubmit={handleSubmit} id="addForm">
+                    <div className="form-group">
+                        <label htmlFor="name">Full Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="fullname"
+                            onChange={handleChange}
+                            value={inputs.fullname}
+                            placeholder="Enter full name"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="contact">Contact Number:</label>
+                        <input
+                            type="text"
+                            id="contact"
+                            name="contactnumber"
+                            onChange={handleChange}
+                            value={inputs.contactnumber}
+                            placeholder="Enter contact number"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="specialization">Specialization:</label>
+                        <input
+                            type="text"
+                            id="specialization"
+                            name="specialization"
+                            onChange={handleChange}
+                            value={inputs.specialization}
+                            placeholder="E.g., Engine Repair, First Aid"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="location">Location:</label>
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            onChange={handleChange}
+                            value={inputs.location}
+                            placeholder="Enter location"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="btn">
+                        Update
+                    </button>
+                </form>
+            </div>
         </div>
-        
-        <form onSubmit={handleSubmit} className="update-form">
-          <div className="form-field">
-            <label>Full Name:</label>
-            <input
-              type="text"
-              name="fullname"
-              value={inputs?.fullname || ""}
-              onChange={handleChange}
-              placeholder="Enter full name"
-              required
-            />
-          </div>
-          
-          <div className="form-field">
-            <label>Contact Number:</label>
-            <input
-              type="text"
-              name="contactnumber"
-              value={inputs?.contactnumber || ""}
-              onChange={handleChange}
-              placeholder="Enter contact number"
-              required
-            />
-          </div>
-          
-          <div className="form-field">
-            <label>Specialization:</label>
-            <input
-              type="text"
-              name="specialization"
-              value={inputs?.specialization || ""}
-              onChange={handleChange}
-              placeholder="E.g., Engine Repair, First Aid"
-              required
-            />
-          </div>
-          
-          <div className="form-field">
-            <label>Location:</label>
-            <input
-              type="text"
-              name="location"
-              value={inputs?.location || ""}
-              onChange={handleChange}
-              placeholder="Enter location"
-              required
-            />
-          </div>
-          
-          <button type="submit" className="update-button">
-            UPDATE
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default UpdateServiceProvider;

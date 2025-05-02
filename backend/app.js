@@ -14,6 +14,10 @@ const payFormRoutes = require("./Routes/PayFormRoute");
 const multer = require('multer');
 const path = require('path');
 const paymentRoutes = require('./Routes/PaymentRoutes');
+const serviceRouter  = require("./Routes/ServiceProviderRoutes");
+const medRouter = require("./Routes/MedIssueRoutes");
+const secRouter = require("./Routes/SecIssueRoutes");
+const mecRouter = require("./Routes/MecIssueRoutes");
 
 const app = express();
 const cors = require("cors");
@@ -57,6 +61,10 @@ app.use("/complaint",complaintRouter);
 app.use("/Review",reviewRouter);
 app.use('/api/payments', payFormRoutes);
 app.use('/payment', paymentRoutes);
+app.use("/ServiceProviders",serviceRouter);
+app.use("/MedIssues",medRouter);
+app.use("/SecIssues",secRouter);
+app.use("/MecIssues",mecRouter);
 
 // Session routes
 sessionRouter.post('/sessions', (req, res) => {
@@ -79,5 +87,6 @@ mongoose.connect("mongodb+srv://Heshal:12345@sojournparking.exrjn.mongodb.net/")
 .then(() => console.log("Connected to MongoDB"))
 .then(() => {
     app.listen(5000);
+
 })
 .catch((err) => console.log((err)));
