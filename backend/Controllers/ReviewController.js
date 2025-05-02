@@ -1,36 +1,73 @@
 const Review = require('../Models/ReviewModel');
+const { sendReviewConfirmationEmail } = require('../config/emailConfig');
 
 const getAllReview = async (req, res, next) => {
 	let review;
 
 	try {
-		review = await Review.find();
+		review = await Review.find().sort({ createdAt: -1 });
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: 'Error fetching reviews' });
 	}
 
 	if (!review) {
-		return res.status(404).json({ message: 'Review ot found' });
+		return res.status(404).json({ message: 'No reviews found' });
 	}
 	return res.status(200).json({ review });
 };
 
 const DisReview = async (req, res, next) => {
-	const { RService, RThought } = req.body;
+	const { 
+		rating, 
+		RService, 
+		RThought, 
+		parkingLocation, 
+		parkingDuration, 
+		vehicleType, 
+		paymentMethod, 
+		date,
+		email
+	} = req.body;
 
 	let review;
 
 	try {
-		review = new Review({ RService, RThought });
+		review = new Review({
+			rating,
+			RService,
+			RThought,
+			parkingLocation,
+			parkingDuration,
+			vehicleType,
+			paymentMethod,
+			date: new Date(date),
+			email
+		});
 		await review.save();
+
+		if (email) {
+			try {
+				const reviewDetails = {
+					rating,
+					RService,
+					RThought,
+					date: new Date(date)
+				};
+				await sendReviewConfirmationEmail(email, reviewDetails);
+			} catch (emailError) {
+				console.error('Error sending review confirmation email:', emailError);
+			}
+		}
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: 'Error saving review' });
 	}
 
 	if (!review) {
 		return res.status(404).json({ message: 'Unable to add review' });
 	}
-	return res.status(200).json({ review });
+	return res.status(201).json({ review });
 };
 
 const getById = async (req, res, next) => {
@@ -41,28 +78,44 @@ const getById = async (req, res, next) => {
 		review = await Review.findById(id);
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: 'Error fetching review' });
 	}
 
 	if (!review) {
-		return res.status(404).json({ message: 'review not found' });
+		return res.status(404).json({ message: 'Review not found' });
 	}
 	return res.status(200).json({ review });
 };
 
 const updateReview = async (req, res, next) => {
 	const id = req.params.id;
-	const { RService, RThought } = req.body;
+	const { 
+		rating, 
+		RService, 
+		RThought, 
+		parkingLocation, 
+		parkingDuration, 
+		vehicleType, 
+		paymentMethod, 
+		date 
+	} = req.body;
 
 	let review;
 
 	try {
 		review = await Review.findByIdAndUpdate(id, {
-			RService: RService,
-			RThought: RThought,
-		});
-		review = await review.save();
+			rating,
+			RService,
+			RThought,
+			parkingLocation,
+			parkingDuration,
+			vehicleType,
+			paymentMethod,
+			date: new Date(date)
+		}, { new: true });
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: 'Error updating review' });
 	}
 
 	if (!review) {
@@ -80,7 +133,9 @@ const deleteReview = async (req, res, next) => {
 		review = await Review.findByIdAndDelete(id);
 	} catch (err) {
 		console.log(err);
+		return res.status(500).json({ message: 'Error deleting review' });
 	}
+
 	if (!review) {
 		return res.status(404).json({ message: 'Unable to delete review' });
 	}

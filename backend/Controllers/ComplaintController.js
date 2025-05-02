@@ -2,8 +2,8 @@ const Complaint = require('../Models/ComplaintModel'); // Check that the path is
 
 const getAllComplaint = async (req, res) => {
 	try {
-		const complaints = await Complaint.find(); // Use a different variable name
-		res.status(200).json({ complaints }); // Send response properly
+		const complaints = await Complaint.find();
+		res.status(200).json(complaints); // Return the array directly
 	} catch (error) {
 		res.status(500).json({ message: error.message });
 	}
@@ -11,18 +11,18 @@ const getAllComplaint = async (req, res) => {
 
 
 const DisComplaint = async (req, res, next) => {
-	const { date, comp, describe, solution } = req.body;
+	const { date, email, comp, describe, solution } = req.body;
 	let complaint;
 
 	try {
-		complaint = new Complaint({ date, comp, describe, solution });
+		complaint = new Complaint({ date, email, comp, describe, solution });
 		await complaint.save();
 	} catch (err) {
 		console.log(err);
 	}
 
 	if (!complaint) {
-		return res.status(404).json({ message: 'unable to add users' });
+		return res.status(404).json({ message: 'unable to add complaint' });
 	}
 	return res.status(200).json({ complaint });
 };
@@ -45,13 +45,14 @@ const getById = async (req, res, next) => {
 
 const updateComplaint = async (req, res, next) => {
 	const id = req.params.id;
-	const { date, comp, describe, solution } = req.body;
+	const { date, email, comp, describe, solution } = req.body;
 
 	let complaint;
 
 	try {
 		complaint = await Complaint.findByIdAndUpdate(id, {
 			date: date,
+			email: email,
 			comp: comp,
 			describe: describe,
 			solution: solution,

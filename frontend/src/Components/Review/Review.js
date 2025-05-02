@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Review.css";
 
 function Review({ review }) {
   const navigate = useNavigate();
@@ -11,53 +12,63 @@ function Review({ review }) {
     return <p>Loading review...</p>;
   }
 
-  const { _id, RService = "N/V", RThought = "N/V" } = review;
+  const { _id, rating = 0, RService = "N/V", RThought = "N/V" } = review;
 
   const deleteHandler = async () => {
     try {
       await axios.delete(`http://localhost:5000/Review/${_id}`);
-      navigate("/DisplayReview");
+      // Force a page reload to refresh the reviews list
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting review:", error);
     }
   };
 
-  return (
-    <div>
-      <meta charSet="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Feedback Display</title>
-      <link rel="stylesheet" href="../DisplayReview.css" />
+  const renderStars = (rating) => {
+    return [...Array(5)].map((_, index) => (
+      <span
+        key={index}
+        className={`star ${index < rating ? 'active' : ''}`}
+      >
+        ★
+      </span>
+    ));
+  };
 
-      <div className="sidebar-feedback">
-        <div className="sidebar-feedback-header">
-          <div className="sidebar-header-content">
-            <h3>Feedback Summary</h3>
-            <span className="sidebar-status submitted">Submitted</span>
+  return (
+    <div className="review-container">
+      <div className="review-card">
+        <div className="review-header">
+          <h3>Feedback Summary</h3>
+          <span className="status submitted">Submitted</span>
+        </div>
+        
+        <div className="review-content">
+          <div className="rating-section">
+            <div className="rating-title">Rating</div>
+            <div className="stars-container">
+              {renderStars(rating)}
+            </div>
+            <div className="rating-text">{rating} out of 5 stars</div>
+          </div>
+
+          <div className="review-details">
+            <div className="detail-item">
+              <span className="label">Recommendation:</span>
+              <span className="value">{RService}</span>
+            </div>
+            <div className="detail-item">
+              <span className="label">Comments:</span>
+              <span className="value">{RThought}</span>
+            </div>
           </div>
         </div>
-        <div className="sidebar-feedback-details">
-          <div className="sidebar-detail-item">
-            <span className="label">Recommendation: {RService}</span>
-            <span className="value" id="recommendValue">Yes</span>
-            <select id="recommendEdit" className="edit-field" style={{ display: "none" }}>
-              <option value="Yes">Yes: {RThought}</option>
-              <option value="No">No: {RThought}</option>
-              <option value="Maybe">Maybe: {RThought}</option>
-            </select>
-          </div>
-          <div className="sidebar-detail-item">
-            <span className="label">Comments:</span>
-            <span className="value" id="commentsValue">Great service! Keep it up.</span>
-            <textarea id="commentsEdit" className="edit-field" style={{ display: "none" }} />
-          </div>
-        </div>
-        <div className="sidebar-feedback-actions">
-          <Link to={`/updateReview/${_id}`}>Edit</Link>
-          <button className="sidebar-btn sidebar-btn-primary" id="saveBtn" style={{ display: "none" }}>
-            Save
-          </button>
-          <button className="sidebar-btn sidebar-btn-danger" onClick={deleteHandler}>
+
+        <div className="review-actions">
+          <Link to={`/updateReview/${_id}`} className="action-btn edit">
+            Edit
+          </Link>
+          <button className="action-btn delete" onClick={deleteHandler}>
             Delete
           </button>
         </div>

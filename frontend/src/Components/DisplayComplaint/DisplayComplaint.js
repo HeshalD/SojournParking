@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Complaint from '../Complaint/Complaint';
+import './DisplayComplaint.css';
 
 const URL = 'http://localhost:5000/complaint';
 
@@ -9,7 +10,7 @@ const fetchHandler = async () => {
 };
 
 function DisplayComplaint() {
-    const [complaint, setCompaint] = useState([]);
+    const [complaints, setComplaints] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -17,7 +18,8 @@ function DisplayComplaint() {
         fetchHandler()
             .then((data) => {
                 console.log("API Response:", data);
-                setCompaint(data.complaints || []); // Ensure it matches API response
+                // Check if data.complaints exists, otherwise use data directly
+                setComplaints(Array.isArray(data.complaints) ? data.complaints : (Array.isArray(data) ? data : []));
                 setLoading(false);
             })
             .catch((err) => {
@@ -27,16 +29,22 @@ function DisplayComplaint() {
             });
     }, []);
 
+    if (loading) return <div className="display-review-container">Loading...</div>;
+    if (error) return <div className="display-review-container">Error: {error}</div>;
+
     return (
-        <div>
-            <h1>Complaint Detais display page</h1>
-            <div>
-                {complaint &&
-                    complaint.map((complaint, i) => (
-                        <div key={i}>
+        <div className="display-review-container">
+            <h1>Complaint Details Display Page</h1>
+            <div className="complaints-list">
+                {complaints.length > 0 ? (
+                    complaints.map((complaint, i) => (
+                        <div key={i} className="complaint-item">
                             <Complaint complaint={complaint} />
                         </div>
-                    ))}
+                    ))
+                ) : (
+                    <p>No complaints found</p>
+                )}
             </div>
         </div>
     );

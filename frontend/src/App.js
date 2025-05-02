@@ -42,8 +42,16 @@ import SelectEmergency from './Components/SelectEmergency/SelectEmergency';
 import ResponsePage from './Components/ResponsePage/ResponsePage'
 import ResponsePageM from './Components/ResponsePageM/ResponsePageM'
 import ResponsePageS from './Components/ResponsePageS/ResponsePageS'
-
-
+import Complaint from './Components/AddCompliant/AddComplant';
+import UpdateComplaint from './Components/UpdateComplaint/UpdateComplaint';
+import DisplayComplaint from './Components/DisplayComplaint/DisplayComplaint';
+import EmployeeLandingPage from './Components/EmployeeLandingPage/EmployeeLandingPage';
+import AddReview from './Components/AddReview/AddReview';
+import DisplayReview from './Components/DisplayReview/DisplayReview';
+import UpdateReview from './Components/UpdateReview/UpdateReview';
+import ReservationTable from './Components/ReservationTable/ReservationTable';
+import ComplaintTable from './Components/ComplaintTable/ComplaintTable';
+import ReviewTable from './Components/ReviewTable/ReviewTable';
 
 
 function App() {
@@ -95,6 +103,16 @@ function App() {
           <Route path="/responseM" element={<ResponsePageM/>}/>
           <Route path="/security-issue" element={<SecurityIssue/>}/>
           <Route path="/responseS" element={<ResponsePageS/>}/>
+          <Route path="/addComplaint" element={<Complaint/>}/>
+          <Route path="/displayComplaint" element={<DisplayComplaint/>}/>
+          <Route path="/updateComplaint/:id" element={<UpdateComplaint/>}/>
+          <Route path="/employeeLandingPage" element={<EmployeeLandingPage/>}/>
+          <Route path="/addReview" element={<AddReview/>}/>
+          <Route path="/displayReview" element={<DisplayReview/>}/>
+          <Route path="/updateReview/:id" element={<UpdateReview/>}/>
+          <Route path="/reservationTable" element={<ReservationTable/>}/>
+          <Route path="/complaintTable" element={<ComplaintTable/>}/>
+          <Route path="/reviewTable" element={<ReviewTable/>}/>
         </Routes>
       </React.Fragment>
     </div>

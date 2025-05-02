@@ -55,7 +55,8 @@ h1 {
 }
 
 .form-field select,
-.form-field input[type="date"] {
+.form-field input[type="date"],
+.form-field textarea {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -65,15 +66,21 @@ h1 {
     transition: border-color 0.2s;
 }
 
+.form-field textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
 .form-field select:focus,
-.form-field input[type="date"]:focus {
+.form-field input[type="date"]:focus,
+.form-field textarea:focus {
     outline: none;
     border-color: #4a90e2;
 }
 
 .form-field select.error,
 .form-field input[type="date"].error,
-textarea.error {
+.form-field textarea.error {
     border-color: #f44336;
 }
 
@@ -108,11 +115,10 @@ textarea.error {
 .stars-container {
     display: flex;
     gap: 5px;
-    margin-bottom: 5px;
 }
 
 .star {
-    font-size: 32px;
+    font-size: 24px;
     color: #ddd;
     cursor: pointer;
     transition: color 0.2s;
@@ -122,65 +128,6 @@ textarea.error {
     color: #ffd700;
 }
 
-.rating-text {
-    font-size: 14px;
-    color: #666;
-    text-align: center;
-}
-
-.recommendation {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.radio-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.radio-option input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.radio-option label {
-    font-size: 16px;
-    color: #333;
-    cursor: pointer;
-}
-
-.thoughts {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-textarea {
-    width: 100%;
-    height: 120px;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    resize: vertical;
-    font-size: 16px;
-    font-family: inherit;
-    transition: border-color 0.2s;
-}
-
-textarea:focus {
-    outline: none;
-    border-color: #4a90e2;
-}
-
 .submit-btn {
     background-color: #4a90e2;
     color: white;
@@ -188,46 +135,33 @@ textarea:focus {
     padding: 12px 20px;
     border-radius: 5px;
     font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
-    margin-top: 10px;
-    width: 100%;
+    margin-top: 20px;
 }
 
 .submit-btn:hover {
     background-color: #357abd;
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
     .parking-details {
         grid-template-columns: 1fr;
     }
-}
 
-@media (max-width: 480px) {
     .container {
         padding: 20px;
     }
 
-    .star {
-        font-size: 28px;
-    }
-
-    .rating-title {
+    .form-field select,
+    .form-field input[type="date"],
+    .form-field textarea {
         font-size: 16px;
     }
 
-    .radio-option label {
-        font-size: 14px;
+    .star {
+        font-size: 20px;
     }
-
-    .form-field select,
-    .form-field input[type="date"] {
-        font-size: 13px;
-        padding: 8px;
-    }
-
-    .error-message {
-        font-size: 11px;
-    }
-}
+} 

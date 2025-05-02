@@ -6,6 +6,10 @@ const complaintSchema = new Schema({
 		type: Date,
 		required: true,
 	},
+	email: {
+		type: String,
+		required: true,
+	},
 	comp: {
 		type: String,
 		required: true,
