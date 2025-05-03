@@ -29,9 +29,11 @@ function PaymentReceipt() {
   if (!location.state || !user) {
     return (
       <div className="payment-receipt-container">
-        <div className="error-message">
-          <h2>Error: No payment data available</h2>
-          <button onClick={() => navigate(-1)}>Go Back</button>
+        <div className="receipt-card">
+          <div className="error-message">
+            <h2>Error: No payment data available</h2>
+            <button onClick={() => navigate(-1)}>Go Back</button>
+          </div>
         </div>
       </div>
     );
@@ -64,7 +66,7 @@ function PaymentReceipt() {
         amount: totalAmount,
         duration: `${durationHours.toFixed(2)} hours`,
         rate: ratePerHour,
-        parkingDetails // Pass parking details to payment portal
+        parkingDetails
       } 
     });
   };
@@ -79,31 +81,31 @@ function PaymentReceipt() {
 
         <div className="receipt-details">
           <div className="detail-row">
-            <span className="label">ID:</span>
+            <span className="label">ID</span>
             <span className="value">{_id}</span>
           </div>
           <div className="detail-row">
-            <span className="label">License Plate No:</span>
+            <span className="label">License Plate No</span>
             <span className="value">{LicensePlateNo}</span>
           </div>
           <div className="detail-row">
-            <span className="label">Entry Time:</span>
+            <span className="label">Entry Time</span>
             <span className="value">{formatDate(EntryTime)}</span>
           </div>
           <div className="detail-row">
-            <span className="label">Exit Time:</span>
+            <span className="label">Exit Time</span>
             <span className="value">{formatDate(ExitTime)}</span>
           </div>
           <div className="detail-row">
-            <span className="label">Duration:</span>
+            <span className="label">Duration</span>
             <span className="value">{`${durationHours.toFixed(2)} hours`}</span>
           </div>
           <div className="detail-row">
-            <span className="label">Rate:</span>
+            <span className="label">Rate</span>
             <span className="value">${ratePerHour.toFixed(2)} per hour</span>
           </div>
           <div className="detail-row total">
-            <span className="label">Total Amount:</span>
+            <span className="label">Total Amount</span>
             <span className="value">${totalAmount.toFixed(2)}</span>
           </div>
         </div>

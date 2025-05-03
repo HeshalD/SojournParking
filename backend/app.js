@@ -2,7 +2,7 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const router = require("./Routes/SlotRoutes");
-const userRouter = require("./Routes/UserRoutes");
+const userRouter = require("./Routes/user");
 const serviceProviderRouter = require("./Routes/ServiceProviderRoutes");
 const sessionRouter = express.Router();
 const employeeRouter = require("./Routes/EmployeeRoutes");
@@ -38,29 +38,33 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Session configuration
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'defaultSecret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/'
+    },
+    name: 'sojourn.sid' // Give the session cookie a specific name
+}));
+
 // CORS setup
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 
 // Middleware
 app.use(express.json());
-
-// Session configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'defaultSecret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
-    }
-}));
 
 // Initialize Passport and restore authentication state from session
 app.use(passport.initialize());
@@ -85,15 +89,30 @@ app.use("/", sessionRouter);
 
 // Session management routes
 app.post("/sessions", (req, res) => {
-  const { name, email } = req.body;
-  req.session.user = { name, email };
+  console.log("Creating session with data:", req.body);
+  console.log("Current session before update:", req.session);
+  
+  const { name, email, phone, profilePic } = req.body;
+  req.session.user = { 
+    name, 
+    email,
+    phone,
+    profilePic
+  };
+  
+  console.log("Session after update:", req.session);
   res.json({ success: true, message: "User session created" });
 });
 
 app.get("/sessions/current", (req, res) => {
+  console.log("Checking current session:", req.session);
+  console.log("Session ID:", req.sessionID);
+  
   if (req.session.user) {
+    console.log("Found user session:", req.session.user);
     res.json({ user: req.session.user });
   } else {
+    console.log("No user session found");
     res.json({ user: null });
   }
 });

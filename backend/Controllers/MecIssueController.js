@@ -5,10 +5,7 @@ const { sendEmergencyEmail } = require("../Config/emergencyEmailConfig");
 const getAllMecIssues = async(req, res, next) => {
     try {
         const MecIssues = await MecIssue.find();
-        if (!MecIssues || MecIssues.length === 0) {
-            return res.status(404).json({ message: "No mechanical issues found" });
-        }
-        return res.status(200).json(MecIssues);
+        return res.status(200).json(MecIssues || []);
     } catch (err) {
         console.error("Error fetching mechanical issues:", err);
         return res.status(500).json({ message: "Error fetching mechanical issues" });

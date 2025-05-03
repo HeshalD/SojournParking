@@ -141,7 +141,11 @@ function ChooseParking() {
             console.error("Error making reservation:", err);
             if (err.response) {
                 console.error("Server response:", err.response.data);
-                setError(err.response.data.message || "Failed to reserve parking slot");
+                if (err.response.data.error === "Duplicate license plate") {
+                    setError("This license plate already has an active reservation. Please use a different license plate or end your current reservation first.");
+                } else {
+                    setError(err.response.data.message || "Failed to reserve parking slot");
+                }
             } else {
                 setError("Failed to reserve parking slot");
             }

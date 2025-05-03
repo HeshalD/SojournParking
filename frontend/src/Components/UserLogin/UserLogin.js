@@ -5,6 +5,9 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import "../RegisterUser/RegisterUser";
 
+// Configure axios defaults
+axios.defaults.withCredentials = true;
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,20 +16,38 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // First login to get user details
       const res = await axios.post("http://localhost:5000/user/login", { email, password });
+      console.log("Login response:", res.data);
 
       // Store the token
       localStorage.setItem("token", res.data.token);
       
-      // Create the session with name and email
-      await axios.post("http://localhost:5000/sessions", {
+      // Create the session with user details
+      const sessionRes = await axios.post("http://localhost:5000/sessions", {
         name: res.data.user.name,
-        email: res.data.user.email
+        email: res.data.user.email,
+        phone: res.data.user.phone || "",
+        profilePic: res.data.user.profilePic || ""
+      }, {
+        withCredentials: true
       });
+      console.log("Session creation response:", sessionRes.data);
 
-      alert("Login Successful");
-      navigate("/userDashboard");
+      // Verify session was created
+      const verifySession = await axios.get("http://localhost:5000/sessions/current", {
+        withCredentials: true
+      });
+      console.log("Session verification:", verifySession.data);
+
+      if (verifySession.data.user) {
+        alert("Login Successful");
+        navigate("/userDashboard");
+      } else {
+        throw new Error("Session creation failed");
+      }
     } catch (err) {
+      console.error("Login error:", err);
       alert(err.response?.data?.message || "Login Failed");
     }
   };

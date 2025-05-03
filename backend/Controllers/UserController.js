@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const axios = require("axios");
 const User = require("../Models/User");
 const generateToken = require("../utils/generateToken");
-const { transporter } = require("../config/emailConfig");
+const sendEmail = require("../utils/sendEmail");
 const path = require('path');
 
 
@@ -14,35 +14,17 @@ const path = require('path');
 // Register
 exports.register = async (req, res) => {
   try {
-    console.log('Registration request received:', req.body);
     const { fullName, email, password, phone } = req.body;
-    
-    // Validate required fields
-    if (!fullName || !email || !password || !phone) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      console.log('Email already exists:', email);
-      return res.status(400).json({ error: "Email already exists" });
-    }
+    if (existingUser) return res.status(400).json({ error: "Email already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = await User.create({ 
-      fullName, 
-      email, 
-      password: hashedPassword, 
-      phone 
-    });
-    
-    console.log('User created successfully:', user._id);
+    const user = await User.create({ fullName, email, password: hashedPassword, phone });
     const token = generateToken({ id: user._id });
 
     res.json({ token });
   } catch (err) {
-    console.error('Registration error:', err);
-    res.status(500).json({ error: err.message || "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -50,23 +32,40 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt for email:', email);
+
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: "User not found" });
+    if (!user) {
+      console.log('User not found:', email);
+      return res.status(400).json({ error: "User not found" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ error: "Incorrect password" });
+    if (!isMatch) {
+      console.log('Invalid password for user:', email);
+      return res.status(400).json({ error: "Incorrect password" });
+    }
 
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate a 6-digit code with leading zeros if necessary
+    const code = Math.floor(100000 + Math.random() * 900000).toString().padStart(6, '0');
     user.twoFACode = code;
     user.twoFACodeExpires = Date.now() + 5 * 60 * 1000;
     await user.save();
 
-    await sendEmail(user.email, "Your 2FA Code", `Your code is ${code}`);
-    const tempToken = generateToken({ id: user._id }, "10m");
+    try {
+      console.log('Attempting to send 2FA code to:', email);
+      await sendEmail(user.email, "Your 2FA Code", `Your verification code is: ${code}`);
+      console.log('2FA code sent successfully');
+    } catch (emailError) {
+      console.error('Failed to send 2FA email:', emailError);
+      return res.status(500).json({ error: "Failed to send verification code" });
+    }
 
+    const tempToken = generateToken({ id: user._id }, "10m");
     res.json({ requires2FA: true, tempToken });
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    console.error('Login error:', err);
+    res.status(500).json({ error: "Server error", details: err.message });
   }
 };
 
@@ -74,20 +73,44 @@ exports.login = async (req, res) => {
 exports.verify2FA = async (req, res) => {
   try {
     const { tempToken, code } = req.body;
-    const decoded = jwt.verify(tempToken, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
+    console.log("2FA Verification request received:", { tempToken, code });
 
-    if (!user || user.twoFACode !== code || user.twoFACodeExpires < Date.now()) {
+    // Validate code length
+    if (!code || code.length !== 6) {
+      return res.status(400).json({ error: "Verification code must be 6 digits" });
+    }
+
+    const decoded = jwt.verify(tempToken, process.env.JWT_SECRET);
+    console.log("Decoded token:", decoded);
+
+    const user = await User.findById(decoded.id);
+    console.log("Found user:", user ? user.email : "Not found");
+
+    if (!user) {
+      console.log("User not found for ID:", decoded.id);
       return res.status(400).json({ error: "Invalid or expired code" });
     }
 
+    if (user.twoFACode !== code) {
+      console.log("Invalid 2FA code. Expected:", user.twoFACode, "Received:", code);
+      return res.status(400).json({ error: "Invalid verification code" });
+    }
+
+    if (user.twoFACodeExpires < Date.now()) {
+      console.log("2FA code expired. Expiry time:", new Date(user.twoFACodeExpires));
+      return res.status(400).json({ error: "Verification code has expired" });
+    }
+
+    console.log("2FA verification successful for user:", user.email);
     user.twoFACode = null;
     user.twoFACodeExpires = null;
     await user.save();
 
     const token = generateToken({ id: user._id });
+    console.log("New token generated for user:", user.email);
     res.json({ token });
   } catch (err) {
+    console.error("2FA verification error:", err);
     res.status(401).json({ error: "Unauthorized" });
   }
 };
@@ -345,22 +368,17 @@ exports.forgotPassword = async (req, res) => {
     const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+    user.resetPasswordExpires = Date.now() + 30 * 60 * 1000; // 30 minutes instead of 10
     await user.save();
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
-    const message = `Click the following link to reset your password: ${resetUrl}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${encodeURIComponent(resetToken)}`;
+    const message = `Click the following link to reset your password: ${resetUrl}\n\nThis link will expire in 30 minutes.`;
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: user.email,
-      subject: "Password Reset Request",
-      text: message
-    });
+    await sendEmail(user.email, "Password Reset Request", message);
 
     res.json({ message: "Password reset email sent" });
   } catch (err) {
-    console.error('Error in forgot-password:', err);
+    console.error("Forgot password error:", err);
     res.status(500).json({ error: "Server error" });
   }
 };
@@ -371,6 +389,14 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
 
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: "Token and new password are required" });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({ error: "Password must be at least 6 characters long" });
+  }
+
   try {
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
     const user = await User.findOne({
@@ -378,7 +404,9 @@ exports.resetPassword = async (req, res) => {
       resetPasswordExpires: { $gt: Date.now() },
     });
 
-    if (!user) return res.status(400).json({ error: "Invalid or expired token" });
+    if (!user) {
+      return res.status(400).json({ error: "Invalid or expired token" });
+    }
 
     user.password = await bcrypt.hash(newPassword, 10);
     user.resetPasswordToken = undefined;
@@ -386,6 +414,36 @@ exports.resetPassword = async (req, res) => {
     await user.save();
 
     res.json({ message: "Password reset successfully" });
+  } catch (err) {
+    console.error("Reset password error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+// Get all users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select('-password -twoFACode -twoFACodeExpires -resetPasswordToken -resetPasswordExpires');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+// Delete user by ID
+exports.deleteUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Check if the user exists
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Delete the user
+    await User.findByIdAndDelete(id);
+    res.json({ message: "User deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }

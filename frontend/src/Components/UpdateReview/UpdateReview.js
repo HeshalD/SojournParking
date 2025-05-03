@@ -119,24 +119,29 @@ function UpdateReview() {
 		setHoverRating(rating);
 	};
 
-	const handleSubmit = async (e) => {
+	const sendRequest = async () => {
+		try {
+			await axios.put(`http://localhost:5000/Review/${id}`, {
+				rating: Number(inputs.rating),
+				RService: String(inputs.RService),
+				RThought: String(inputs.RThought),
+				parkingLocation: inputs.parkingLocation,
+				parkingDuration: inputs.parkingDuration,
+				vehicleType: inputs.vehicleType,
+				paymentMethod: inputs.paymentMethod,
+				date: inputs.date
+			});
+		} catch (err) {
+			console.error('Error updating review:', err);
+			throw err;
+		}
+	};
+
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (validateForm()) {
-			try {
-				await axios.put(`http://localhost:5000/Review/${id}`, {
-					rating: Number(inputs.rating),
-					RService: String(inputs.RService),
-					RThought: String(inputs.RThought),
-					parkingLocation: inputs.parkingLocation,
-					parkingDuration: inputs.parkingDuration,
-					vehicleType: inputs.vehicleType,
-					paymentMethod: inputs.paymentMethod,
-					date: inputs.date
-				});
-				navigate('/displayReview');
-			} catch (err) {
-				console.error('Error updating review:', err);
-			}
+			console.log(inputs);
+			sendRequest().then(() => navigate('/userdashboard', { state: { activeSection: 'reviews' } }));
 		}
 	};
 

@@ -18,7 +18,8 @@ const slotSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    index: true // Keep the index for performance but don't make it unique
   },
   licensePlate: {
     type: String,
@@ -44,6 +45,9 @@ const slotSchema = new mongoose.Schema({
     },
   },
 }, { collection: "parkingSlots" });
+
+// Remove any existing unique index on email
+slotSchema.index({ email: 1 }, { unique: false });
 
 const Slot = mongoose.model("Slot", slotSchema);
 module.exports = Slot;

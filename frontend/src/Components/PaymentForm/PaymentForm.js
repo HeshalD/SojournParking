@@ -6,7 +6,7 @@ import axios from "axios";
 function PaymentForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const licensePlate = location.state?.licensePlate || "";
+  const { licensePlate, entryTime, exitTime, slotId } = location.state || {};
 
   const [reservation, setReservation] = useState({
     LicensePlateNo: "",
@@ -18,20 +18,32 @@ function PaymentForm() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!licensePlate) {
-      setError("No license plate found. Please try again.");
+    if (!licensePlate || !entryTime || !exitTime) {
+      setError("Missing reservation data. Please try again.");
       setLoading(false);
       return;
     }
 
-    // Use the passed reservation data
+    // Format the times for display
+    const formatTime = (time) => {
+      if (!time) return "";
+      const date = new Date(time);
+      return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    };
+
     setReservation({
       LicensePlateNo: licensePlate,
-      EntryTime: location.state?.entryTime || "",
-      ExitTime: location.state?.exitTime || ""
+      EntryTime: formatTime(entryTime),
+      ExitTime: formatTime(exitTime)
     });
     setLoading(false);
-  }, [licensePlate, location.state]);
+  }, [licensePlate, entryTime, exitTime]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,13 +53,12 @@ function PaymentForm() {
     try {
       // Use the passed slot data to create payment
       const response = await axios.post("http://localhost:5000/api/payments", {
-        slotId: location.state?.slotId // Pass the slot ID from the state
+        slotId: slotId
       });
 
       console.log("Payment creation response:", response.data);
 
       if (response.data.success) {
-        alert("Payment processed successfully!");
         navigate("/paymentReceipt", { 
           state: { 
             payment: response.data.data,
@@ -66,7 +77,6 @@ function PaymentForm() {
       });
       const errorMessage = err.response?.data?.message || err.message || "Payment processing failed. Please try again.";
       setError(errorMessage);
-      alert(`Payment Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -95,7 +105,7 @@ function PaymentForm() {
             <div className="payment-form-group">
               <label htmlFor="entryTime">Entry Time</label>
               <input 
-                type="datetime-local" 
+                type="text" 
                 name="EntryTime" 
                 id="entryTime" 
                 value={reservation.EntryTime} 
@@ -105,7 +115,7 @@ function PaymentForm() {
             <div className="payment-form-group">
               <label htmlFor="exitTime">Exit Time</label>
               <input 
-                type="datetime-local" 
+                type="text" 
                 name="ExitTime" 
                 id="exitTime" 
                 value={reservation.ExitTime} 

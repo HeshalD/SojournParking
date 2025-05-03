@@ -108,7 +108,7 @@ function AddReview() {
 		e.preventDefault();
 		if (validateForm()) {
 			console.log(inputs);
-			sendRequest().then(() => navigate('/displayReview'));
+			sendRequest().then(() => navigate('/userdashboard', { state: { activeSection: 'reviews' } }));
 		}
 	};
 

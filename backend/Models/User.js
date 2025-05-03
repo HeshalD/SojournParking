@@ -26,4 +26,4 @@ const userSchema = new mongoose.Schema(
 // Create a TTL index for the `deletedAt` field, automatically removing the user after 24 hours (86400 seconds)
 userSchema.index({ deletedAt: 1 }, { expireAfterSeconds: 86400 }); // 86400 seconds = 24 hours
 
-module.exports = mongoose.models.User || mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

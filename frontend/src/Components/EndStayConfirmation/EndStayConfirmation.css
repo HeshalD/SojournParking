@@ -1,0 +1,162 @@
+/* EndStayConfirmation.css - Scoped styles for the end stay confirmation component */
+
+.end-stay-confirmation {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #1E1C1C;
+    color: white;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.confirmation-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 40px 30px;
+    background-color: #2D2A2A;
+    border: 1px solid white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.confirmation-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: white;
+    line-height: 1.3;
+}
+
+.confirmation-message {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #f0f0f0;
+}
+
+.confirmation-details {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #f0f0f0;
+    font-weight: 500;
+}
+
+.detail-value {
+    color: white;
+    font-weight: 600;
+}
+
+.confirmation-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.confirmation-button {
+    flex: 1;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.button-primary {
+    background-color: #50B087;
+    color: white;
+    border: none;
+}
+
+.button-primary:hover {
+    background-color: #3d8c6e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(61, 140, 110, 0.3);
+}
+
+.button-secondary {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #50B087;
+}
+
+.button-secondary:hover {
+    background-color: rgba(80, 176, 135, 0.1);
+    transform: translateY(-2px);
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-left-color: #50B087;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(255, 107, 107, 0.1);
+    border-radius: 8px;
+    border: 1px solid #ff6b6b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .confirmation-card {
+        padding: 30px 20px;
+    }
+    
+    .confirmation-title {
+        font-size: 24px;
+    }
+    
+    .confirmation-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .confirmation-button {
+        width: 100%;
+    }
+} 

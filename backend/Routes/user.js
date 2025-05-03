@@ -46,4 +46,8 @@ router.delete("/delete-account", authMiddleware, userController.deleteAccount);
 router.post("/forgot-password", userController.forgotPassword);
 router.post("/reset-password", userController.resetPassword);
 
+// Admin Routes
+router.get("/all", authMiddleware, userController.getAllUsers);
+router.delete("/:id", authMiddleware, userController.deleteUserById);
+
 module.exports = router;

@@ -39,7 +39,7 @@ const AuthLoginRegMern = () => {
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5 }}
                 className="auth-mern-form-wrapper"
               >
                 <LoginFormMern toggleFormMern={toggleFormMern} setErrorMern={setErrorMern} errorMern={errorMern} />
@@ -50,7 +50,7 @@ const AuthLoginRegMern = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5 }}
                 className="auth-mern-form-wrapper"
               >
                 <RegisterFormMern toggleFormMern={toggleFormMern} setErrorMern={setErrorMern} errorMern={errorMern} />
@@ -77,30 +77,19 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
     setErrorMern("");
 
     try {
-      console.log("Attempting login with:", { email: emailMern, password: passwordMern });
       const res = await axios.post("http://localhost:5000/api/users/login", {
         email: emailMern,
         password: passwordMern,
       });
-      console.log("Login response:", res.data);
 
       if (res.data.requires2FA) {
         setRequires2FA(true);
         setTwoFAToken(res.data.tempToken);
       } else {
-        // Store the token
         localStorage.setItem("token", res.data.token);
-        
-        // Create the session with name and email
-        await axios.post("http://localhost:5000/sessions", {
-          name: res.data.user.name,
-          email: res.data.user.email
-        });
-        
-        window.location.href = "/";
+        window.location.href = "/userDashboard";
       }
     } catch (error) {
-      console.error("Login error:", error.response?.data || error);
       setErrorMern(error.response?.data?.error || "Login failed");
     } finally {
       setIsLoading(false);
@@ -118,15 +107,7 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
         code: twoFACode,
       });
 
-      // Store the token
       localStorage.setItem("token", res.data.token);
-      
-      // Create the session with name and email
-      await axios.post("http://localhost:5000/sessions", {
-        name: res.data.user.name,
-        email: res.data.user.email
-      });
-      
       window.location.href = "/userDashboard";
     } catch (error) {
       setErrorMern(error.response?.data?.error || "Verification failed");
@@ -135,10 +116,10 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
     }
   };
 
-  const handleOAuthLoginMern = (provider) => {
-    window.open(`http://localhost:5000/api/users/${provider}`, "_self");
+  /*const handleOAuthLoginMern = (provider) => {
+    window.open(`http://localhost:5001/api/users/${provider}`, "_self");
   };
-
+*/
   if (requires2FA) {
     return (
       <form onSubmit={handle2FASubmit} className="auth-mern-glass-card">
@@ -165,11 +146,20 @@ const LoginFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
           placeholder="Enter 6-digit code"
           className="auth-mern-input auth-mern-mb-3"
           value={twoFACode}
-          onChange={(e) => setTwoFACode(e.target.value)}
+          onChange={(e) => {
+            // Only allow numbers and limit to 6 digits
+            const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+            setTwoFACode(value);
+          }}
           required
           maxLength="6"
+          pattern="\d{6}"
+          inputMode="numeric"
         />
-        <button className="auth-mern-btn auth-mern-btn-primary auth-mern-w-100" disabled={isLoading}>
+        <button 
+          className="auth-mern-btn auth-mern-btn-primary auth-mern-w-100" 
+          disabled={isLoading || twoFACode.length !== 6}
+        >
           {isLoading ? "Verifying..." : "Verify Code"}
         </button>
         <p className="auth-mern-text-center auth-mern-mt-3">
@@ -242,39 +232,8 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
     e.preventDefault();
     setErrorMern("");
 
-    // Validate all fields
-    if (!fullNameMern || !emailMern || !passwordMern || !phoneMern) {
-      setErrorMern("All fields are required");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailMern)) {
-      setErrorMern("Please enter a valid email address");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validate password length
-    if (passwordMern.length < 6) {
-      setErrorMern("Password must be at least 6 characters long");
-      setIsLoading(false);
-      return;
-    }
-
-    // Validate phone number format (basic validation)
-    const phoneRegex = /^[0-9]{10,}$/;
-    if (!phoneRegex.test(phoneMern.replace(/\D/g, ''))) {
-      setErrorMern("Please enter a valid phone number");
-      setIsLoading(false);
-      return;
-    }
-
-    if (passwordMern !== confirmPasswordMern) {
-      setErrorMern("Passwords do not match");
-      setIsLoading(false);
+    if (!isValidPhoneNumber(phoneMern)) {
+      setErrorMern("Please enter a valid phone number.");
       return;
     }
 
@@ -285,10 +244,10 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
 
     setIsLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/users/register", {
-        fullName: fullNameMern.trim(),
-        email: emailMern.toLowerCase().trim(),
-        phone: phoneMern.trim(),
+      const res = await axios.post("http://localhost:5001/api/users/register", {
+        fullName: fullNameMern,
+        email: emailMern,
+        phone: phoneMern,
         password: passwordMern,
       });
 
@@ -362,3 +321,6 @@ const RegisterFormMern = ({ toggleFormMern, setErrorMern, errorMern }) => {
 };
 
 export default AuthLoginRegMern;
+
+
+

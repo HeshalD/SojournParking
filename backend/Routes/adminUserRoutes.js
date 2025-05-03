@@ -3,13 +3,14 @@ const router = express.Router();
 const adminController = require("../Controllers/adminUserController");
 const { verifyAdminToken } = require("../middleware/authAdmin");
 
-// Corrected Route: POST /api/admin/login
+// Admin login route
 router.post('/login', adminController.adminLogin);
 
-// Corrected Route: GET /api/admin/summary
+// Get dashboard summary
 router.get("/summary", verifyAdminToken, adminController.getUserSummary);
-router.delete("/:id", verifyAdminToken, adminController.adminDeleteUser);
-router.put("/restore/:id", verifyAdminToken, adminController.restoreUser);
 
+// User management routes
+router.delete("/user/:id", verifyAdminToken, adminController.adminDeleteUser);
+router.put("/user/restore/:id", verifyAdminToken, adminController.restoreUser);
 
 module.exports = router;

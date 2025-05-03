@@ -54,53 +54,46 @@ const getAllReservations = async (req, res, next) => {
 };
 
 const addReservation = async (req, res, next) => {
-  const { slotId, isReserved, userName, email, licensePlate, entryTime, exitTime } = req.body;
-
   try {
-    // Validate required fields
-    if (!slotId || !userName || !email || !licensePlate || !entryTime) {
-      return res.status(400).json({ 
-        message: "Missing required fields",
-        required: ["slotId", "userName", "email", "licensePlate", "entryTime"],
-        received: req.body
+    const { slotId, userName, email, licensePlate, entryTime, isReserved } = req.body;
+
+    // Check if there's already a reservation with this license plate
+    const existingReservation = await Slot.findOne({ licensePlate });
+    if (existingReservation) {
+      return res.status(400).json({
+        message: "This license plate already has an active reservation",
+        error: "Duplicate license plate"
       });
     }
 
-    const slot = new Slot({ 
-      slotId, 
-      isReserved, 
-      userName, 
+    const newReservation = new Slot({
+      slotId,
+      userName,
       email,
-      licensePlate, 
-      entryTime, 
-      exitTime 
+      licensePlate,
+      entryTime,
+      isReserved
     });
-    
-    const savedSlot = await slot.save();
-    
-    if (!savedSlot) {
-      return res.status(400).json({ message: "Unable to add reservation" });
-    }
 
+    const savedReservation = await newReservation.save();
+    
     // Send confirmation email
-    try {
-      const emailSent = await sendReservationEmail(email, userName, slotId, entryTime);
-      if (!emailSent) {
-        console.warn("Failed to send confirmation email, but reservation was saved");
-      }
-    } catch (emailError) {
-      console.error("Error sending email:", emailError);
-      // Don't fail the reservation if email fails
-    }
+    await sendReservationEmail(email, {
+      userName,
+      slotId,
+      entryTime,
+      licensePlate
+    });
 
-    return res.status(201).json({ slot: savedSlot });
-
+    res.status(201).json({
+      message: "Reservation created successfully",
+      reservation: savedReservation
+    });
   } catch (err) {
     console.error("Error in addReservation:", err);
-    return res.status(500).json({ 
-      message: "Server error", 
-      error: err.message,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    res.status(500).json({
+      message: "Server error",
+      error: err.message
     });
   }
 };
@@ -190,16 +183,23 @@ const deleteReservation = async (req, res, next) => {
 };
 
 const endStay = async (req, res, next) => {
-  const licensePlate = req.params.lp;
+  const licensePlate = decodeURIComponent(req.params.lp);
   const { exitTime } = req.body;
 
   try {
-    const formattedExitTime = new Date(exitTime);
+    // Create a proper date object from the time string
+    const [hours, minutes] = exitTime.split(':');
+    const currentDate = new Date();
+    currentDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
     
+    // Find the slot with case-insensitive license plate search
     const slot = await Slot.findOneAndUpdate(
-      { licensePlate, isReserved: true },
       { 
-        exitTime: formattedExitTime, 
+        licensePlate: { $regex: new RegExp(licensePlate, 'i') },
+        isReserved: true 
+      },
+      { 
+        exitTime: currentDate, 
         isReserved: false 
       },
       { new: true }
@@ -207,7 +207,7 @@ const endStay = async (req, res, next) => {
 
     if (!slot) {
       return res.status(404).json({ 
-        message: "No active reservation found for this license plate" 
+        message: `No active reservation found for license plate: ${licensePlate}` 
       });
     }
 
